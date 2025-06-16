@@ -1,0 +1,47 @@
+import React, { useState } from 'react'
+import { quickPickCategories, quickPickItems } from '../../../constants/Home'
+import Button from '../../common/Button'
+import ItemCard from '../ItemCard'
+
+const QuickPick = () => {
+
+    const [activeCategory, setActiveCategory] = useState('');
+
+    const setCategory = (category) => {
+        setActiveCategory(category);
+    }
+
+  return (
+    <div className='flex flex-col items-center pt-12'>
+        <p className='uppercase font-archivo font-semibold'><span className='text-mainRed'>Quick</span> Picks</p>
+        <p className='text-white/70 font-poppins font-light mt-1'>Out most popular items ready for quick customization</p>
+
+        <div className='flex gap-3 mt-4'>
+            {
+                quickPickCategories.map((category) => {
+                    const isActive = activeCategory === `${category.name}`;
+                    console.log(isActive);
+                    return (
+                        <div className={`py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
+                        onClick={() => setCategory(category.name)}>
+                            {category.name}
+                        </div>
+                    )
+                })
+            }
+        </div>
+
+        <div className='w-full flex justify-between my-6 font-poppins'>
+            {
+                quickPickItems.map((item) => (
+                    <ItemCard name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
+                ))
+            }
+        </div>
+
+        <Button text={"Explore full menu"}/>
+    </div>
+  )
+}
+
+export default QuickPick

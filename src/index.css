@@ -25,6 +25,3 @@
   background-color: var(--color-mainRed);
   border-radius: 10px;
 }
-
-.custom-scrollbar::-webkit-scrollbar-track {
-}

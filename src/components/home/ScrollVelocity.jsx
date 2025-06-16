@@ -114,7 +114,7 @@ export const ScrollVelocity = ({
 
     return (
       <div
-        className={`${parallaxClassName} relative w-full`}
+        className={`${parallaxClassName} relative`}
         style={parallaxStyle}
       >
         <motion.div
