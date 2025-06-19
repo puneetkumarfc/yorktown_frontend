@@ -55,7 +55,7 @@ const FeaturesSection = () => {
     }, []);
 
   return (
-    <section ref={sectionRef} className="relative">
+    <section ref={sectionRef} className="relative mb-20">
         <p className='font-archivo uppercase text-end pb-5'>What <span className='text-mainRed '>separates </span>us?</p>
 
         <div ref={containerRef} className="w-full flex gap-10 translate-x-[60%]">

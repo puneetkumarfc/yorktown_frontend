@@ -20,7 +20,6 @@ const QuickPick = () => {
             {
                 quickPickCategories.map((category) => {
                     const isActive = activeCategory === `${category.name}`;
-                    console.log(isActive);
                     return (
                         <div className={`py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
                         onClick={() => setCategory(category.name)}>
