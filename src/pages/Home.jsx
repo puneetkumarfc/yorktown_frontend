@@ -12,7 +12,7 @@ const Home = () => {
 
         <FeaturesSection/>
 
-        <section style={{ height: "200vh", backgroundColor: "#000000" }}>Next Section</section>
+        <section style={{ height: "200vh", backgroundColor: "#000000" }}></section>
     </div>
   )
 }
