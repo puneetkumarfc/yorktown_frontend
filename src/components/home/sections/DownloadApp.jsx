@@ -12,13 +12,13 @@ const DownloadApp = () => {
         </div>
 
         <div className="flex gap-2">
-          <img src="public/GooglePlay.svg" />
-          <img src="public/AppStore.svg" />
+          <img src="/GooglePlay.svg" />
+          <img src="/AppStore.svg" />
         </div>
       </div>
 
       <div className="w-fit h-fit relative translate-y-1/4">
-        <img src="public/iPhone 14 Pro.svg" />
+        <img src="/iPhone 14 Pro.svg" />
       </div>
     </div>
   );

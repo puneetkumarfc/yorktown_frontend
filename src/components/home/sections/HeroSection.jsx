@@ -29,7 +29,7 @@ const HeroSection = () => {
             </div>
 
             <div className='flex items-end gap-7'>
-                <img src="public/MainPizza.png" alt="PizzaImg" width={582}/>
+                <img src="/MainPizza.png" alt="PizzaImg" width={582}/>
 
                 <div className='w-[300px] flex flex-col gap-5'>
                     <p className='text-end font-poppins font-light text-white/70'>
