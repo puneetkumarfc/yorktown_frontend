@@ -12,7 +12,7 @@ import Button from '../../common/Button';
 
 const HeroSection = () => {
   return (
-    <>
+    <div className='max-h-screen'>
         <ScrollVelocity texts={['Original american']} velocity={90} className="text-[140px] uppercase mt-25 font-black text-mainYellow/20"/>
 
         <div className='-translate-y-15 flex justify-between items-end w-full '>
@@ -46,7 +46,7 @@ const HeroSection = () => {
                 </div>
             </div>
         </div>
-    </>
+    </div>
   )
 }
 
