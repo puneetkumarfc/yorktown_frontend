@@ -60,19 +60,23 @@ export const quickPickItems = [
 
 export const features = [
     {
+        image: '/Delivery.svg',
         heading: "On-time Deliveries",
-        desc: "We understand how valuable your time is. That's why we've built a robust delivery system that ensures every order arrives exactly when you expect it. No delays, no excuses — just punctual, reliable service every single time."
+        desc: "We value your time! Expect prompt and accurate deliveries with real-time tracking."
     },
     {
-        heading: " Top-Quality Food",
-        desc: "Quality is the cornerstone of our kitchen. We use only the freshest, locally sourced ingredients and adhere to rigorous hygiene and safety standards. Each dish is crafted with care to ensure you experience rich flavors, wholesome nutrition, and unbeatable taste in every bite."
+        image: '/TastyFood.svg',
+        heading: "Unforgettable Flavors",
+        desc: "From the first bite to the last, our dishes are designed to leave a lasting impression on your taste buds."
     },
     {
+        image: '/Chef.svg',
         heading: "Handpicked Chefs",
-        desc: "Our culinary team is composed of chefs selected through a rigorous process that values creativity, experience, and passion. They bring fine-dining expertise to your table, curating menus that are both innovative and comforting — all made with love and precision."
+        desc: "Experience gourmet meals crafted by top-tier chefs chosen for their culinary excellence."
     },
     {
-        heading: "Customer-First Approach",
-        desc: "You are at the heart of everything we do. From placing an order to receiving your meal, we strive to provide an experience that feels personal and delightful. Our support is responsive, our process is transparent, and our goal is your complete satisfaction — every step of the way."
+        image: '/Support.svg',
+        heading: "24/7 Customer Support",
+        desc: "We're here anytime you need us! Chat with our friendly team whenever you have a query."
     },
 ]
