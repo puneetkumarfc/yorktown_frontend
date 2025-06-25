@@ -5,7 +5,7 @@ import ItemCard from '../ItemCard'
 
 const QuickPick = () => {
 
-    const [activeCategory, setActiveCategory] = useState('');
+    const [activeCategory, setActiveCategory] = useState('Submarines');
 
     const setCategory = (category) => {
         setActiveCategory(category);

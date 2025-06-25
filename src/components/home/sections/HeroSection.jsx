@@ -12,24 +12,26 @@ import Button from '../../common/Button';
 
 const HeroSection = () => {
   return (
-    <div className='max-h-screen'>
-        <ScrollVelocity texts={['Original american']} velocity={90} className="text-[140px] uppercase mt-30 font-black text-mainYellow/20"/>
+    <div className='max-h-screen mt-[16vh]'>
+        <ScrollVelocity texts={['Original american']} velocity={90} className="text-[140px] uppercase font-black text-mainYellow/20"/>
 
-        <div className='-translate-y-15 flex justify-between items-end w-full '>
-            <div className='flex flex-col gap-2'>
-                <p className='uppercase font-archivo font-semibold'><span className='text-mainRed'>Follow</span> us on</p>
+        <div className='relative -translate-y-15 flex justify-between items-end w-full h-[582px]'>
 
-                <div className='flex gap-6 items-center text-3xl text-white'>
-                    <AiFillInstagram className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                <div className='flex flex-col gap-2'>
+                    <p className='uppercase font-archivo font-semibold'><span className='text-mainRed'>Follow</span> us on</p>
 
-                    <FaTwitter  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                    <div className='flex gap-6 items-center text-3xl text-white'>
+                        <AiFillInstagram className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
 
-                    <FaFacebook  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                        <FaTwitter  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+
+                        <FaFacebook  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                    </div>
                 </div>
-            </div>
-
-            <div className='flex items-end gap-7'>
-                <img src="/MainPizza.png" alt="PizzaImg" width={582}/>
+                
+                <div className='absolute left-1/2 transform -translate-x-1/2 top-0'>
+                    <img src="/MainPizza.png" alt="PizzaImg" width={582} />
+                </div>
 
                 <div className='w-[300px] flex flex-col gap-5'>
                     <p className='text-end font-poppins font-light text-white/70'>
@@ -44,7 +46,8 @@ const HeroSection = () => {
                         <Button text={"Take away"}/>
                     </div>
                 </div>
-            </div>
+            {/* <div className='flex items-end justify-between border'>
+            </div> */}
         </div>
     </div>
   )

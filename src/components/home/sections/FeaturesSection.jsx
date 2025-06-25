@@ -23,7 +23,7 @@ const FeaturesSection = () => {
             scrollTrigger: {
                 trigger: section,
                 start: "top 20%",
-                end: () => container.scrollWidth,
+                end: () => container.scrollWidth * 1.4,
                 pin: true,
                 scrub: true,
                 anticipatePin: 1,
@@ -66,7 +66,7 @@ const FeaturesSection = () => {
                           <div className='h-[180px] w-[180px] flex items-center justify-center overflow-hidden'>
                             <img src={feature.image} alt={feature.heading} className="h-full w-full object-contain" />
                           </div>
-                          <div className='h-[40%] flex flex-col items-center justify-between'>
+                          <div className='h-[40%] flex flex-col items-center gap-2'>
                             <p className='font-archivo text-mainYellow'>{feature.heading}</p>
                             <p className='text-white/70 text-center'>{feature.desc}</p>
                           </div>
