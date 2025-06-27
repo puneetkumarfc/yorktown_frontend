@@ -12,7 +12,7 @@ const QuickPick = () => {
     }
 
   return (
-    <div className='flex flex-col items-center mt-12 mb-20'>
+    <div className='flex flex-col items-center mt-12'>
         <p className='uppercase font-archivo font-semibold'><span className='text-mainRed'>Quick</span> Picks</p>
         <p className='text-white/70 font-poppins font-light mt-1'>Out most popular items ready for quick customization</p>
 
