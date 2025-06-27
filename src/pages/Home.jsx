@@ -10,10 +10,7 @@ const Home = () => {
         <HeroSection/>
 
         <QuickPick/>
-        {/* todo: remove later */}
-        <div className='pb-20'>
 
-        </div>
         <FeaturesSection/>
 
         <DownloadApp/>
