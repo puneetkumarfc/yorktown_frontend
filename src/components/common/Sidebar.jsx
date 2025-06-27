@@ -33,12 +33,16 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
       ref={sidebarRef}
       className="bg-white/8 backdrop-blur-[30px] min-w-[450px] fixed top-0 bottom-0 right-0 z-40 translate-x-full will-change-transform hidden">
       <div className='pt-12 px-4'>
-        <p className="text-xs uppercase border-b border-white/70 text-white/70 py-2 font-archivo">Navigation</p>
+        <p className="text-xs uppercase border-b border-white/70 text-white/70 py-2 font-poppins">Navigation</p>
 
-        <div className="flex flex-col gap-8 items-start font-poppins mt-5 px-4">
+        <div className="flex flex-col gap-8 items-start font-archivo mt-5 px-4">
             {
                 sideLinks.map(link => (
-                    <p onClick={() => navigate(link.link)} className="text-4xl cursor-pointer font-semibold">{link.name}</p>
+                    <p className="text-4xl cursor-pointer font-semibold uppercase"
+                    onClick={() => {
+                        navigate(link.link)
+                        toggleSidebar();
+                    }}>{link.name}</p>
                 ))
             }
         </div>

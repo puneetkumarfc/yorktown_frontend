@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { quickPickCategories, quickPickItems } from '../../../constants/Home'
 import Button from '../../common/Button'
 import ItemCard from '../ItemCard'
+import { routeConstant } from '../../../constants/RouteConstants'
 
 const QuickPick = () => {
 
@@ -38,7 +39,7 @@ const QuickPick = () => {
             }
         </div>
 
-        <Button text={"Explore full menu"}/>
+        <Button text={"Explore full menu"} path={routeConstant.MENU}/>
     </div>
   )
 }

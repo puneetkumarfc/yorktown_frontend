@@ -6,6 +6,7 @@ import Bag from './pages/Bag'
 import Header from './components/common/Header'
 import Footer from './components/home/sections/Footer'
 import Sidebar from './components/common/Sidebar'
+import Menu from './pages/Menu'
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
   }, [sidebarOpen]);
 
   return (
-    <div className={`bg-black min-h-screen w-full text-white px-[6rem] overflow-x-hidden custom-scrollbar relative`}>
+    <div className={`bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem]  overflow-x-hidden custom-scrollbar relative`}>
       <Header toggleSidebar={toggleSidebar}/>
       <div
         className={`fixed inset-0 bg-black/20 z-30 transition-opacity duration-300 ${
@@ -37,6 +38,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/bag' element={<Bag/>}/>
+        <Route path='/menu' element={<Menu/>}/>
       </Routes>
 
       <Footer/>

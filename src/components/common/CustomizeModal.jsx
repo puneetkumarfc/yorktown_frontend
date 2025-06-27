@@ -6,6 +6,7 @@ import { FiMinus } from "react-icons/fi";
 const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
 
   const [selectedSize, setSelectedSize] = useState('medium');
+
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
 
