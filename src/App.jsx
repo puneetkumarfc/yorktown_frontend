@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
+import Bag from './pages/Bag'
 import Header from './components/common/Header'
 import Footer from './components/home/sections/Footer'
 import Sidebar from './components/common/Sidebar'
@@ -35,7 +36,7 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Home/>}/>
-
+        <Route path='/bag' element={<Bag/>}/>
       </Routes>
 
       <Footer/>

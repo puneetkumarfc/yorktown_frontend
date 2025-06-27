@@ -41,10 +41,10 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
   console.log(selectedToppings);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-4xl max-h-[100vh] rounded-lg bg-black/20 backdrop-blur-xl border-[0.5px] border-white/70">
-        <div className='h-[35vh] overflow-hidden rounded-t-md relative'>
-          <div className='p-2 rounded-full absolute top-1 right-1 bg-white text-black border' onClick={showModal}><RxCross2/></div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40">
+      <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-lg bg-black/20 backdrop-blur-xl border-[0.5px] border-white/70">
+        <div className='h-[30vh] overflow-hidden rounded-t-md relative'>
+          <div className='p-2 rounded-full absolute top-1 right-1 bg-white/70 hover:bg-white transition-all duration-200 text-black border cursor-pointer' onClick={showModal}><RxCross2/></div>
           <img src={img} className="h-full w-full object-cover rounded-t-md"/>
         </div>
 
@@ -55,9 +55,11 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
                 <p className='font-poppins font-light text-white/70'>{desc}</p>
               </div>
 
-              <div className='flex gap-3'>
-                <button className='border py-2 px-4 rounded-lg'>Add to Cart</button>
-                <button className='border py-2 px-4'>Buy Now</button>
+              <div className='flex gap-3 font-light text-sm'>
+                <button className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
+                border border-mainYellow/70 hover:border-transparent rounded-full text-sm text-mainYellow hover:text-white cursor-pointer'>Add to Bag</button>
+                <button className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
+                border border-mainYellow/70 hover:border-transparent rounded-full text-sm text-mainYellow hover:text-white cursor-pointer'>Buy Now</button>
               </div>
           </div>
 
@@ -76,7 +78,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
                         : 'border-white/70 hover:border-gray-300 text-white'
                     }`}
                   >
-                    <div className="font-normal font-poppins">{size.name}</div>
+                    <div className="font-light text-sm font-poppins">{size.name}</div>
                     {size.price > 0 && (
                       <div className="text-sm ">+${size.price}</div>
                     )}
@@ -102,7 +104,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
                     }`}
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-normal font-poppins">{topping.name}</span>
+                      <span className="font-light text-sm font-poppins">{topping.name}</span>
                       <span className="text-sm">+${topping.price}</span>
                     </div>
                   </button>
@@ -117,14 +119,14 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
+                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
                 >
                   <FiMinus className="w-4 h-4" />
                 </button>
                 <span className="w-8 text-center font-semibold text-lg">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
+                  className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
                 >
                   <FiPlus className="w-4 h-4" />
                 </button>
@@ -133,7 +135,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
 
             <div className="text-right">
               <div className="text-2xl font-bold text-white">
-                ${calculatePrice().toFixed(2)}
+                <span className='text-mainRed'>$</span>{calculatePrice().toFixed(2)}
               </div>
             </div>
           </div>
