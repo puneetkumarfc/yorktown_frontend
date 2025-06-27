@@ -81,7 +81,7 @@ const Menu = () => {
                         filters.map((filter, index) => (
                           <div key={index} className=''>
                             <p className='text-medium py-1'>{filter.name}</p>
-                            <div className='flex flex-col gap-1 px-3 '>
+                            <div className='flex flex-col gap-2.5 px-3'>
                               {
                                 filter.list.map((item, ind) => (
                                   <div key={ind} className='flex gap-2 items-center'>
