@@ -38,7 +38,7 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
         <div className="flex flex-col gap-8 items-start font-archivo mt-5 px-4">
             {
                 sideLinks.map(link => (
-                    <p className="text-4xl cursor-pointer font-semibold uppercase"
+                    <p className="text-4xl cursor-pointer font-semibold uppercase hover:translate-x-2 transition-all duration-200 font-poppins py-2"
                     onClick={() => {
                         navigate(link.link)
                         toggleSidebar();
