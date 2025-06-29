@@ -30,7 +30,11 @@ const useCartStore = create(
                     cart: get().cart.filter(cartItem => cartItem.uniqueId !== id)
                 })
             },
-            updateQuantity: (id, qty) => { /* logic */ },
+            updateQuantity: (id, qty) => { 
+                set({
+                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? {...cartItem, quantity: cartItem.quantity+1} : cartItem)
+                })
+            },
             clearCart: () => set({ cart: [] }),
             totalItemTypes: () => get().cart.length,
             totalItems: () => get().cart.reduce((acc, i) => acc + i.quantity, 0),
