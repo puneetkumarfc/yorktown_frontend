@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import CustomizeModal from '../common/CustomizeModal';
+import CustomizeModal from './CustomizeModal';
 
-const ItemCard = ({name, img, desc, priceFrom}) => {
+const ItemCard = ({id, name, img, desc, priceFrom}) => {
 
     const [displayModal, setDisplayModal] = useState(null);
 
@@ -16,7 +16,7 @@ const ItemCard = ({name, img, desc, priceFrom}) => {
         </div>
 
         <div className='flex flex-col w-full items-center justify-between px-4 py-2 h-full'>
-            <p>{name}</p>
+            <p className='text-center'>{name}</p>
             <p className='text-center text-sm text-white/70 mt-1 mb-3'>{desc}</p>
 
             <div className='flex w-full justify-between items-end'>
@@ -33,7 +33,7 @@ const ItemCard = ({name, img, desc, priceFrom}) => {
         </div>
 
         {
-            displayModal && <CustomizeModal name={name} img={"/ShrimpBg.jpg"} desc={desc} priceFrom={priceFrom} showModal={showModal}/>
+            displayModal && <CustomizeModal id={id} name={name} img={"/ShrimpBg.jpg"} desc={desc} priceFrom={priceFrom} showModal={showModal}/>
         }
     </div>
   )

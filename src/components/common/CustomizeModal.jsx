@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxCross2 } from "react-icons/rx";
 import { FiPlus } from "react-icons/fi";
 import { FiMinus } from "react-icons/fi";
+import useCartStore from '../../hooks/useCartStore';
 
-const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
+const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
   const [selectedSize, setSelectedSize] = useState('medium');
-
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
 
@@ -38,12 +38,32 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
     return (priceFrom + sizePrice + toppingsPrice) * quantity;
   };
 
-  console.log(selectedSize);
-  console.log(selectedToppings);
+  const [finalPrice, setFinalPrice] = useState(() => calculatePrice().toFixed(2));
+
+  useEffect(() => {
+    setFinalPrice(calculatePrice().toFixed(2));
+  }, [selectedSize, selectedToppings, quantity]);
+
+  const { addToCart, removeFromCart } = useCartStore();
+
+  const handleAddToCart = () => {
+    const newItem = {
+      id: id,
+      name: name,
+      image: img,
+      price: parseFloat(calculatePrice().toFixed(2)),
+      quantity: quantity,
+      size: selectedSize,
+      toppings: selectedToppings
+    }
+
+    console.log(newItem)
+    addToCart(newItem)
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40">
-      <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-lg bg-black/20 backdrop-blur-xl border-[0.5px] border-white/70">
+      <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-black/20 backdrop-blur-xl border border-white/20">
         <div className='h-[30vh] overflow-hidden rounded-t-md relative'>
           <div className='p-2 rounded-full absolute top-1 right-1 bg-white/70 hover:bg-white transition-all duration-200 text-black border cursor-pointer' onClick={showModal}><RxCross2/></div>
           <img src={img} className="h-full w-full object-cover rounded-t-md"/>
@@ -57,10 +77,11 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
               </div>
 
               <div className='flex gap-3 font-light text-sm'>
+                <button type='button' className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
+                border border-mainYellow/70 hover:border-transparent rounded-xl text-sm text-mainYellow hover:text-white cursor-pointer'
+                onClick={handleAddToCart}>Add to Bag</button>
                 <button className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
-                border border-mainYellow/70 hover:border-transparent rounded-full text-sm text-mainYellow hover:text-white cursor-pointer'>Add to Bag</button>
-                <button className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
-                border border-mainYellow/70 hover:border-transparent rounded-full text-sm text-mainYellow hover:text-white cursor-pointer'>Buy Now</button>
+                border border-mainYellow/70 hover:border-transparent rounded-xl text-sm text-mainYellow hover:text-white cursor-pointer'>Buy Now</button>
               </div>
           </div>
 
@@ -76,7 +97,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
                     className={`py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
                       selectedSize === size.id
                         ? 'border-mainRed/70 bg-red-50 text-mainRed'
-                        : 'border-white/70 hover:border-gray-300 text-white'
+                        : 'border-white/20 hover:border-gray-300 text-white'
                     }`}
                   >
                     <div className="font-light text-sm font-poppins">{size.name}</div>
@@ -101,7 +122,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
                     className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                       selectedToppings.includes(topping.id)
                         ? 'border-mainRed/70 bg-red-50 text-mainRed'
-                        : 'border-white/70 hover:border-gray-300 text-white'
+                        : 'border-white/20 hover:border-gray-300 text-white'
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -114,7 +135,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-white/70">
+          <div className="flex items-center justify-between pt-4 border-t border-white/20">
             <div className="flex items-center space-x-3">
               <span className="text-lg font-semibold text-white">Quantity:</span>
               <div className="flex items-center space-x-2">
@@ -136,7 +157,7 @@ const CustomizeModal = ({name, img, desc, priceFrom, showModal}) => {
 
             <div className="text-right">
               <div className="text-2xl font-bold text-white">
-                <span className='text-mainRed'>$</span>{calculatePrice().toFixed(2)}
+                <span className='text-mainRed'>$</span>{finalPrice}
               </div>
             </div>
           </div>

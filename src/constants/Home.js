@@ -27,30 +27,35 @@ export const quickPickCategories = [
 
 export const quickPickItems = [
     {
+        id: 1,
         name: "Shrimp Cheesesteak",
         desc: "Grilled shrimp, melted cheese, and onions on a hoagie roll",
         priceFrom: 20.15,
         img: "/Shrimp.png"
     },
     {
+        id: 2,
         name: "Pizza Steak",
         desc: "Steak, marinara, and cheese on a toasted roll",
         priceFrom: 18.50,
         img: "/Shrimp.png"
     },
     {
+        id: 3,
         name: "Cheese Steak",
         desc: "Classic steak and melted cheese",
         priceFrom: 17.00,
         img: "/Shrimp.png"
     },
     {
+        id: 4,
         name: "Italian Cheesesteak",
         desc: "Steak, peppers, onions, and provolone",
         priceFrom: 19.25,
         img: "/Shrimp.png"
     },
     {
+        id: 5,
         name: "Grilled Chicken",
         desc: "Tender grilled chicken with cheese",
         priceFrom: 16.75,

@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { quickPickCategories, quickPickItems } from '../constants/Home';
 import { VscSettings } from "react-icons/vsc";
 import {filters} from "../constants/Menu"
-import ItemCard from '../components/home/ItemCard';
+import ItemCard from '../components/common/ItemCard';
 
 const Menu = () => {
 
@@ -29,6 +29,10 @@ const Menu = () => {
   
     const displayFilterModal = () => {
       setFilterModal(!filterModal);
+    }
+
+    const toggleFilters = (filters) => {
+      setSelectedFilters(prev => prev.includes(filters) ? prev.filter(id => id !== filters) : [...prev, filters])
     }
   
     const clearAllFilters = () => {
@@ -66,39 +70,38 @@ const Menu = () => {
           </div>
           
           {/* Filter */}
-          <div className='p-2 bg-mainYellow/30 rounded-md cursor-pointer relative'>
+          <div className='p-2 bg-mainYellow/30 rounded-md relative'>
             <VscSettings onClick={displayFilterModal} 
-            className='text-xl rotate-90 text-white hover:text-mainYellow transition-all duration-200'/>
+            className='text-xl rotate-90 text-white hover:text-mainYellow transition-all duration-200 cursor-pointer'/>
             {
               filterModal && (
-                <div className='absolute top-10 border border-white/50 rounded-lg right-0 w-[300px] bg-white/5 backdrop-blur-md'>
-                  <p className='py-3 px-3 border-b border-white/50 text-md uppercase'>Filters</p>
+                <div className='absolute top-10 rounded-xl right-0 w-fit bg-[#1a1a1a] py-4 px-6'>
+                  <p className='text-lg font-semibold text-center'>Filters</p>
 
                   {/* Filters */}
-                  <div className='py-2 px-2'>
+                  <div className='py-2'>
                     <>
                       {
                         filters.map((filter, index) => (
-                          <div key={index} className=''>
-                            <p className='text-medium py-1'>{filter.name}</p>
-                            <div className='flex flex-col gap-2.5 px-3'>
+                          <div key={index} className='mb-3 w-full'>
+                            <p className='text-medium mb-3'>{filter.name}</p>
+                            <div className='flex gap-3 w-full'>
                               {
                                 filter.list.map((item, ind) => (
                                   <div key={ind} className='flex gap-2 items-center'>
-                                    <input
-                                      type="checkbox"
-                                      id={item.id}
-                                      className="appearance-none w-4 h-4 p-1 rounded-full border border-white/70 checked:bg-mainYellow transition-colors duration-100 cursor-pointer"
-                                      checked={selectedFilters.includes(item.item)}
-                                      onChange={(e) => {
-                                        if (e.target.checked) {
-                                          setSelectedFilters((prev) => [...prev, item.item]);
-                                        } else {
-                                          setSelectedFilters((prev) => prev.filter((fid) => fid !== item.item));
-                                        }
-                                      }}
-                                    />
-                                    <label htmlFor={item.id} className="text-white/70 cursor-pointer w-full bg-transparent hover:bg-white/10 rounded-md px-1 text-sm">{item.item}</label>
+                                    <button
+                                      key={item.id}
+                                      onClick={() => toggleFilters(item.item)}
+                                      className={`p-3 w-auto rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                                        selectedFilters.includes(item.item)
+                                          ? 'border-mainRed/70 bg-red-50 text-mainRed'
+                                          : 'border-white/20 hover:border-gray-300 text-white'
+                                      }`}
+                                    >
+                                      <div className="flex justify-between items-center">
+                                        <span className="font-light text-sm font-poppins text-nowrap">{item.item}</span>
+                                      </div>
+                                    </button>
                                   </div>
                                 ))
                               }
@@ -110,13 +113,13 @@ const Menu = () => {
                   </div>
                   
                   {/* Buttons */}
-                  <div className='py-3 px-2 border-t border-white/50 flex gap-2 items-center justify-center'>
+                  <div className='flex gap-2 items-center justify-center'>
                     <button className='text-nowrap text-sm bg-transparent hover:bg-mainYellow/70 
                     transition-all duration-200 border border-mainYellow/70 hover:border-transparent text-mainYellow
-                    hover:text-white cursor-pointer py-2 px-2 rounded-md'>Apply Filters</button>
+                    hover:text-white cursor-pointer p-3 rounded-xl'>Apply Filters</button>
                     <button className='text-nowrap text-sm bg-transparent hover:bg-mainRed/70 
                     transition-all duration-200 border border-mainRed/70 hover:border-transparent text-mainRed
-                    hover:text-white cursor-pointer py-2 px-2 rounded-md'
+                    hover:text-white cursor-pointer p-3 rounded-xl'
                     onClick={clearAllFilters}>Clear All</button>
                   </div>
                 </div>

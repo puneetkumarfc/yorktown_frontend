@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { quickPickCategories, quickPickItems } from '../../../constants/Home'
 import Button from '../../common/Button'
-import ItemCard from '../ItemCard'
 import { routeConstant } from '../../../constants/RouteConstants'
+import ItemCard from '../../common/ItemCard'
 
 const QuickPick = () => {
 
@@ -33,8 +33,8 @@ const QuickPick = () => {
 
         <div className='w-full flex justify-between my-6 font-poppins'>
             {
-                quickPickItems.map((item) => (
-                    <ItemCard name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
+                quickPickItems.map((item, index) => (
+                    <ItemCard key={index} id={item.id} name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
                 ))
             }
         </div>
