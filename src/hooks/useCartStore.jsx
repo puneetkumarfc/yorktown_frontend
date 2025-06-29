@@ -11,13 +11,13 @@ const useCartStore = create(
                 const existing = get().cart.find(cartItem => cartItem.uniqueId === uniqueId);
                 if(existing) {
                     set({
-                        cart: get().cart.map((cartItem) => cartItem.id === item.id ? 
-                            { 
-                                ...cartItem, 
-                                quantity: cartItem.quantity + item.quantity, 
-                                price: cartItem.price + item.price,
-                            } : 
-                            cartItem),
+                        cart: get().cart.map((cartItem) => cartItem.uniqueId === item.uniqueId ? 
+                        { 
+                            ...cartItem, 
+                            quantity: cartItem.quantity + item.quantity, 
+                            price: cartItem.price + item.price,
+                        } : 
+                        cartItem),
                     })
                 } else {
                     set({
@@ -32,7 +32,7 @@ const useCartStore = create(
             },
             updateQuantity: (id, qty) => { 
                 set({
-                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? {...cartItem, quantity: cartItem.quantity+1} : cartItem)
+                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? {...cartItem, quantity: cartItem.quantity + qty} : cartItem)
                 })
             },
             clearCart: () => set({ cart: [] }),
