@@ -30,9 +30,26 @@ const useCartStore = create(
                     cart: get().cart.filter(cartItem => cartItem.uniqueId !== id)
                 })
             },
-            updateQuantity: (id, qty) => { 
+            increaseQuantity: (id, qty) => { 
                 set({
-                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? {...cartItem, quantity: cartItem.quantity + qty} : cartItem)
+                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? 
+                    {
+                        ...cartItem, 
+                        quantity: cartItem.quantity + qty,
+                        price: (cartItem.quantity + qty) * cartItem.unitPrice
+                    } :
+                    cartItem)
+                })
+            },
+            decreaseQuantity: (id, qty) => { 
+                set({
+                    cart: get().cart.map((cartItem) => cartItem.uniqueId === id ? 
+                    {
+                        ...cartItem, 
+                        quantity: cartItem.quantity - qty,
+                        price: (cartItem.quantity - qty) * cartItem.unitPrice
+                    } : 
+                    cartItem)
                 })
             },
             clearCart: () => set({ cart: [] }),

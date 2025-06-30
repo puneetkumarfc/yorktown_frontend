@@ -29,13 +29,18 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
     setSelectedToppings(prev => prev.includes(toppingId) ? prev.filter(id => id !== toppingId) : [...prev, toppingId]);
   };
 
-  const calculatePrice = () => {
+  const computeUnitPrice = () => {
     const sizePrice = sizes.find(size => size.id === selectedSize)?.price || 0;
     const toppingsPrice = selectedToppings.reduce((total, toppingId) => {
       const topping = toppings.find(t => t.id === toppingId);
       return total + (topping?.price || 0);
     }, 0);
-    return (priceFrom + sizePrice + toppingsPrice) * quantity;
+    return priceFrom + sizePrice + toppingsPrice;
+  };
+
+  const calculatePrice = () => {
+    const unitPrice = computeUnitPrice();
+    return unitPrice * quantity;
   };
 
   const [finalPrice, setFinalPrice] = useState(() => calculatePrice().toFixed(2));
@@ -47,11 +52,13 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
   const { addToCart, removeFromCart } = useCartStore();
 
   const handleAddToCart = () => {
+    const unitPrice = parseFloat(computeUnitPrice().toFixed(2));
     const newItem = {
       id: id,
       name: name,
       image: img,
-      price: parseFloat(calculatePrice().toFixed(2)),
+      price: parseFloat((unitPrice * quantity).toFixed(2)),
+      unitPrice,
       quantity: quantity,
       size: selectedSize,
       toppings: selectedToppings
