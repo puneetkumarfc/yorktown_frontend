@@ -5,6 +5,7 @@ import { FiPlus } from "react-icons/fi";
 import BagSidebar from "../components/bag/BagSidebar";
 import { RxCross2 } from "react-icons/rx";
 import AreYouSureModal from "../components/bag/AreYouSureModal";
+import { routeConstant } from "../constants/RouteConstants";
 
 const Bag = () => {
   const { 
@@ -20,6 +21,7 @@ const Bag = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
+  const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
 
   //todo - rename to toggleModal
   const displayAreYouSureModal = () => {
@@ -30,19 +32,21 @@ const Bag = () => {
     const itemToRemove = cart.find((cartItem) => cartItem.quantity < 1);
     if (itemToRemove) {
       setRemoveItem(itemToRemove.uniqueId);
+      setManuallyReducedItemId(itemToRemove.uniqueId);
       displayAreYouSureModal();
     }
   }, [totalItems()]);
 
   const removeItemFromCart = () => {
     removeFromCart(removeItem);
+    setManuallyReducedItemId(null);
   }
 
   console.log(removeItem);
   console.log(cart)
 
   return (
-    <div className="relative flex min-h-[calc(100vh-60px)] mb-20">
+    <div className="relative flex min-h-[calc(100vh-60px)] mb-10">
       <div className={`transition-all duration-300 ${isSidebarOpen ? "w-[calc(100%-400px)]" : "w-[100%]"} px-6 mt-28`}>
         <p className="uppercase font-archivo font-semibold">
           Your<span className="text-mainRed"> food</span> bag
@@ -82,11 +86,15 @@ const Bag = () => {
                 </div>
 
                 <RxCross2 className="text-xl text-white/50 hover:text-white cursor-pointer transition-colors duration-200" 
-                onClick={() => removeFromCart(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`)}/>
+                onClick={() => {
+                  setRemoveItem(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`);
+                  setManuallyReducedItemId(null);
+                  displayAreYouSureModal();
+                }}/>
               </div>
             )) :
             <div className="w-full h-[50vh] flex items-center justify-center text-white/70 text-lg italic">
-              Oops! No items in your bag.
+              Oops! No items in your bag.<span><a className="text-mainYellow/85" href={routeConstant.MENU}>Visit menu</a></span>
             </div>
           }
         </div>
@@ -95,7 +103,15 @@ const Bag = () => {
       <BagSidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>
 
       {
-        areYouSureModal && <AreYouSureModal displayAreYouSureModal={displayAreYouSureModal} removeItemFromCart={removeItemFromCart}/>
+        areYouSureModal 
+        && 
+        <AreYouSureModal 
+          displayAreYouSureModal={displayAreYouSureModal} 
+          removeItemFromCart={removeItemFromCart} 
+          increaseQuantity={increaseQuantity} 
+          removeItem={removeItem}
+          manuallyReducedItemId={manuallyReducedItemId}
+        />
       }
     </div>
   );
