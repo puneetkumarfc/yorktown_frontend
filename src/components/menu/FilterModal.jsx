@@ -40,17 +40,15 @@ const FilterModal = ({selectedFilters, clearAllFilters, toggleFilters}) => {
       </div>
 
       {/* Buttons */}
-      <div className="flex gap-2 items-center justify-center">
+      <div className="flex gap-2 items-center justify-center mt-2">
         <button
-          className="text-nowrap text-sm bg-transparent hover:bg-mainYellow/70 
-                        transition-all duration-200 border border-mainYellow/70 hover:border-transparent text-mainYellow
-                        hover:text-white cursor-pointer p-3 rounded-xl">
+          className="text-nowrap text-sm bg-[#ffffff2a] hover:bg-[#ffffff65]
+                        transition-all duration-200 text-white cursor-pointer p-3 rounded-xl">
           Apply Filters
         </button>
         <button
-          className="text-nowrap text-sm bg-transparent hover:bg-mainRed/70 
-                        transition-all duration-200 border border-mainRed/70 hover:border-transparent text-mainRed
-                        hover:text-white cursor-pointer p-3 rounded-xl"
+          className="text-nowrap text-sm bg-mainRed hover:bg-mainRed/80 
+                        transition-all duration-200 text-white cursor-pointer p-3 rounded-xl"
           onClick={clearAllFilters}>
           Clear All
         </button>
