@@ -55,7 +55,7 @@ const useCartStore = create(
             clearCart: () => set({ cart: [] }),
             totalItemTypes: () => get().cart.length,
             totalItems: () => get().cart.reduce((acc, i) => acc + i.quantity, 0),
-            totalPrice: () => get().cart.reduce((acc, i) => acc + i.price * i.quantity, 0).toFixed(2),
+            totalPrice: () => get().cart.reduce((acc, i) => acc + i.unitPrice * i.quantity, 0).toFixed(2),
         }),
         {
             name: "cart-storage",

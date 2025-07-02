@@ -8,7 +8,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   const [formStep, setFormStep] = useState(1);
 
   return (
-    <div className={`fixed top-0 right-0 h-screen min-w-[400px] bg-mainYellow/50 transform transition-transform duration-300 ${
+    <div className={`fixed top-0 right-0 h-screen max-w-[400px] bg-mainYellow/50 transform transition-transform duration-300 ${
       isSidebarOpen ? "translate-x-0" : "translate-x-[98%]"}`}>
       {/* Toggle button inside sidebar */}
       <button

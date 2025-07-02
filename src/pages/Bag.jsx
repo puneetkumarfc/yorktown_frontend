@@ -15,7 +15,8 @@ const Bag = () => {
     increaseQuantity,
     decreaseQuantity, 
     clearCart, 
-    totalItems
+    totalItems,
+    totalPrice
   } = useCartStore();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -97,6 +98,10 @@ const Bag = () => {
               Oops! No items in your bag.<span><a className="text-mainYellow/85" href={routeConstant.MENU}>Visit menu</a></span>
             </div>
           }
+
+          <div>
+            <p>Subtotal: $<span>{totalPrice()}</span></p>
+          </div>
         </div>
       </div>
 
