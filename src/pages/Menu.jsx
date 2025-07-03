@@ -13,8 +13,6 @@ const Menu = () => {
   const [filterModal, setFilterModal] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Submarines');
   const [selectedFilters, setSelectedFilters] = useState([]);
-
-  console.log(selectedFilters)
   
   const handleInputChange = (e) => {
     setQuery(e.target.value);

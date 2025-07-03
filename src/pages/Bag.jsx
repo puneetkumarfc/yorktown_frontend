@@ -6,6 +6,8 @@ import BagSidebar from "../components/bag/BagSidebar";
 import { RxCross2 } from "react-icons/rx";
 import AreYouSureModal from "../components/bag/AreYouSureModal";
 import { routeConstant } from "../constants/RouteConstants";
+import { IoIosArrowBack } from "react-icons/io";
+import { Link, useNavigate } from "react-router-dom";
 
 const Bag = () => {
   const { 
@@ -23,6 +25,7 @@ const Bag = () => {
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
   const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
+  const navigate = useNavigate();
 
   //todo - rename to toggleModal
   const displayAreYouSureModal = () => {
@@ -57,7 +60,7 @@ const Bag = () => {
           {
             cart.length > 0 ?
             cart.map((item, index) => (
-              <div key={index} className="flex items-center justify-between w-full">
+              <div key={index} className="flex items-center justify-between w-full gap-4">
                 <div className="flex items-center border border-white/20 rounded-xl w-[97%]">
                   <div className="w-1/5 min-w-[200px] rounded-l-xl">
                     <img className="rounded-l-xl object-cover" src={item.image} />
@@ -99,7 +102,8 @@ const Bag = () => {
             </div>
           }
 
-          <div>
+          <div className="w-full flex items-col justify-between">
+            <Link to={routeConstant.MENU} className="flex items-center gap-2 cursor-pointer hover:gap-3 transition-all duration-200"><span><IoIosArrowBack /></span>Back to Shop</Link>
             <p>Subtotal: $<span>{totalPrice()}</span></p>
           </div>
         </div>

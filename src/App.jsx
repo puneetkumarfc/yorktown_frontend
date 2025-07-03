@@ -7,6 +7,7 @@ import Header from './components/common/Header'
 import Footer from './components/home/sections/Footer'
 import Sidebar from './components/common/Sidebar'
 import Menu from './pages/Menu'
+import { routeConstant } from './constants/RouteConstants'
 
 function App() {
 
@@ -25,10 +26,9 @@ function App() {
   }, [sidebarOpen]);
 
   return (
-    <div className={`bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem]  overflow-x-hidden custom-scrollbar relative`}>
+    <div className={`bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem] overflow-x-hidden custom-scrollbar relative`}>
       <Header toggleSidebar={toggleSidebar}/>
-      <div
-        className={`fixed inset-0 bg-black/20 z-30 transition-opacity duration-300 ${
+      <div className={`fixed inset-0 bg-black/20 z-30 transition-opacity duration-300 ${
           sidebarOpen ? 'opacity-100 pointer-events-auto overflow-hidden' : 'opacity-0 pointer-events-none'
         }`}
         onClick={toggleSidebar}
@@ -36,9 +36,9 @@ function App() {
       <Sidebar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
 
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/bag' element={<Bag/>}/>
-        <Route path='/menu' element={<Menu/>}/>
+        <Route path={routeConstant.HOME} element={<Home/>}/>
+        <Route path={routeConstant.BAG} element={<Bag/>}/>
+        <Route path={routeConstant.MENU} element={<Menu/>}/>
       </Routes>
 
       <Footer/>
