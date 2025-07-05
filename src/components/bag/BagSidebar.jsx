@@ -16,7 +16,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   }
 
   return (
-    <div className={`z-0 fixed top-0 right-0 h-full max-w-[400px] bg-mainYellow/50 transform transition-transform duration-300 ${
+    <div className={`z-40 fixed top-0 right-0 h-full max-w-[400px] w-[400px] bg-mainYellow/50 transform transition-transform duration-300 ${
       isSidebarOpen ? "translate-x-0" : "translate-x-[98%]"}`}>
       {/* Toggle button inside sidebar */}
       <button
@@ -27,11 +27,11 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
 
       <div className="flex flex-col p-8 mt-28">
         <div className="flex items-center w-full mb-8">
-          <p className={`${formStep === 1 ? "text-2xl" : "text-sm"}`}>01</p>
+          <p className={`${formStep === 1 ? "text-2xl" : "text-sm"} cursor-pointer`} onClick={() => setFormStep(1)}>01</p>
           <div className="w-full min-h-[0.2px] bg-white/60 mx-4"></div>
-          <p className={`${formStep === 2 ? "text-2xl" : "text-sm"}`}>02</p>
+          <p className={`${formStep === 2 ? "text-2xl" : "text-sm"} cursor-pointer`} onClick={() => setFormStep(2)}>02</p>
           <div className="w-full min-h-[0.2px] bg-white/60 mx-4"></div>
-          <p className={`${formStep === 3 ? "text-2xl" : "text-sm"}`}>03</p>
+          <p className={`${formStep === 3 ? "text-2xl" : "text-sm"} cursor-pointer`} onClick={() => setFormStep(3)}>03</p>
         </div>
 
         { 

@@ -50,7 +50,7 @@ const Bag = () => {
   console.log(cart)
 
   return (
-    <div className="relative flex min-h-[calc(100vh-60px)] mb-10">
+    <div className="relative flex min-h-screen mb-10 z-0">
       <div className={`transition-all duration-300 ${isSidebarOpen ? "w-[calc(100%-400px)]" : "w-[100%]"} px-6 mt-28`}>
         <p className="uppercase font-archivo font-semibold">
           Your<span className="text-mainRed"> food</span> bag
