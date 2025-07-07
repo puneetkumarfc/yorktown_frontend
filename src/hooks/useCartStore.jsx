@@ -11,7 +11,7 @@ const useCartStore = create(
                 const existing = get().cart.find(cartItem => cartItem.uniqueId === uniqueId);
                 if(existing) {
                     set({
-                        cart: get().cart.map((cartItem) => cartItem.uniqueId === item.uniqueId ? 
+                        cart: get().cart.map((cartItem) => cartItem.uniqueId === uniqueId ? 
                         { 
                             ...cartItem, 
                             quantity: cartItem.quantity + item.quantity, 
@@ -36,7 +36,7 @@ const useCartStore = create(
                     {
                         ...cartItem, 
                         quantity: cartItem.quantity + qty,
-                        price: (cartItem.quantity + qty) * cartItem.unitPrice
+                        price: ((cartItem.quantity + qty) * cartItem.unitPrice).toFixed(2)
                     } :
                     cartItem)
                 })
@@ -47,7 +47,7 @@ const useCartStore = create(
                     {
                         ...cartItem, 
                         quantity: cartItem.quantity - qty,
-                        price: (cartItem.quantity - qty) * cartItem.unitPrice
+                        price: ((cartItem.quantity - qty) * cartItem.unitPrice).toFixed(2)
                     } : 
                     cartItem)
                 })

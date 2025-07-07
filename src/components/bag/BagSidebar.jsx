@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import UserDetails from "./UserDetails";
-import { form } from "framer-motion/client";
 import AddressDetails from "./AddressDetails";
 import PaymentDetails from "./PaymentDetails";
 
@@ -16,7 +15,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   }
 
   return (
-    <div className={`z-40 fixed top-0 right-0 h-full max-w-[400px] w-[400px] bg-mainYellow/50 transform transition-transform duration-300 ${
+    <div className={`z-5 absolute right-0 h-[100%] max-w-[400px] w-[400px] bg-mainYellow/50 will-change-transform transform transition-transform duration-300 ${
       isSidebarOpen ? "translate-x-0" : "translate-x-[98%]"}`}>
       {/* Toggle button inside sidebar */}
       <button

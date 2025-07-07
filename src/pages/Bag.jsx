@@ -25,21 +25,11 @@ const Bag = () => {
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
   const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
-  const navigate = useNavigate();
 
   //todo - rename to toggleModal
   const displayAreYouSureModal = () => {
     setAreYouSureModal(!areYouSureModal);
   }
-
-  useEffect(() => {
-    const itemToRemove = cart.find((cartItem) => cartItem.quantity < 1);
-    if (itemToRemove) {
-      setRemoveItem(itemToRemove.uniqueId);
-      setManuallyReducedItemId(itemToRemove.uniqueId);
-      displayAreYouSureModal();
-    }
-  }, [totalItems()]);
 
   const removeItemFromCart = () => {
     removeFromCart(removeItem);
@@ -50,7 +40,7 @@ const Bag = () => {
   console.log(cart)
 
   return (
-    <div className="relative flex min-h-screen mb-10 z-0">
+    <div className="flex min-h-screen z-0 overflow-x-hidden">
       <div className={`transition-all duration-300 ${isSidebarOpen ? "w-[calc(100%-400px)]" : "w-[100%]"} px-6 mt-28`}>
         <p className="uppercase font-archivo font-semibold">
           Your<span className="text-mainRed"> food</span> bag
@@ -82,7 +72,14 @@ const Bag = () => {
                       </button>
                       <p>{item.quantity}</p>
                       <button className="cursor-pointer w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
-                      onClick={() => decreaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`, 1)}>
+                      onClick={() => {
+                        if(item.quantity === 1) {
+                          setRemoveItem(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`);
+                          displayAreYouSureModal();
+                        } else {
+                          decreaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`, 1)
+                        }
+                      }}>
                         <FiMinus className="w-4 h-4"/>
                       </button>
                     </div>
@@ -102,10 +99,13 @@ const Bag = () => {
             </div>
           }
 
-          <div className="w-full flex items-col justify-between">
-            <Link to={routeConstant.MENU} className="flex items-center gap-2 cursor-pointer hover:gap-3 transition-all duration-200"><span><IoIosArrowBack /></span>Back to Shop</Link>
-            <p>Subtotal: $<span>{totalPrice()}</span></p>
-          </div>
+         {
+            totalItems() > 0 &&
+            <div className="w-full flex items-col justify-between">
+              <Link to={routeConstant.MENU} className="flex items-center gap-2 cursor-pointer hover:gap-3 transition-all duration-200"><span><IoIosArrowBack /></span>Back to Shop</Link>
+              <p>Subtotal: $<span>{totalPrice()}</span></p>
+            </div>
+          }
         </div>
       </div>
 

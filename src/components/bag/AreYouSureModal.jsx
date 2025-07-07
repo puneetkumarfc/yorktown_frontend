@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AreYouSureModal = ({displayAreYouSureModal, removeItemFromCart, increaseQuantity, removeItem, manuallyReducedItemId}) => {
+const AreYouSureModal = ({displayAreYouSureModal, removeItemFromCart}) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
@@ -10,9 +10,6 @@ const AreYouSureModal = ({displayAreYouSureModal, removeItemFromCart, increaseQu
         <div className="flex justify-center space-x-4">
           <button className="cursor-pointer px-4 py-2 bg-[#ffffff2a] rounded-xl hover:bg-[#ffffff65] transition-all duration-150" 
           onClick={() => {
-            if (removeItem === manuallyReducedItemId) {
-              increaseQuantity(removeItem, 1);
-            }
             displayAreYouSureModal();
           }}>Cancel</button> 
           <button className="cursor-pointer px-4 py-2 bg-mainRed text-white rounded-xl hover:bg-mainRed/80 transition-all duration-150" 
