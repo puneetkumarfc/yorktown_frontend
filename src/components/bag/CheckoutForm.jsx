@@ -30,7 +30,7 @@ const CheckoutForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* <PaymentElement id="payment-element"/> */}
+      <PaymentElement id="payment-element"/>
       <button type="submit" disabled={!stripe || loading} className='py-2 border rounded-xl w-full hover:bg-white hover:text-black transition-all duration-150'>
         {loading ? 'Processing…' : 'Pay'}
       </button>

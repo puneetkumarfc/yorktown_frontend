@@ -15,7 +15,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   }
 
   return (
-    <div className={`z-5 absolute right-0 h-[100%] max-w-[400px] w-[400px] bg-mainYellow/50 will-change-transform transform transition-transform duration-300 ${
+    <div className={`z-5 absolute right-0 bottom-0 h-[100%] max-w-[400px] w-[400px] bg-mainYellow/50 will-change-transform transform transition-all duration-300 ${
       isSidebarOpen ? "translate-x-0" : "translate-x-[98%]"}`}>
       {/* Toggle button inside sidebar */}
       <button

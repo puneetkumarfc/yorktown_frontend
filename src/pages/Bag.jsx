@@ -41,7 +41,7 @@ const Bag = () => {
 
   return (
     <div className="flex min-h-screen z-0 overflow-x-hidden">
-      <div className={`transition-all duration-300 ${isSidebarOpen ? "w-[calc(100%-400px)]" : "w-[100%]"} px-6 mt-28`}>
+      <div className={`transition-all duration-300 ${isSidebarOpen ? "w-[calc(100%-400px)]" : "w-[100%]"} px-6 mt-28 mb-10`}>
         <p className="uppercase font-archivo font-semibold">
           Your<span className="text-mainRed"> food</span> bag
         </p>
