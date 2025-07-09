@@ -15,15 +15,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   }
 
   return (
-    <div className={`z-5 absolute right-0 bottom-0 h-[100%] max-w-[400px] w-[400px] bg-mainYellow/50 will-change-transform transform transition-all duration-300 ${
-      isSidebarOpen ? "translate-x-0" : "translate-x-[98%]"}`}>
-      {/* Toggle button inside sidebar */}
-      <button
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="cursor-pointer absolute top-1/2 left-0 -translate-x-full bg-mainYellow/50 text-white text-lg h-11 w-6 rounded-l-full flex items-center justify-end">
-        {isSidebarOpen ? <IoIosArrowForward /> : <IoIosArrowBack />}
-      </button>
-
+    <div className={`absolute z-0 right-0 bottom-0 h-[100%] max-w-[400px] xl:w-[400px] w-[300px] bg-mainYellow/50`}>
       <div className="flex flex-col p-8 mt-28">
         <div className="flex items-center w-full mb-8">
           <p className={`${formStep === 1 ? "text-2xl" : "text-sm"} cursor-pointer`} onClick={() => setFormStep(1)}>01</p>

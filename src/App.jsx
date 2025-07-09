@@ -26,7 +26,7 @@ function App() {
   }, [sidebarOpen]);
 
   return (
-    <div className={`bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem] overflow-x-hidden custom-scrollbar`}>
+    <div className={`custom-scrollbar bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem] overflow-x-hidden`}>
       <Header toggleSidebar={toggleSidebar}/>
       <div className={`fixed inset-0 bg-black/20 z-30 transition-opacity duration-300 ${
           sidebarOpen ? 'opacity-100 pointer-events-auto overflow-hidden' : 'opacity-0 pointer-events-none'

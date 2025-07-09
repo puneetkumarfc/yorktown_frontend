@@ -56,7 +56,7 @@ const AddressDetails = ({handleNext}) => {
           <>
             <form className='flex flex-col gap-6 mt-5'>
               <div className='flex flex-col gap-1'>
-                <textarea placeholder="Do you have any message for us?" rows={7}
+                <textarea placeholder="Do you have any message for us?" rows={5}
                   className='border border-white/50 p-4 rounded-xl w-full placeholder:text-white/50 placeholder:text-sm focus:outline-none focus:border-white transition duration-200'
                 />
               </div>

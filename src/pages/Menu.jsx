@@ -49,14 +49,14 @@ const Menu = () => {
         <div className='flex items-center gap-2'>
           {/* Searchbar */}
           <div className="relative flex items-center w-full">
-            <IoIosSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-mainYellow/90 w-6 h-6 transition-colors" />
+            <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#C4C7C5] w-9 h-9 transition-colors p-2 bg-secondary hover:bg-primary rounded-full cursor-pointer" />
             <input
               type="text"
               value={query}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
-              placeholder="Search pizza"
-              className="w-full px-13 py-3 border-[1px] border-mainYellow/70 placeholder:text-white/70 rounded-full focus:outline-none text-white"
+              placeholder="Search anything"
+              className="w-full px-13 py-3 bg-secondary placeholder:text-white/40 placeholder:font-light placeholder:text-sm rounded-full focus:outline-none focus:border-white/50 text-white"
               autoComplete="off"
             />
             {query && (
@@ -69,7 +69,7 @@ const Menu = () => {
           </div>
           
           {/* Filter */}
-          <div className='p-2 bg-mainYellow/30 rounded-md relative'>
+          <div className='relative'>
             <VscSettings onClick={displayFilterModal} 
             className='text-xl rotate-90 text-white hover:text-mainYellow transition-all duration-200 cursor-pointer'/>
             {
@@ -100,12 +100,12 @@ const Menu = () => {
       <div className='w-full flex flex-wrap gap-5 justify-between mt-10 font-poppins'>
           {
               quickPickItems.map((item) => (
-                  <ItemCard name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
+                  <ItemCard id={item.id} name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
               ))
           }
           {
               quickPickItems.map((item) => (
-                  <ItemCard name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
+                  <ItemCard id={item.id} name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
               ))
           }
       </div>

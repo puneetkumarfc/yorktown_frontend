@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
+import { Toaster } from 'react-hot-toast';
 
 const stripePromise = loadStripe('pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P');
 
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Elements stripe={stripePromise} options={options}>
         <App />
+        <Toaster/>
       </Elements>
     </BrowserRouter>
   </StrictMode>

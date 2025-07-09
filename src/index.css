@@ -1,29 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
 
 @theme {
+  --color-mainBg: #F4F9F5;
+  --color-primaryBg: #F1EEE9;
+
   --color-mainRed: #C42A2A;
   --color-mainYellow: #F3D053;
 
+  --color-customBeige: #E1D5BD;
+  --color-orange: #BD390E;
+  --color-primary: #1B1B1B;
+  --color-secondary: #222328;
+
+
   --font-poppins: "Poppins", sans-serif; 
   --font-archivo: "Archivo", sans-serif; 
+  --font-roboto: "Roboto", sans-serif;
+  --font-roboto_serif: "Roboto Serif", serif;
 }
 
 /* App.css */
-.custom-scrollbar {
-  -ms-overflow-style: none;  
-  scrollbar-width: none;     
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--color-mainRed);
-  border-radius: 10px;
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 input:-webkit-autofill,
