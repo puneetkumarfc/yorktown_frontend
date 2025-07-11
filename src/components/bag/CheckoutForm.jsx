@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PaymentElement, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -8,21 +8,19 @@ const CheckoutForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
     if (!stripe || !elements) return;
 
-    const card = elements.getElement(CardElement);
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card,
+    setLoading(true);
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: 'http://localhost:5173/bag',
+      },
     });
 
     if (error) {
-      console.error('Error: ', error);
-    } else {
-      console.log('PaymentMethod: ', paymentMethod);
-      // Send paymentMethod.id to your backend to process the payment
+      console.error(error.message);
     }
 
     setLoading(false);

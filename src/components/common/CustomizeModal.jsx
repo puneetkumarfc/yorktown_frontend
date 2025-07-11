@@ -5,10 +5,11 @@ import { FiMinus } from "react-icons/fi";
 import useCartStore from '../../hooks/useCartStore';
 import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
+import toast from 'react-hot-toast';
 
 const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
-   console.log(id)
+  console.log(id)
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState('medium');
@@ -70,8 +71,13 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
       size: selectedSize,
       toppings: selectedToppings
     }
-    addToCart(newItem);
-    setIsPresent(true);
+
+    setTimeout(() => {
+      addToCart(newItem);
+      toast.success('Item added to cart');
+      setIsPresent(true);
+    }, 1000)
+
   }
 
   useEffect(() => {

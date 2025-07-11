@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
 import { IoIosArrowForward } from "react-icons/io";
 
 const AddressDetails = ({handleNext}) => {
 
-  const [deliveryOption, setDeliveryOption] = useState("Takeaway")
+  const {register, handleSubmit, formState: { errors }} = useForm();
+  const [orderType, setOrderType] = useState("takeaway")
   const [schedulingOption, setSchedulingOption] = useState("Order Now")
   const [scheduleModal, setScheduleModal] = useState(false);
 
@@ -18,15 +20,15 @@ const AddressDetails = ({handleNext}) => {
       <span onClick={toggleModal} className='underline hover:text-white cursor-pointer transition-all duration-150'> Schedule it now</span></p>
 
       <div className='w-fit flex items-center gap-4 py-1 px-1 mt-2 rounded-full border border-white/50'>
-        <p className={`${deliveryOption === "Home Delivery" ? "bg-white text-black" : "text-white hover:bg-white/20"} cursor-pointer font-normal  h-full px-3 py-3 rounded-full`}
-        onClick={() => setDeliveryOption("Home Delivery")}>Home Delivery</p>
-        <p className={`${deliveryOption === "Takeaway" ? "bg-white text-black" : "text-white hover:bg-white/20"} cursor-pointer font-normal  h-full px-3 py-3 rounded-full`}
-        onClick={() => setDeliveryOption("Takeaway")}>Takeaway</p>
+        <p className={`${orderType === "delivery" ? "bg-white text-black" : "text-white hover:bg-white/20"} cursor-pointer font-normal  h-full px-3 py-3 rounded-full`}
+        onClick={() => setOrderType("delivery")}>Home Delivery</p>
+        <p className={`${orderType === "takeaway" ? "bg-white text-black" : "text-white hover:bg-white/20"} cursor-pointer font-normal  h-full px-3 py-3 rounded-full`}
+        onClick={() => setOrderType("takeaway")}>Takeaway</p>
       </div>
 
       <div className='w-full'>
         {
-          deliveryOption === "Home Delivery" ? 
+          orderType === "delivery" ? 
           <>
             {/* <p className='mb-2 text-xl font-poppins font-bold uppercase text-center'>Enter Your Address</p>
             <p className='text-sm text-white/50 text-center mb-7'>Please provide your address, so that we can place your order.</p>
@@ -54,15 +56,15 @@ const AddressDetails = ({handleNext}) => {
              <p className='text-center mt-20'>Coming Soon!</p>
           </> :
           <>
-            <form className='flex flex-col gap-6 mt-5'>
+            <form className='flex flex-col gap-6 mt-5' onSubmit={handleSubmit(handleNext)}>
               <div className='flex flex-col gap-1'>
-                <textarea placeholder="Do you have any message for us?" rows={5}
+                <textarea placeholder="Do you have any message for us?" rows={5} {...register("orderNotes")}
                   className='border border-white/50 p-4 rounded-xl w-full placeholder:text-white/50 placeholder:text-sm focus:outline-none focus:border-white transition duration-200'
                 />
               </div>
 
               <button className='cursor-pointer w-full bg-mainRed/90 rounded-full py-3 text-lg font-normal flex items-center justify-center gap-1 hover:gap-2 transition-all duration-200'
-              onClick={handleNext}>
+              value="submit" type='submit'>
                 Next <span><IoIosArrowForward /></span>
               </button>
             </form>

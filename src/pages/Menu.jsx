@@ -62,8 +62,8 @@ const Menu = () => {
             {query && (
               <button type="button"
                 onClick={handleClear}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-mainRed/80 hover:text-mainRed transition-colors cursor-pointer">
-                <RxCross2 className="w-6 h-6" />
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#C4C7C5] hover:text-white transition-colors cursor-pointer">
+                <RxCross2 className="w-5 h-5" />
               </button>
             )}
           </div>

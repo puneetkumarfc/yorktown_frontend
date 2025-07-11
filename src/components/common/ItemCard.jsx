@@ -17,7 +17,7 @@ const ItemCard = ({id, name, img, desc, priceFrom}) => {
 
         <div className='flex flex-col w-full items-center justify-between px-4 py-2 h-full'>
             <p className='text-center'>{name}</p>
-            <p className='text-center text-sm text-white/70 mt-1 mb-3'>{desc}</p>
+            <p className='text-center text-sm font-light text-white/70 mt-1 mb-3'>{desc}</p>
 
             <div className='flex w-full justify-between items-end'>
                 <div className='flex flex-col items-start'>

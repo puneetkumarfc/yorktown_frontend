@@ -40,14 +40,14 @@ const Bag = () => {
   console.log(cart)
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen relative">
       <div className="flex flex-1">
         <div className={`transition-all duration-300 px-6 mt-28 ${totalItems() > 0 ? 'w-[calc(100%-400px)] ' : "w-full"}`}>
           <p className="uppercase font-archivo font-semibold">
             Your<span className="text-mainRed"> food</span> bag
           </p>
 
-          <div className="flex flex-col gap-4 mt-5 w-full">
+          <div className="flex flex-col gap-4 mt-5 mb-10 w-full">
             {
               cart.length > 0 ?
               cart.map((item, index) => (

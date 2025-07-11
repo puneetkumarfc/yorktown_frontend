@@ -1,13 +1,10 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
-import { Elements } from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
 import { Toaster } from 'react-hot-toast';
 
-const stripePromise = loadStripe('pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P');
 
 //todo: create a checkout session
 const fetchClientSecret = async() => {
@@ -15,7 +12,7 @@ const fetchClientSecret = async() => {
 }
 
 const options = {
-  clientSecret: 'pi_12345ABCDEF_secret_your_secret_here', //todo: change later on
+  clientSecret: 'pi_3RjR5dFRY99NMsGP1AJL3OFh_secret_jWWfkxmCc9xOiEILQxFdRcFUQ', //todo: change later on
   appearance: {
     theme: 'stripe',
   },
@@ -24,10 +21,8 @@ const options = {
 createRoot(document.getElementById('root')).render(
   <StrictMode> 
     <BrowserRouter>
-      <Elements stripe={stripePromise} options={options}>
-        <App />
-        <Toaster/>
-      </Elements>
+      <App />
+      <Toaster/>
     </BrowserRouter>
   </StrictMode>
 )
