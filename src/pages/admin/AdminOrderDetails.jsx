@@ -16,13 +16,22 @@ const mockOrder = {
   ],
 };
 
-const statusOptions = ['Delivered', 'Pending', 'Cancelled'];
+// Replace statusOptions with the new statuses
+const statusOptions = [
+  { id: 6, name: 'cancelled' },
+  { id: 5, name: 'delivered' },
+  { id: 3, name: 'in oven' },
+  { id: 2, name: 'preparing' },
+  { id: 4, name: 'ready for pickup' },
+  { id: 1, name: 'received' },
+];
 
 const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   // In real app, fetch order by orderId
-  const [status, setStatus] = useState(mockOrder.status);
+  // Default to the id of the current status (simulate 'received' for now)
+  const [status, setStatus] = useState(1);
 
   return (
     <div className={styles.adminDashboardFlexLayout + (collapsed ? ' ' + styles.collapsed : '')}>
@@ -87,12 +96,12 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
             <label className={styles.detailLabel} htmlFor="order-status">Status</label>
             <select
               id="order-status"
-              className={styles.statusDropdown}
+              className={styles.statusDropdown + ' modernStatusDropdown'}
               value={status}
-              onChange={e => setStatus(e.target.value)}
+              onChange={e => setStatus(Number(e.target.value))}
             >
               {statusOptions.map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
+                <option key={opt.id} value={opt.id}>{opt.name.charAt(0).toUpperCase() + opt.name.slice(1)}</option>
               ))}
             </select>
           </div>

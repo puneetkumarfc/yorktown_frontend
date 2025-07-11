@@ -120,7 +120,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
             </table>
           )}
         </div>
-        <div className="admin-orders-pagination">
+        <div className="admin-orders-pagination animate-fadein" style={{ justifyContent: 'flex-end', marginRight: 0 }}>
           <button onClick={() => handlePage(page - 1)} disabled={page === 1}>&lt;</button>
           {Array.from({ length: totalPages }, (_, i) => (
             <button

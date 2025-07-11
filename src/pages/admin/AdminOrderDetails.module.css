@@ -204,6 +204,69 @@
   color: #fff;
   border: 1.5px solid #a82323;
 }
+
+/* Modern admin-themed dropdown for status */
+.modernStatusDropdown {
+  background: linear-gradient(135deg, #232323 60%, #2a0a0a 100%);
+  color: #fff;
+  border: 1.5px solid #d32f2f;
+  border-radius: 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(179,0,0,0.10);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  margin-top: 0.2rem;
+  appearance: none;
+  cursor: pointer;
+}
+.modernStatusDropdown:focus, .modernStatusDropdown:hover {
+  border: 2px solid #ff2222;
+  background: linear-gradient(135deg, #2a0a0a 60%, #232323 100%);
+  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+}
+
+/* Custom dropdown menu styling for Chrome, Edge, Safari */
+.modernStatusDropdown::-webkit-scrollbar {
+  width: 8px;
+  background: #232323;
+}
+.modernStatusDropdown::-webkit-scrollbar-thumb {
+  background: #d32f2f;
+  border-radius: 8px;
+}
+
+/* Style the dropdown menu and options (browser support varies) */
+.modernStatusDropdown option {
+  background: #232323;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 0.7rem;
+  padding: 0.7rem 1.2rem;
+  margin: 4px 0;
+}
+
+/* Firefox only: style the dropdown menu */
+@-moz-document url-prefix() {
+  .modernStatusDropdown {
+    border-radius: 0.7rem;
+    overflow: hidden;
+  }
+  .modernStatusDropdown option {
+    border-radius: 0.7rem;
+    padding: 0.7rem 1.2rem;
+    margin: 4px 0;
+  }
+}
+
+/* Custom highlight for selected/hovered option (browser support is limited) */
+.modernStatusDropdown option:checked,
+.modernStatusDropdown option:focus,
+.modernStatusDropdown option:hover {
+  background: linear-gradient(90deg, #b30000 0%, #ff2222 100%);
+  color: #fff;
+}
 @media (max-width: 1200px) {
   .adminOrderDetailsBg {
     padding-left: 64px;

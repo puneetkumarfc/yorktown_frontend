@@ -14,6 +14,7 @@ import AdminFooter from './components/admin/AdminFooter';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminOrderDetails from './pages/admin/AdminOrderDetails';
+import AdminMenuList from './pages/admin/AdminMenuList';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
   const isAdminDashboard = location.pathname === routeConstant.ADMIN_DASHBOARD;
   const isAdminOrders = location.pathname === routeConstant.ADMIN_ORDERS;
   const isAdminOrderDetails = /^\/admin\/orders\//.test(location.pathname) && !isAdminOrders;
+  const isAdminMenuList = location.pathname === routeConstant.ADMIN_MENU_LIST;
 
   if (isAdminLogin) {
     return (
@@ -70,6 +72,15 @@ function App() {
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
         <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminOrderDetails collapsed={collapsed} setCollapsed={setCollapsed} />
+        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
+      </div>
+    );
+  }
+  if (isAdminMenuList) {
+    return (
+      <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
+        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
+        <AdminMenuList collapsed={collapsed} setCollapsed={setCollapsed} />
         <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );

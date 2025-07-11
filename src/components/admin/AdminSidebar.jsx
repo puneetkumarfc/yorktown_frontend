@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminAuth } from '../../utils/api';
-import { FaTachometerAlt, FaListAlt, FaSignOutAlt, FaBars } from 'react-icons/fa';
+import { FaTachometerAlt, FaListAlt, FaSignOutAlt, FaBars, FaUtensils } from 'react-icons/fa';
 import './AdminSidebar.css';
 
 const links = [
   { label: 'Dashboard', to: routeConstant.ADMIN_DASHBOARD, icon: <FaTachometerAlt /> },
   { label: 'Orders', to: routeConstant.ADMIN_ORDERS, icon: <FaListAlt /> },
+  { label: 'Menu', to: routeConstant.ADMIN_MENU_LIST, icon: <FaUtensils /> },
 ];
 
 const AdminSidebar = ({ collapsed, setCollapsed }) => {
