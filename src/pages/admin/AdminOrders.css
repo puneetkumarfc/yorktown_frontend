@@ -1,0 +1,290 @@
+/* AdminOrders.css */
+.admin-dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+.admin-orders-container {
+  margin-left: 220px;
+  flex: 1;
+  width: 100%;
+  transition: margin-left 0.2s;
+}
+.admin-dashboard-layout.collapsed .admin-orders-container {
+  margin-left: 64px;
+}
+
+.admin-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #232323;
+  border-radius: 1.5rem;
+  padding: 1.2rem 2.5rem;
+  margin-bottom: 2.5rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  border: 1px solid #444;
+}
+.admin-title {
+  color: #ff4444;
+  font-size: 2.7rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+}
+.admin-titlebar-search {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.admin-titlebar-search-input {
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.7rem;
+  border: 1.5px solid #444;
+  background: #181818;
+  color: #fff;
+  font-size: 1.1rem;
+  outline: none;
+  width: 260px;
+  max-width: 100%;
+  box-shadow: 0 2px 8px rgba(179,0,0,0.08);
+  transition: border 0.2s;
+}
+.admin-titlebar-search-input:focus {
+  border: 2px solid #ff2222;
+}
+.admin-titlebar-search-btn {
+  background: #ff4444;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+}
+.admin-titlebar-search-btn:hover {
+  background: #b30000;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.admin-orders-table-wrapper {
+  background: #181818;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.10);
+  padding: 1.5rem 1.2rem;
+  overflow-x: auto;
+}
+
+.admin-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.admin-orders-table th, .admin-orders-table td {
+  padding: 0.7rem 0.7rem;
+  text-align: left;
+}
+
+.admin-orders-table th {
+  color: #ff2222;
+  font-weight: 600;
+  border-bottom: 1.5px solid #b30000;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+.admin-orders-table th.active, .admin-orders-table th:hover {
+  color: #fff;
+  background: #b30000;
+}
+
+.admin-orders-table tr:not(:last-child) td {
+  border-bottom: 1px solid #222;
+}
+
+.admin-orders-row {
+  transition: background 0.2s;
+}
+.admin-orders-row:hover {
+  background: #2a0000;
+}
+
+.admin-status {
+  padding: 0.2rem 0.7rem;
+  border-radius: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: inline-block;
+}
+.admin-status-delivered { background: #1a3a1a; color: #4fff4f; }
+.admin-status-pending { background: #3a1a1a; color: #ffb84f; }
+.admin-status-cancelled { background: #3a1a1a; color: #ff4f4f; }
+
+.admin-action-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  margin-right: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+.admin-action-btn.view {
+  background: linear-gradient(90deg, #b30000 0%, #ff2222 100%);
+}
+.admin-action-btn.cancel {
+  background: #2a0000;
+  color: #ff2222;
+}
+.admin-action-btn:hover {
+  background: #ff2222;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.admin-orders-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+.admin-orders-pagination button {
+  background: #181818;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+}
+.admin-orders-pagination button.active, .admin-orders-pagination button:hover {
+  background: #ff2222;
+  color: #fff;
+  transform: scale(1.08);
+}
+.admin-orders-pagination button:disabled {
+  background: #222;
+  color: #888;
+  cursor: not-allowed;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.gradient-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+.table-row {
+  animation: slideIn 0.4s ease-out;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.table-row:hover {
+  background: rgba(255, 51, 51, 0.15);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
+}
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.admin-orders-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2.5rem 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: transparent;
+  margin-top: 2.5rem;
+}
+.gradient-bg .admin-orders-container {
+  background: transparent;
+}
+
+@media (max-width: 900px) {
+  .admin-titlebar {
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.2rem;
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .admin-title {
+    font-size: 1.5rem;
+  }
+  .admin-titlebar-search-input {
+    width: 100%;
+    min-width: 0;
+    font-size: 1rem;
+  }
+  .admin-titlebar-search-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
+  .admin-orders-table-wrapper {
+    padding: 1rem 0.2rem;
+  }
+  .admin-orders-container {
+    margin-left: 64px;
+  }
+  .admin-dashboard-layout.collapsed .admin-orders-container {
+    margin-left: 64px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-orders-table, .admin-orders-table thead, .admin-orders-table tbody, .admin-orders-table tr, .admin-orders-table th, .admin-orders-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .admin-orders-table thead {
+    display: none;
+  }
+  .admin-orders-table tr {
+    margin-bottom: 1.2rem;
+    background: #181818;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(179,0,0,0.10);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .admin-orders-table td {
+    padding: 0.4rem 0.7rem;
+    font-size: 1rem;
+    border: none;
+    text-align: left;
+    position: relative;
+  }
+  .admin-orders-table td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #ff2222;
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.95rem;
+  }
+  .admin-orders-pagination {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+} 

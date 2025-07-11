@@ -1,0 +1,305 @@
+/* AdminSidebar.css */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  background: #181818;
+  border-right: 2px solid #b30000;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 100;
+  transition: width 0.2s;
+}
+.admin-sidebar.collapsed {
+  width: 64px;
+}
+
+.admin-sidebar-toggle {
+  background: none;
+  border: none;
+  color: #ff2222;
+  font-size: 1.5rem;
+  padding: 1.2rem 1rem 0.5rem 1rem;
+  cursor: pointer;
+  outline: none;
+  align-self: flex-end;
+  transition: color 0.2s;
+}
+.admin-sidebar-toggle:hover {
+  color: #fff;
+}
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.admin-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 0.9rem 1.2rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 0.7rem 1.2rem 1.2rem 0.7rem;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+.admin-sidebar-link .admin-sidebar-icon {
+  font-size: 1.3rem;
+  color: #ff2222;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-sidebar-link .admin-sidebar-label {
+  white-space: nowrap;
+}
+.admin-sidebar-link.active, .admin-sidebar-link:hover {
+  background: #b30000;
+  color: #fff;
+  transform: scale(1.04);
+}
+.admin-sidebar-link.logout {
+  margin-top: 2rem;
+  color: #ff2222;
+  background: #2a0000;
+}
+.admin-sidebar-link.logout:hover {
+  background: #ff2222;
+  color: #fff;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-label {
+  display: none;
+}
+.admin-sidebar.collapsed {
+  width: 64px;
+}
+.admin-sidebar.collapsed .admin-sidebar-toggle {
+  align-self: center;
+  padding-left: 0.5rem;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-link.active,
+.admin-sidebar.collapsed .admin-sidebar-link:hover {
+  background: none;
+  color: #ff2222;
+  border-radius: 0;
+  transform: none;
+}
+.admin-sidebar.collapsed .admin-sidebar-link .admin-sidebar-icon {
+  color: #ff2222;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-nav {
+  align-items: center;
+}
+.admin-sidebar.collapsed .admin-sidebar-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+.admin-sidebar.collapsed .admin-sidebar-link .admin-sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-size: 1.5rem;
+}
+.admin-sidebar.collapsed .admin-sidebar-link.active .admin-sidebar-icon {
+  background: #b30000;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: 0 0 0 2px #ff2222;
+}
+.admin-sidebar.collapsed .admin-sidebar-link.active {
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Logout Confirmation Modal Styles */
+.logout-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.logout-confirm-modal {
+  background: rgba(24, 24, 24, 0.95);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5), 0 1.5px 12px 0 rgba(179,0,0,0.15);
+  max-width: 400px;
+  width: 90%;
+  border: 1.5px solid rgba(179, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  animation: logoutModalSlideIn 0.3s ease-out;
+}
+
+@keyframes logoutModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.logout-confirm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  border-bottom: 1px solid rgba(179, 0, 0, 0.2);
+}
+
+.logout-confirm-header h3 {
+  color: #ff2222;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.logout-confirm-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.logout-confirm-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.logout-confirm-content {
+  padding: 1.5rem;
+}
+
+.logout-confirm-content p {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+.logout-confirm-footer {
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-confirm-btn {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.logout-confirm-btn.cancel {
+  background: #666;
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.15);
+}
+
+.logout-confirm-btn.cancel:hover {
+  background: #777;
+  transform: translateY(-1px);
+}
+
+.logout-confirm-btn.confirm {
+  background: linear-gradient(90deg, #a82323 0%, #ff2222 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+}
+
+.logout-confirm-btn.confirm:hover {
+  background: linear-gradient(90deg, #ff2222 0%, #a82323 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(179,0,0,0.2);
+}
+
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 64px;
+  }
+  .admin-sidebar:not(.collapsed) {
+    width: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-sidebar {
+    width: 54px;
+    min-width: 54px;
+  }
+  .admin-sidebar:not(.collapsed) {
+    width: 120px;
+  }
+  .admin-sidebar-link {
+    font-size: 1rem;
+    padding: 0.7rem 0.5rem;
+  }
+  .admin-sidebar-toggle {
+    font-size: 1.2rem;
+    padding: 0.7rem 0.5rem 0.3rem 0.5rem;
+  }
+  .logout-confirm-modal {
+    width: 95%;
+    margin: 1rem;
+  }
+  .logout-confirm-header {
+    padding: 1rem 1rem 0.5rem 1rem;
+  }
+  .logout-confirm-content {
+    padding: 1rem;
+  }
+  .logout-confirm-footer {
+    padding: 0.5rem 1rem 1rem 1rem;
+  }
+} 

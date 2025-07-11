@@ -1,0 +1,241 @@
+.adminDashboardFlexLayout {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #18181c 60%, #2a0a0a 100%);
+}
+
+.sidebarFlex {
+  width: 220px;
+  flex-shrink: 0;
+  transition: width 0.2s;
+}
+.sidebarFlex.collapsed {
+  width: 64px;
+}
+
+.adminOrderDetailsBg {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  padding-top: 72px;
+  box-sizing: border-box;
+}
+
+.gradientBg {
+  /* If you want a gradient, put it here, but not on the whole viewport */
+}
+
+.adminOrderDetailsWrapper {
+  background: rgba(24, 24, 24, 0.85);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37), 0 1.5px 12px 0 rgba(179,0,0,0.10);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 1100px;
+  width: 100%;
+  /* margin: 0 auto; */
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+}
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #232323;
+  border-radius: 1.2rem;
+  padding: 1.2rem 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
+  border: 1px solid #444;
+}
+.title {
+  color: #d32f2f;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+}
+.detailsItemsLayout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.detailsCol {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.itemsCol {
+  flex: 1;
+  background: rgba(34, 34, 34, 0.85);
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px 0 rgba(179,0,0,0.08);
+  padding: 1.2rem 1rem;
+  margin-top: 0.5rem;
+}
+.sectionCard {
+  background: rgba(34, 34, 34, 0.7);
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px 0 rgba(179,0,0,0.08);
+  padding: 1.2rem 1rem;
+  margin-bottom: 1.2rem;
+}
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 1.2rem;
+}
+.fullWidth {
+  grid-column: 1 / -1;
+}
+.detailLabel {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.5px;
+}
+.detailValue {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 400;
+  opacity: 0.95;
+  word-break: break-word;
+}
+.itemsSection {
+  margin-top: 0.5rem;
+}
+.itemsTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  background: transparent;
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+.itemsTable th, .itemsTable td {
+  padding: 0.7rem 0.7rem;
+  text-align: left;
+}
+.itemsTable th {
+  color: #d32f2f;
+  font-weight: 700;
+  border-bottom: 1.5px solid #a82323;
+  background: rgba(34, 34, 34, 0.7);
+}
+.itemsTable tr:not(:last-child) td {
+  border-bottom: 1px solid #222;
+}
+.statusSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  background: rgba(34, 34, 34, 0.85);
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px 0 rgba(179,0,0,0.08);
+  padding: 1.2rem 1rem;
+  margin-top: 1.2rem;
+}
+.statusDropdown {
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.7rem;
+  border: 1.5px solid #d32f2f;
+  background: rgba(34, 34, 34, 0.7);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  margin-top: 0.2rem;
+  transition: border 0.2s, background 0.2s;
+}
+.statusDropdown:focus {
+  border: 2px solid #d32f2f;
+  background: rgba(34, 34, 34, 0.85);
+}
+.actionsRow {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+.saveBtn {
+  background: linear-gradient(90deg, #a82323 0%, #d32f2f 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+  letter-spacing: 1px;
+}
+.saveBtn:hover {
+  background: linear-gradient(90deg, #d32f2f 0%, #a82323 100%);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px 0 rgba(179,0,0,0.18);
+}
+.cancelBtn {
+  background: rgba(34, 34, 34, 0.7);
+  color: #d32f2f;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.7rem 2rem;
+  border: 1.5px solid #d32f2f;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  letter-spacing: 1px;
+}
+.cancelBtn:hover {
+  background: #d32f2f;
+  color: #fff;
+  border: 1.5px solid #a82323;
+}
+@media (max-width: 1200px) {
+  .adminOrderDetailsBg {
+    padding-left: 64px;
+  }
+  .adminOrderDetailsWrapper {
+    padding: 1rem 0.3rem;
+  }
+  .detailsItemsLayout {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+@media (max-width: 900px) {
+  .adminOrderDetailsBg {
+    padding-left: 0;
+  }
+  .adminOrderDetailsWrapper {
+    padding: 0.5rem 0.1rem;
+  }
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .titlebar {
+    padding: 0.7rem 0.7rem;
+  }
+  .title {
+    font-size: 1.2rem;
+  }
+  .actionsRow {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+} 
