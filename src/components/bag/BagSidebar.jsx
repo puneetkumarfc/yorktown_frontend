@@ -14,10 +14,10 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   const { cart, totalPrice } = useCartStore();
 
   const cartItems = cart.map((item) => ({
-    itemId: item.uniqueId,
-    sizeId: item.size === "small" ? 1 : item.size === "medium" ? 2 : 3,
-    quantity: item.quantity,
-    notes: "Dummy notes for now, will be changed later"
+    "itemId": item.id,
+    "sizeId": item.size === "small" ? 7 : item.size === "medium" ? 8 : 9,
+    "quantity": item.quantity,
+    "notes": "Dummy notes for now, will be changed later"
   }))
 
   const [formStep, setFormStep] = useState(1);
@@ -40,7 +40,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
       
       const input = {
         ...formData.userDetails,
-        ...formData.deliveryDetails,
+        ...data,
         "cart": cartItems,
         "stripePayment": {
           "amount": Number(totalPrice()),
@@ -51,9 +51,10 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
           }
         }
       }
+      console.log(input)
       try {
         const response = await placeOrder(input);
-        console.log("Order placed:", response.data);
+        console.log("Order placed:", response);
         if(response.data.status) {
           options = {
             clientSecret: response.data.data.clientSecret,

@@ -26,7 +26,6 @@ const Bag = () => {
   const [areYouSureModal, setAreYouSureModal] = useState(false);
   const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
 
-  //todo - rename to toggleModal
   const displayAreYouSureModal = () => {
     setAreYouSureModal(!areYouSureModal);
   }
