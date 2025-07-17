@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { quickPickCategories, quickPickItems } from '../constants/Home';
@@ -6,13 +6,16 @@ import { VscSettings } from "react-icons/vsc";
 import {filters} from "../constants/Menu"
 import ItemCard from '../components/common/ItemCard';
 import FilterModal from '../components/menu/FilterModal';
+import { fetchCategories, fetchMenu } from '../services/operations/menu';
 
 const Menu = () => {
 
   const [query, setQuery] = useState('');
   const [filterModal, setFilterModal] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('Submarines');
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState('');
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [menu, setMenu] = useState([]);
   
   const handleInputChange = (e) => {
     setQuery(e.target.value);
@@ -37,6 +40,34 @@ const Menu = () => {
   const clearAllFilters = () => {
     setSelectedFilters([]);
   }
+
+  const displayCategories = async(displayHome=2) => {
+    try {
+        const response = await fetchCategories(displayHome);
+        // console.log(response.data.data)
+        setCategories(response.data.data);
+        if (response.data.data.length > 0) {
+          setActiveCategory(response.data.data[0]);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  const displayMenu = async(displayHome=2) => {
+    try {
+        const response = await fetchMenu(displayHome);
+        // console.log(response.data.data)
+        setMenu(response.data.data);
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  useEffect(() => {
+      displayCategories();
+      displayMenu();
+  }, [])
 
   return (
     <div className='min-h-screen mb-10'>
@@ -84,14 +115,14 @@ const Menu = () => {
         <p className='font-poppins text-sm'>Categories: </p>
         <div className='flex gap-3 flex-wrap'>
             {
-                quickPickCategories.map((category) => {
-                    const isActive = activeCategory === `${category.name}`;
-                    return (
-                        <div className={`py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
-                        onClick={() => setCategory(category.name)}>
-                            {category.name}
-                        </div>
-                    )
+                categories.map((category, index) => {
+                  const isActive = activeCategory.name === `${category.name}`;
+                  return (
+                      <div key={index} className={`text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
+                      onClick={() => setCategory(category)}>
+                          {category.name}
+                      </div>
+                  )
                 })
             }
         </div>
@@ -99,14 +130,11 @@ const Menu = () => {
 
       <div className='w-full flex flex-wrap gap-5 justify-between mt-10 font-poppins'>
           {
-              quickPickItems.map((item) => (
-                  <ItemCard id={item.id} name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
-              ))
-          }
-          {
-              quickPickItems.map((item) => (
-                  <ItemCard id={item.id} name={item.name} img={item.img} desc={item.desc} priceFrom={item.priceFrom}/>
-              ))
+            menu.filter(item => item.categoryId == activeCategory.id).map((menuItem, index) => {
+              return (
+                  <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+              )
+            })
           }
       </div>
     </div>

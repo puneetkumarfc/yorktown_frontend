@@ -6,10 +6,24 @@ import useCartStore from '../../hooks/useCartStore';
 import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import toast from 'react-hot-toast';
+import { fetchItemDetails } from '../../services/operations/menu';
 
 const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
   console.log(id)
+
+  const displayDetails = async(id) => {
+    try {
+      const response = await fetchItemDetails(id);
+      console.log(response.data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    displayDetails(id);
+  }, [])
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState('medium');
