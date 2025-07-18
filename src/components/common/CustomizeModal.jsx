@@ -3,12 +3,33 @@ import { RxCross2 } from "react-icons/rx";
 import { FiPlus } from "react-icons/fi";
 import { FiMinus } from "react-icons/fi";
 import useCartStore from '../../hooks/useCartStore';
+import { useNavigate } from 'react-router-dom';
+import { routeConstant } from '../../constants/RouteConstants';
+import toast from 'react-hot-toast';
+import { fetchItemDetails } from '../../services/operations/menu';
 
 const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
+  console.log(id)
+
+  const displayDetails = async(id) => {
+    try {
+      const response = await fetchItemDetails(id);
+      console.log(response.data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    displayDetails(id);
+  }, [])
+
+  const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState('medium');
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [isPresent, setIsPresent] = useState(false);
 
   const sizes = [
     { id: 'small', name: 'Small (10")', price: 0 },
@@ -49,12 +70,13 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
     setFinalPrice(calculatePrice().toFixed(2));
   }, [selectedSize, selectedToppings, quantity]);
 
-  const { addToCart, removeFromCart } = useCartStore();
+  const { cart, addToCart, removeFromCart, totalItems } = useCartStore();
 
+  //todo: create a delay of 2 seconds and toast the message
   const handleAddToCart = () => {
     const unitPrice = parseFloat(computeUnitPrice().toFixed(2));
     const newItem = {
-      id: id,
+      id,
       name: name,
       image: img,
       price: parseFloat((unitPrice * quantity).toFixed(2)),
@@ -64,9 +86,18 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
       toppings: selectedToppings
     }
 
-    console.log(newItem);
-    addToCart(newItem);
+    setTimeout(() => {
+      addToCart(newItem);
+      toast.success('Item added to cart');
+      setIsPresent(true);
+    }, 1000)
+
   }
+
+  useEffect(() => {
+    const matchedItem = cart.find(item => item.id === id && item.size === selectedSize && JSON.stringify(item.toppings.sort()) === JSON.stringify(selectedToppings.sort()));
+    setIsPresent(!!matchedItem);
+  }, [cart, selectedSize, selectedToppings]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40">
@@ -86,7 +117,9 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
               <div className='flex gap-3 font-light text-sm'>
                 <button type='button' className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
                 border border-mainYellow/70 hover:border-transparent rounded-xl text-sm text-mainYellow hover:text-white cursor-pointer'
-                onClick={handleAddToCart}>Add to Bag</button>
+                onClick={isPresent ? () => navigate(routeConstant.BAG) : handleAddToCart}>
+                  {isPresent ? "View Cart" : "Add to Bag"}
+                </button>
                 <button className='py-2 px-4 bg-transparent hover:bg-mainYellow/70 transition-all duration-200
                 border border-mainYellow/70 hover:border-transparent rounded-xl text-sm text-mainYellow hover:text-white cursor-pointer'>Buy Now</button>
               </div>
@@ -157,7 +190,7 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
                   onClick={() => setQuantity(quantity + 1)}
                   className="cursor-pointer w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
                 >
-                  <FiPlus FiMinus className="w-4 h-4" />
+                  <FiPlus className="w-4 h-4" />
                 </button>
               </div>
             </div>
