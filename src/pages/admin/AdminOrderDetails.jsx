@@ -1,37 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './AdminOrderDetails.module.css';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-
-const mockOrder = {
-  id: 'ORD-1001',
-  user: 'John Doe',
-  date: '2024-06-01',
-  total: '$45.00',
-  status: 'Delivered',
-  address: '123 Main St, New York, NY',
-  items: [
-    { name: 'Pizza Margherita', qty: 2, price: '$20.00' },
-    { name: 'Coke', qty: 1, price: '$5.00' },
-  ],
-};
-
-// Replace statusOptions with the new statuses
-const statusOptions = [
-  { id: 6, name: 'cancelled' },
-  { id: 5, name: 'delivered' },
-  { id: 3, name: 'in oven' },
-  { id: 2, name: 'preparing' },
-  { id: 4, name: 'ready for pickup' },
-  { id: 1, name: 'received' },
-];
+import { adminOrders } from '../../utils/api';
 
 const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
-  const { orderId } = useParams();
+  let { orderId } = useParams();
+  // Fallback: extract orderId from the URL if useParams() fails
+  if (!orderId) {
+    const match = window.location.pathname.match(/\/admin\/orders\/(\w+)/);
+    if (match && match[1]) {
+      orderId = match[1];
+    }
+  }
   const navigate = useNavigate();
-  // In real app, fetch order by orderId
-  // Default to the id of the current status (simulate 'received' for now)
-  const [status, setStatus] = useState(1);
+  const [orderData, setOrderData] = useState(null);
+  const [statusOptions, setStatusOptions] = useState([]);
+  const [status, setStatus] = useState('');
+  const [statusId, setStatusId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const response = await adminOrders.getOrderDetailsById(orderId);
+        setOrderData(response.data);
+        setStatusOptions(response.data.orderStatuses || []);
+        if (response.data.order) {
+          setStatus(response.data.order.status);
+          // Find statusId for the current status
+          const currentStatus = (response.data.orderStatuses || []).find(opt => opt.name === response.data.order.status);
+          setStatusId(currentStatus ? currentStatus.id : null);
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to fetch order details');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrderDetails();
+  }, [orderId]);
+
+  // Handle status change
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+    // Find the statusId for the selected status name
+    const selected = statusOptions.find(opt => opt.name === e.target.value);
+    setStatusId(selected ? selected.id : null);
+  };
+
+  // Handle submit
+  const handleSubmit = async () => {
+    setSubmitLoading(true);
+    setSubmitError('');
+    try {
+      const response = await adminOrders.updateOrderStatusApi({ orderId: Number(orderId), statusId });
+      if (response.status === true) {
+        navigate('/admin/orders');
+      } else {
+        setSubmitError(response.message || 'Failed to update order status');
+      }
+    } catch (err) {
+      setSubmitError(err.message || 'Failed to update order status');
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <div className={styles.adminOrderDetailsBg + ' ' + styles.gradientBg}><div className={styles.adminOrderDetailsWrapper + ' ' + styles.glassEffect}><div style={{ textAlign: 'center', color: '#ff2222', padding: '2rem' }}>Loading order details...</div></div></div>;
+  }
+  if (error) {
+    return <div className={styles.adminOrderDetailsBg + ' ' + styles.gradientBg}><div className={styles.adminOrderDetailsWrapper + ' ' + styles.glassEffect}><div style={{ textAlign: 'center', color: '#ff2222', padding: '2rem' }}>{error}</div></div></div>;
+  }
+  if (!orderData) {
+    return null;
+  }
+  const { order, orderItems, payments } = orderData;
 
   return (
     <div className={styles.adminDashboardFlexLayout + (collapsed ? ' ' + styles.collapsed : '')}>
@@ -49,23 +98,55 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
                 <div className={styles.detailsGrid}>
                   <div>
                     <div className={styles.detailLabel}>Order ID</div>
-                    <div className={styles.detailValue}>{mockOrder.id}</div>
+                    <div className={styles.detailValue}>{order.id}</div>
                   </div>
                   <div>
                     <div className={styles.detailLabel}>Customer</div>
-                    <div className={styles.detailValue}>{mockOrder.user}</div>
+                    <div className={styles.detailValue}>{order.customerName}</div>
+                  </div>
+                  <div>
+                    <div className={styles.detailLabel}>Email</div>
+                    <div className={styles.detailValue}>{order.customerEmail || '-'}</div>
+                  </div>
+                  <div>
+                    <div className={styles.detailLabel}>Phone</div>
+                    <div className={styles.detailValue}>
+                      {order.customerPhone ? (
+                        <>
+                          {order.customerPhone}
+                          {` `}
+                          <a
+                            href={`tel:${order.customerPhone}`}
+                            style={{
+                              marginLeft: '0.5rem',
+                              color: '#bd390e',
+                              textDecoration: 'underline',
+                              fontWeight: 600,
+                              fontSize: '1.1rem',
+                            }}
+                            title="Call customer"
+                          >
+                            Call
+                          </a>
+                        </>
+                      ) : '-'}
+                    </div>
                   </div>
                   <div>
                     <div className={styles.detailLabel}>Date</div>
-                    <div className={styles.detailValue}>{mockOrder.date}</div>
+                    <div className={styles.detailValue}>{order.placedAt ? new Date(order.placedAt).toLocaleString() : '-'}</div>
                   </div>
                   <div>
                     <div className={styles.detailLabel}>Total</div>
-                    <div className={styles.detailValue}>{mockOrder.total}</div>
+                    <div className={styles.detailValue}>${order.totalAmount?.toFixed(2)}</div>
                   </div>
                   <div className={styles.fullWidth}>
                     <div className={styles.detailLabel}>Delivery Address</div>
-                    <div className={styles.detailValue}>{mockOrder.address}</div>
+                    <div className={styles.detailValue}>{order.customerAddress || '-'}</div>
+                  </div>
+                  <div className={styles.fullWidth}>
+                    <div className={styles.detailLabel}>Order Notes</div>
+                    <div className={styles.detailValue}>{order.orderNotes || '-'}</div>
                   </div>
                 </div>
               </div>
@@ -78,16 +159,20 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
                     <th>Item</th>
                     <th>Qty</th>
                     <th>Price</th>
+                    <th>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mockOrder.items.map((item, idx) => (
+                  {orderItems && orderItems.length > 0 ? orderItems.map((item, idx) => (
                     <tr key={idx}>
-                      <td>{item.name}</td>
-                      <td>{item.qty}</td>
-                      <td>{item.price}</td>
+                      <td>{item.menuItemName} {item.sizeName ? `(${item.sizeName})` : ''}</td>
+                      <td>{item.quantity}</td>
+                      <td>${item.totalPrice?.toFixed(2)}</td>
+                      <td>{item.notes || '-'}</td>
                     </tr>
-                  ))}
+                  )) : (
+                    <tr><td colSpan={4} style={{ textAlign: 'center' }}>No items</td></tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -98,16 +183,19 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
               id="order-status"
               className={styles.statusDropdown + ' modernStatusDropdown'}
               value={status}
-              onChange={e => setStatus(Number(e.target.value))}
+              onChange={handleStatusChange}
             >
               {statusOptions.map(opt => (
-                <option key={opt.id} value={opt.id}>{opt.name.charAt(0).toUpperCase() + opt.name.slice(1)}</option>
+                <option key={opt.id} value={opt.name}>{opt.name.charAt(0).toUpperCase() + opt.name.slice(1)}</option>
               ))}
             </select>
           </div>
+          {submitError && <div style={{ color: '#bd390e', textAlign: 'center', marginBottom: '1rem' }}>{submitError}</div>}
           <div className={styles.actionsRow}>
-            <button className={styles.saveBtn}>Save</button>
-            <button className={styles.cancelBtn} onClick={() => navigate('/admin/orders')}>Cancel</button>
+            <button className={styles.saveBtn} onClick={handleSubmit} disabled={submitLoading || !statusId}>
+              {submitLoading ? 'Submitting...' : 'Submit'}
+            </button>
+            <button className={styles.cancelBtn} onClick={() => navigate('/admin/orders')}>Back</button>
           </div>
         </div>
       </div>

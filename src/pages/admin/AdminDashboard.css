@@ -3,19 +3,23 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
+  background: #f1eee8;
 }
+
 .admin-dashboard-container {
   margin-left: 220px;
   flex: 1;
   width: 100%;
   transition: margin-left 0.2s;
+  background: #f1eee8;
 }
+
 .admin-dashboard-layout.collapsed .admin-dashboard-container {
   margin-left: 64px;
 }
 
 .admin-dashboard-title {
-  color: #ff2222;
+  color: #bd390e;
   font-size: 2.2rem;
   font-weight: bold;
   text-align: left;
@@ -34,9 +38,9 @@
 }
 
 .admin-summary-card {
-  background: #181818;
+  background: #e1d5bd;
   border-radius: 1.2rem;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.10);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
   padding: 1.5rem 2rem;
   min-width: 180px;
   flex: 1 1 180px;
@@ -50,20 +54,20 @@
 .admin-summary-icon {
   font-size: 2.2rem;
   color: #fff;
-  background: #b30000;
+  background: #bd390e;
   border-radius: 0.7rem;
   padding: 0.5rem 0.7rem;
   margin-bottom: 0.2rem;
 }
 
 .admin-summary-value {
-  color: #fff;
+  color: #000000;
   font-size: 1.7rem;
   font-weight: bold;
 }
 
 .admin-summary-label {
-  color: #fff;
+  color: #000000;
   font-size: 1rem;
   opacity: 0.7;
 }
@@ -77,9 +81,9 @@
 }
 
 .admin-dashboard-orders {
-  background: #181818;
+  background: #e1d5bd;
   border-radius: 1.2rem;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.10);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
   padding: 1.5rem 1.2rem;
   min-width: 320px;
   flex: 2 1 350px;
@@ -87,7 +91,7 @@
 }
 
 .admin-dashboard-orders h2 {
-  color: #ff2222;
+  color: #bd390e;
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
@@ -95,8 +99,9 @@
 .admin-orders-table {
   width: 100%;
   border-collapse: collapse;
-  color: #fff;
+  color: #000000;
   font-size: 1rem;
+  background: #f1eee8;
 }
 
 .admin-orders-table th, .admin-orders-table td {
@@ -105,13 +110,13 @@
 }
 
 .admin-orders-table th {
-  color: #ff2222;
+  color: #bd390e;
   font-weight: 600;
-  border-bottom: 1.5px solid #b30000;
+  border-bottom: 1.5px solid #bd390e;
 }
 
 .admin-orders-table tr:not(:last-child) td {
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #e1d5bd;
 }
 
 .admin-status {
@@ -120,14 +125,14 @@
   font-size: 0.95rem;
   font-weight: 500;
 }
-.admin-status-delivered { background: #1a3a1a; color: #4fff4f; }
-.admin-status-pending { background: #3a1a1a; color: #ffb84f; }
-.admin-status-cancelled { background: #3a1a1a; color: #ff4f4f; }
+.admin-status-delivered { background: #e1d5bd; color: #bd390e; }
+.admin-status-pending { background: #e1d5bd; color: #000000; }
+.admin-status-cancelled { background: #e1d5bd; color: #bd390e; }
 
 .admin-dashboard-charts {
-  background: #181818;
+  background: #e1d5bd;
   border-radius: 1.2rem;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.10);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
   padding: 1.5rem 1.2rem;
   min-width: 220px;
   flex: 1 1 220px;
@@ -137,7 +142,7 @@
 }
 
 .admin-dashboard-charts h2 {
-  color: #ff2222;
+  color: #bd390e;
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
@@ -166,7 +171,7 @@
 }
 
 .admin-bar-label {
-  color: #fff;
+  color: #000000;
   font-size: 0.95rem;
   margin-top: 0.3rem;
 }
@@ -175,25 +180,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #232323;
+  background: #e1d5bd;
   border-radius: 1.5rem;
   padding: 1.2rem 2.5rem;
   margin-bottom: 2.5rem;
   margin-top: 5.5rem;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
-  border: 1px solid #444;
+  border: 1px solid #bd390e;
 }
 .admin-title {
-  color: #ff4444;
+  color: #bd390e;
   font-size: 2.7rem;
   font-weight: 900;
   letter-spacing: 2px;
   margin: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .admin-dashboard-summary {
-    gap: 1rem;
+    gap: 1.5rem;
   }
   .admin-dashboard-main {
     flex-direction: column;
@@ -211,10 +216,56 @@
   }
 }
 
+@media (max-width: 900px) {
+  .admin-dashboard-title {
+    font-size: 1.8rem;
+    padding-left: 0.3rem;
+    margin-top: 3rem;
+  }
+  .admin-summary-card {
+    padding: 1.2rem 1.5rem;
+    min-width: 150px;
+  }
+  .admin-summary-value {
+    font-size: 1.5rem;
+  }
+  .admin-summary-label {
+    font-size: 0.9rem;
+  }
+  .admin-dashboard-orders {
+    padding: 1.2rem 1rem;
+  }
+  .admin-orders-table th, .admin-orders-table td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.95rem;
+  }
+  .admin-dashboard-charts {
+    padding: 1.2rem 1rem;
+  }
+  .admin-bar-chart {
+    gap: 1rem;
+  }
+  .admin-bar-item {
+    width: 25px;
+  }
+  .admin-bar-label {
+    font-size: 0.85rem;
+  }
+  .admin-dashboard-titlebar {
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+  }
+  .admin-title {
+    font-size: 2.2rem;
+  }
+}
+
 @media (max-width: 600px) {
   .admin-dashboard-title {
     font-size: 1.2rem;
     padding-left: 0.2rem;
+    margin-top: 2rem;
   }
   .admin-dashboard-summary {
     flex-direction: column;
@@ -224,8 +275,13 @@
     padding: 1rem 1rem;
     min-width: 0;
   }
+  .admin-summary-value {
+    font-size: 1.2rem;
+  }
+  .admin-summary-label {
+    font-size: 0.8rem;
+  }
   .admin-dashboard-container {
-    padding: 1.2rem 0 1rem 0;
     margin-left: 54px;
   }
   .admin-dashboard-layout.collapsed .admin-dashboard-container {
@@ -234,29 +290,48 @@
   .admin-dashboard-titlebar {
     padding: 0.7rem 1rem;
     margin-bottom: 1.2rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
   .admin-title {
     font-size: 1.5rem;
   }
-} 
+  .admin-dashboard-orders, .admin-dashboard-charts {
+    padding: 1rem 0.8rem;
+  }
+  .admin-orders-table th, .admin-orders-table td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  .admin-bar-chart {
+    gap: 0.8rem;
+    height: 150px;
+  }
+  .admin-bar-item {
+    width: 20px;
+  }
+  .admin-bar-label {
+    font-size: 0.75rem;
+  }
+}
 
 @media (max-width: 480px) {
   .admin-dashboard-title {
     font-size: 1rem;
     padding-left: 0.1rem;
-  }
-  .admin-dashboard-summary {
-    flex-direction: column;
-    gap: 0.5rem;
+    margin-top: 1rem;
   }
   .admin-summary-card {
     padding: 0.7rem 0.7rem;
     min-width: 0;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+  .admin-summary-value {
+    font-size: 1rem;
+  }
+  .admin-summary-label {
+    font-size: 0.7rem;
   }
   .admin-dashboard-container {
-    padding: 0.7rem 0 0.5rem 0;
     margin-left: 44px;
   }
   .admin-dashboard-layout.collapsed .admin-dashboard-container {
@@ -270,16 +345,67 @@
   .admin-title {
     font-size: 1.1rem;
   }
-  .admin-dashboard-main {
-    flex-direction: column;
-    gap: 0.7rem;
-  }
   .admin-dashboard-orders, .admin-dashboard-charts {
-    min-width: 0;
-    width: 100%;
     padding: 0.7rem 0.3rem;
   }
-  .admin-bar-label {
+  .admin-orders-table th, .admin-orders-table td {
+    padding: 0.3rem 0.4rem;
     font-size: 0.8rem;
   }
-} 
+  .admin-bar-chart {
+    gap: 0.6rem;
+    height: 120px;
+  }
+  .admin-bar-item {
+    width: 18px;
+  }
+  .admin-bar-label {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .admin-dashboard-title {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  .admin-summary-card {
+    padding: 0.5rem 0.5rem;
+  }
+  .admin-summary-value {
+    font-size: 0.9rem;
+  }
+  .admin-summary-label {
+    font-size: 0.65rem;
+  }
+  .admin-dashboard-container {
+    margin-left: 40px;
+  }
+  .admin-dashboard-layout.collapsed .admin-dashboard-container {
+    margin-left: 40px;
+  }
+  .admin-dashboard-titlebar {
+    padding: 0.3rem 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .admin-title {
+    font-size: 1rem;
+  }
+  .admin-dashboard-orders, .admin-dashboard-charts {
+    padding: 0.5rem 0.2rem;
+  }
+  .admin-orders-table th, .admin-orders-table td {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.7rem;
+  }
+  .admin-bar-chart {
+    gap: 0.4rem;
+    height: 100px;
+  }
+  .admin-bar-item {
+    width: 15px;
+  }
+  .admin-bar-label {
+    font-size: 0.6rem;
+  }
+}

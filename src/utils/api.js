@@ -262,7 +262,55 @@ export const adminOrders = {
       
       throw new Error(errorMessage);
     }
-  }
+  },
+
+  // Fetch order details by new endpoint
+  getOrderDetailsById: async (orderId) => {
+    const response = await apiCall(`/admin/order-details/${orderId}`, {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const responseData = response.data;
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Order details fetched successfully',
+          data: responseData.data
+        };
+      } else {
+        let errorMessage = 'Failed to fetch order details. Please try again.';
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0];
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        throw new Error(errorMessage);
+      }
+    } else {
+      let errorMessage = 'Failed to fetch order details. Please try again.';
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 404) {
+        errorMessage = 'Order not found.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      }
+      throw new Error(errorMessage);
+    }
+  },
+
+  updateOrderStatusApi: async ({ orderId, statusId }) => {
+    const response = await apiCall('/admin/update-order-status', {
+      method: 'POST',
+      body: JSON.stringify({ orderId, statusId }),
+    });
+    if (response.ok) {
+      return response.data;
+    } else {
+      throw new Error(response.data?.message || 'Failed to update order status');
+    }
+  },
 };
 
 // Error handling utility
