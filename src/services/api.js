@@ -1,4 +1,4 @@
-const BASE_URL = "http://44.201.121.75:8080/api/"
+const BASE_URL = "https://eatatyorktown.com/api/"
 
 export const menuEndpoints = {
     FETCH_CATEGORIES: (displayHome) => BASE_URL + `menu/home-categories?displayHome=${displayHome}`,
