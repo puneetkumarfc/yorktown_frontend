@@ -1,6 +1,6 @@
 // API utility functions for YorkTown admin panel
 
-const API_BASE_URL = 'http://44.201.121.75:8080/api';
+const API_BASE_URL = 'https://eatatyorktown.com/api';
 
 // Helper function to handle API responses
 const handleApiResponse = async (response) => {
