@@ -62,12 +62,29 @@
   border-radius: 0.7rem;
   border: 1.5px solid #bd390e;
   background: rgba(241, 238, 232, 0.7);
-  color: #000000;
+  color: #000000 !important;
   font-size: 1.05rem;
   outline: none;
   transition: box-shadow 0.2s, border 0.2s, background 0.2s;
   box-shadow: 0 2px 8px rgba(189,57,14,0.08);
   backdrop-filter: blur(4px);
+}
+
+.admin-login-field input:-webkit-autofill,
+.admin-login-field input:-webkit-autofill:focus,
+.admin-login-field input:-webkit-autofill:hover,
+.admin-login-field input:-webkit-autofill:active {
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.admin-login-field input:-moz-autofill {
+  color: #000000 !important;
+}
+
+.admin-login-field input:autofill {
+  color: #000000 !important;
 }
 
 .admin-login-field input:focus {
@@ -438,43 +455,91 @@
   color: #bd390e;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .admin-login-form {
-    padding: 1.5rem 0.7rem;
-    max-width: 95vw;
+    /* max-width: 80vw; */
+    padding: 2rem 1.2rem;
   }
   .admin-login-title {
-    font-size: 1.3rem;
+    font-size: 1.6rem;
   }
-  .error-popup {
-    width: 95%;
-    margin: 1rem;
+}
+
+@media (max-width: 600px) {
+  .admin-login-bg {
+    padding: 0.5rem 0;
   }
-  .error-popup-header {
-    padding: 1rem 1rem 0.5rem 1rem;
+  .admin-login-content-wrapper {
+    padding: 0;
   }
-  .error-popup-content {
-    padding: 1rem;
+  .admin-login-form {
+    padding: 1.2rem 1.3rem;
+    max-width: 88vw;
+    min-width: 0;
+    border-radius: 1rem;
+    gap: 1rem;
   }
-  .error-popup-footer {
-    padding: 0.5rem 1rem 1rem 1rem;
+  .admin-login-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.7rem;
   }
-  .success-popup {
-    width: 95%;
-    margin: 1rem;
+  .admin-login-field label {
+    font-size: 0.95rem;
   }
-  .success-popup-header {
-    padding: 1rem 1rem 0.5rem 1rem;
+  .admin-login-field input {
+    font-size: 0.98rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0.5rem;
   }
-  .success-popup-content {
-    padding: 1rem;
+  .admin-login-btn {
+    font-size: 1rem;
+    padding: 0.7rem 0;
+    border-radius: 0.5rem;
   }
-  .success-popup-footer {
-    padding: 0.5rem 1rem 1rem 1rem;
+  .admin-login-error {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.7rem;
+  }
+  .error-popup, .success-popup {
+    width: 98vw;
+    min-width: 0;
+    margin: 0.5rem;
+    border-radius: 0.7rem;
+    padding: 0.5rem 0.2rem;
+  }
+  .error-popup-header, .success-popup-header {
+    padding: 0.7rem 0.7rem 0.3rem 0.7rem;
+  }
+  .error-popup-content, .success-popup-content {
+    padding: 0.7rem;
+  }
+  .error-popup-footer, .success-popup-footer {
+    padding: 0.3rem 0.7rem 0.7rem 0.7rem;
   }
   .success-icon {
-    width: 50px;
-    height: 50px;
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  .px-\[6rem\]{
+    padding-inline: 1rem!important;
+  }
+}
+
+@media (max-width: 400px) {
+  .admin-login-form {
+    padding: 0.7rem 1.1rem;
+    max-width: 88vw;
+    border-radius: 0.5rem;
+  }
+  .admin-login-title {
     font-size: 1.5rem;
+  }
+  .admin-login-btn {
+    font-size: 0.95rem;
+    padding: 0.6rem 0;
+  }
+  .px-\[6rem\]{
+    padding-inline: 1rem!important;
   }
 } 

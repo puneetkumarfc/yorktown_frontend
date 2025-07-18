@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './AdminOrderDetails.module.css';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { adminOrders } from '../../utils/api';
+import { useLoader } from '../../components/common/LoaderContext';
 
 const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   let { orderId } = useParams();
@@ -22,9 +23,12 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   const [error, setError] = useState('');
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const { showLoader, hideLoader } = useLoader();
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       setLoading(true);
+      showLoader();
       setError('');
       try {
         const response = await adminOrders.getOrderDetailsById(orderId);
@@ -40,6 +44,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
         setError(err.message || 'Failed to fetch order details');
       } finally {
         setLoading(false);
+        hideLoader();
       }
     };
     fetchOrderDetails();
@@ -56,6 +61,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   // Handle submit
   const handleSubmit = async () => {
     setSubmitLoading(true);
+    showLoader();
     setSubmitError('');
     try {
       const response = await adminOrders.updateOrderStatusApi({ orderId: Number(orderId), statusId });
@@ -68,6 +74,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
       setSubmitError(err.message || 'Failed to update order status');
     } finally {
       setSubmitLoading(false);
+      hideLoader();
     }
   };
 

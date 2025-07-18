@@ -4,6 +4,7 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminOrders } from '../../utils/api';
+import { useLoader } from '../../components/common/LoaderContext';
 
 const PAGE_SIZE = 20;
 
@@ -17,10 +18,12 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
+      showLoader();
       setError('');
       try {
         const payload = {
@@ -36,6 +39,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
         setError(err.message || 'Failed to fetch orders');
       } finally {
         setLoading(false);
+        hideLoader();
       }
     };
     fetchOrders();
