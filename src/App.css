@@ -1,0 +1,23 @@
+.category-swiper .swiper-button-next,
+.category-swiper .swiper-button-prev {
+  color: #F3D053;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.category-swiper .swiper-button-next:hover,
+.category-swiper .swiper-button-prev:hover {
+  background: #F3D053;
+  color: #C42A2A;
+}
+.category-swiper .swiper-scrollbar {
+  background: #222328;
+  height: 6px;
+  border-radius: 3px;
+}
+.category-swiper .swiper-scrollbar-drag {
+  background: #F3D053;
+}

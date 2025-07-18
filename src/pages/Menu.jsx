@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { quickPickCategories, quickPickItems } from '../constants/Home';
@@ -7,6 +7,9 @@ import {filters} from "../constants/Menu"
 import ItemCard from '../components/common/ItemCard';
 import FilterModal from '../components/menu/FilterModal';
 import { fetchCategories, fetchMenu } from '../services/operations/menu';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { useLoader } from '../components/common/LoaderContext';
 
 const Menu = () => {
 
@@ -17,6 +20,8 @@ const Menu = () => {
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [menu, setMenu] = useState([]);
   
+  const { showLoader, hideLoader } = useLoader();
+
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
@@ -27,6 +32,8 @@ const Menu = () => {
 
   const setCategory = (category) => {
     setActiveCategory(category);
+    setMenu([]); // Clear menu before fetching new items
+    displayMenu(category.id, 2);
   }
 
   const displayFilterModal = () => {
@@ -42,31 +49,35 @@ const Menu = () => {
   }
 
   const displayCategories = async(displayHome=2) => {
+    showLoader();
     try {
         const response = await fetchCategories(displayHome);
-        // console.log(response.data.data)
         setCategories(response.data.data);
         if (response.data.data.length > 0) {
           setActiveCategory(response.data.data[0]);
+          displayMenu(response.data.data[0].id, 2);
         }
     } catch (error) {
         console.log(error);
+    } finally {
+        hideLoader();
     }
   }
 
-  const displayMenu = async(displayHome=2) => {
+  const displayMenu = async (categoryId, displayHome = 2) => {
+    showLoader();
     try {
-        const response = await fetchMenu(displayHome);
-        // console.log(response.data.data)
-        setMenu(response.data.data);
+      const response = await fetchMenu(categoryId, displayHome);
+      setMenu(response.data.data);
     } catch (error) {
-        console.log(error);
+      console.log(error);
+    } finally {
+      hideLoader();
     }
   }
 
   useEffect(() => {
       displayCategories();
-      displayMenu();
   }, [])
 
   return (
@@ -113,26 +124,56 @@ const Menu = () => {
       {/* Categories */}
       <div className='mt-4 flex items-center gap-3'>
         <p className='font-poppins text-sm'>Categories: </p>
-        <div className='flex gap-3 flex-wrap'>
-            {
-                categories.map((category, index) => {
-                  const isActive = activeCategory.name === `${category.name}`;
-                  return (
-                      <div key={index} className={`text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
-                      onClick={() => setCategory(category)}>
-                          {category.name}
-                      </div>
-                  )
-                })
-            }
+        <div className='w-full max-w-full'>
+          <Carousel
+            additionalTransfrom={0}
+            arrows={true}
+            autoPlay={false}
+            centerMode={false}
+            className="category-carousel"
+            containerClass="container-with-dots"
+            dotListClass=""
+            draggable
+            focusOnSelect={false}
+            infinite={false}
+            itemClass="carousel-item-padding-40-px"
+            keyBoardControl
+            minimumTouchDrag={40}
+            renderButtonGroupOutside={false}
+            renderDotsOutside={false}
+            responsive={{
+              superLargeDesktop: { breakpoint: { max: 4000, min: 1200 }, items: 7 },
+              desktop: { breakpoint: { max: 1200, min: 900 }, items: 5 },
+              tablet: { breakpoint: { max: 900, min: 600 }, items: 3 },
+              mobile: { breakpoint: { max: 600, min: 0 }, items: 2 }
+            }}
+            showDots={false}
+            sliderClass=""
+            slidesToSlide={1}
+            swipeable
+          >
+            {categories.map((category, index) => {
+              const isActive = activeCategory.name === `${category.name}`;
+              return (
+                <div
+                  key={index}
+                  className={`text-nowrap py-2 px-4 mx-2 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
+                  onClick={() => setCategory(category)}
+                  style={{ minWidth: 110, textAlign: 'center' }}
+                >
+                  {category.name}
+                </div>
+              );
+            })}
+          </Carousel>
         </div>
       </div>
 
       <div className='w-full flex flex-wrap gap-5 justify-between mt-10 font-poppins'>
           {
-            menu.filter(item => item.categoryId == activeCategory.id).map((menuItem, index) => {
+            menu.map((menuItem, index) => {
               return (
-                  <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                  <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
               )
             })
           }

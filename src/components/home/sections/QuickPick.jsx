@@ -4,43 +4,54 @@ import Button from '../../common/Button'
 import { routeConstant } from '../../../constants/RouteConstants'
 import ItemCard from '../../common/ItemCard'
 import { fetchCategories, fetchMenu } from '../../../services/operations/menu'
+import PizzaLoader from '../../common/PizzaLoader';
 
 const QuickPick = () => {
 
     const [categories, setCategories] = useState([]);
     const [activeCategory, setActiveCategory] = useState('');
     const [menu, setMenu] = useState([]);
+    const [loadingCategories, setLoadingCategories] = useState(false);
+    const [loadingMenu, setLoadingMenu] = useState(false);
 
     const setCategory = (category) => {
         setActiveCategory(category);
+        displayMenu(category.id, 1);
     }
 
-    const displayCategories = async(displayHome=2) => {
+    const displayCategories = async(displayHome=1) => {
+        setLoadingCategories(true);
         try {
             const response = await fetchCategories(displayHome);
-            console.log(response.data.data)
             setCategories(response.data.data);
             if (response.data.data.length > 0) {
                 setActiveCategory(response.data.data[0]);
+                displayMenu(response.data.data[0].id, 1);
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoadingCategories(false);
         }
     }
 
-    const displayMenu = async(displayHome=2) => {
+    const displayMenu = async(categoryId, displayHome=1) => {
+        setMenu([]); // Clear menu before fetching
+        setLoadingMenu(true);
         try {
-            const response = await fetchMenu(displayHome);
-            console.log(response.data.data)
-            setMenu(response.data.data);
+            const response = await fetchMenu(categoryId, displayHome);
+            const items = Array.isArray(response.data.data) ? response.data.data : [];
+            setMenu(items);
         } catch (error) {
+            setMenu([]); // Clear on error
             console.log(error);
+        } finally {
+            setLoadingMenu(false);
         }
     }
 
     useEffect(() => {
         displayCategories();
-        displayMenu();
     }, [])
 
     console.log(activeCategory)
@@ -67,11 +78,15 @@ const QuickPick = () => {
 
         <div className='w-full flex flex-wrap justify-between my-6 font-poppins'>
             {
-                menu.filter(item => item.categoryId == activeCategory.id).map((menuItem, index) => {
-                    return (
-                        <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
-                    )
-                })
+                (loadingCategories || loadingMenu) ? (
+                    <PizzaLoader loading={true} size={90} />
+                ) : (
+                    menu.map((menuItem, index) => {
+                        return (
+                            <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                        )
+                    })
+                )
             }
         </div>
 

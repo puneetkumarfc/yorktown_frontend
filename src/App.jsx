@@ -15,6 +15,18 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminOrderDetails from './pages/admin/AdminOrderDetails';
 import AdminMenuList from './pages/admin/AdminMenuList';
+import { LoaderProvider, useLoader } from './components/common/LoaderContext';
+import PizzaLoader from './components/common/PizzaLoader';
+
+function GlobalLoaderOverlay() {
+  const { loading } = useLoader();
+  if (!loading) return null;
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60">
+      <PizzaLoader loading={true} size={110} />
+    </div>
+  );
+}
 
 function App() {
 
@@ -106,4 +118,11 @@ function App() {
   )
 }
 
-export default App
+export default function AppWithLoader() {
+  return (
+    <LoaderProvider>
+      <GlobalLoaderOverlay />
+      <App />
+    </LoaderProvider>
+  );
+}
