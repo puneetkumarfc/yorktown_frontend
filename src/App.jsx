@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Bag from './pages/Bag'
 import Header from './components/common/Header'
@@ -100,6 +100,8 @@ function App() {
         <Route path={routeConstant.BAG} element={<Bag/>}/>
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
+        {/* Redirect /admin to /admin/login */}
+        <Route path="/admin" element={<Navigate to={routeConstant.ADMIN_LOGIN} replace />} />
       </Routes>
       <Footer/>
     </div>
