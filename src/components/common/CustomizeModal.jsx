@@ -7,15 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import toast from 'react-hot-toast';
 import { fetchItemDetails } from '../../services/operations/menu';
+import { set } from 'react-hook-form';
 
 const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
-  console.log(id)
+  const [itemDetails, setItemDetails] = useState({});
 
   const displayDetails = async(id) => {
     try {
       const response = await fetchItemDetails(id);
       console.log(response.data.data)
+      setItemDetails(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -25,17 +27,15 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
     displayDetails(id);
   }, [])
 
+  useEffect(() => {
+    setSelectedSize(itemDetails.prices?.[0]?.sizeId);
+  }, [itemDetails])
+
   const navigate = useNavigate();
-  const [selectedSize, setSelectedSize] = useState('medium');
+  const [selectedSize, setSelectedSize] = useState(null);
   const [selectedToppings, setSelectedToppings] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isPresent, setIsPresent] = useState(false);
-
-  const sizes = [
-    { id: 'small', name: 'Small (10")', price: 0 },
-    { id: 'medium', name: 'Medium (12")', price: 3 },
-    { id: 'large', name: 'Large (14")', price: 6 }
-  ]
 
   const toppings = [
     { id: 'pepperoni', name: 'Pepperoni', price: 2.50 },
@@ -51,7 +51,7 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
   };
 
   const computeUnitPrice = () => {
-    const sizePrice = sizes.find(size => size.id === selectedSize)?.price || 0;
+    const sizePrice = itemDetails.prices?.find(size => size.sizeId === selectedSize)?.price || 0;
     const toppingsPrice = selectedToppings.reduce((total, toppingId) => {
       const topping = toppings.find(t => t.id === toppingId);
       return total + (topping?.price || 0);
@@ -130,22 +130,24 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
             <p className="mb-2 font-medium">Size</p>
             <div className="w-full flex flex-wrap gap-3">
               {
-                sizes.map((size) => (
-                  <button
-                    key={size.id}
-                    onClick={() => setSelectedSize(size.id)}
-                    className={`py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
-                      selectedSize === size.id
-                        ? 'border-mainRed/70 bg-red-50 text-mainRed'
-                        : 'border-white/20 hover:border-gray-300 text-white'
-                    }`}
-                  >
-                    <div className="font-light text-sm font-poppins">{size.name}</div>
-                    {size.price > 0 && (
-                      <div className="text-sm ">+${size.price}</div>
-                    )}
-                  </button>
-                ))
+                itemDetails.prices?.map((size, key) => {
+                  return (
+                    <button
+                      key={size.sizeId}
+                      onClick={() => setSelectedSize(size.sizeId)}
+                      className={`py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
+                        selectedSize === size.sizeId
+                          ? 'border-mainRed/70 bg-red-50 text-mainRed'
+                          : 'border-white/20 hover:border-gray-300 text-white'
+                      }`}
+                    >
+                      <div className="font-light text-sm font-poppins">{size.sizeName}</div>
+                      {size.price > 0 && (
+                        <div className="text-sm ">+${size.price}</div>
+                      )}
+                    </button>
+                  )
+                })
               }
             </div>
           </div>

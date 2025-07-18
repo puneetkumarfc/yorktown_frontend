@@ -15,9 +15,8 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
 
   const cartItems = cart.map((item) => ({
     "itemId": item.id,
-    "sizeId": item.size === "small" ? 7 : item.size === "medium" ? 8 : 9,
+    "sizeId": 11,
     "quantity": item.quantity,
-    "notes": "Dummy notes for now, will be changed later"
   }))
 
   const [formStep, setFormStep] = useState(1);
@@ -30,9 +29,6 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   let options;
   
   const handleNext = async (data) => {
-    console.log(data);
-    console.log(formStep);
-
     if (formStep === 1) {
       setFormData((prev) => ({ ...prev, userDetails: data }));
     } else if (formStep === 2) {
