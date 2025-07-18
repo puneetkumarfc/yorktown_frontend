@@ -3,12 +3,14 @@
   display: flex;
   flex-direction: row;
   min-height: 100vh;
+  background: #f1eee8;
 }
 .admin-orders-container {
   margin-left: 220px;
   flex: 1;
   width: 100%;
   transition: margin-left 0.2s;
+  background: #f1eee8;
 }
 .admin-dashboard-layout.collapsed .admin-orders-container {
   margin-left: 64px;
@@ -18,16 +20,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #232323;
+  background: #e1d5bd;
   border-radius: 1.5rem;
   padding: 1.2rem 2.5rem;
   margin-bottom: 2.5rem;
   margin-top: 1.5rem;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
-  border: 1px solid #444;
+  border: 1px solid #bd390e;
 }
 .admin-title {
-  color: #ff4444;
+  color: #bd390e;
   font-size: 2.7rem;
   font-weight: 900;
   letter-spacing: 2px;
@@ -41,21 +43,21 @@
 .admin-titlebar-search-input {
   padding: 0.7rem 1.2rem;
   border-radius: 0.7rem;
-  border: 1.5px solid #444;
-  background: #181818;
-  color: #fff;
+  border: 1.5px solid #e1d5bd;
+  background: #f1eee8;
+  color: #000000;
   font-size: 1.1rem;
   outline: none;
   width: 260px;
   max-width: 100%;
-  box-shadow: 0 2px 8px rgba(179,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: border 0.2s;
 }
 .admin-titlebar-search-input:focus {
-  border: 2px solid #ff2222;
+  border: 2px solid #bd390e;
 }
 .admin-titlebar-search-btn {
-  background: #ff4444;
+  background: #bd390e;
   color: #fff;
   font-size: 1.1rem;
   font-weight: bold;
@@ -64,17 +66,18 @@
   border-radius: 0.7rem;
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.15);
 }
 .admin-titlebar-search-btn:hover {
-  background: #b30000;
+  background: #000000;
+  color: #e1d5bd;
   transform: translateY(-2px) scale(1.03);
 }
 
 .admin-orders-table-wrapper {
-  background: #181818;
+  background: #e1d5bd;
   border-radius: 1.2rem;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.10);
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.10);
   padding: 1.5rem 1.2rem;
   overflow-x: auto;
 }
@@ -82,8 +85,9 @@
 .admin-orders-table {
   width: 100%;
   border-collapse: collapse;
-  color: #fff;
+  color: #000000;
   font-size: 1rem;
+  background: #f1eee8;
 }
 
 .admin-orders-table th, .admin-orders-table td {
@@ -92,27 +96,27 @@
 }
 
 .admin-orders-table th {
-  color: #ff2222;
+  color: #bd390e;
   font-weight: 600;
-  border-bottom: 1.5px solid #b30000;
+  border-bottom: 1.5px solid #bd390e;
   cursor: pointer;
   user-select: none;
   transition: color 0.2s;
 }
 .admin-orders-table th.active, .admin-orders-table th:hover {
   color: #fff;
-  background: #b30000;
+  background: #bd390e;
 }
 
 .admin-orders-table tr:not(:last-child) td {
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #e1d5bd;
 }
 
 .admin-orders-row {
   transition: background 0.2s;
 }
 .admin-orders-row:hover {
-  background: #2a0000;
+  background: #e1d5bd;
 }
 
 .admin-status {
@@ -122,13 +126,13 @@
   font-weight: 500;
   display: inline-block;
 }
-.admin-status-delivered { background: #1a3a1a; color: #4fff4f; }
-.admin-status-pending { background: #3a1a1a; color: #ffb84f; }
-.admin-status-cancelled { background: #3a1a1a; color: #ff4f4f; }
+.admin-status-delivered { background: #e1d5bd; color: #bd390e; }
+.admin-status-pending { background: #e1d5bd; color: #000000; }
+.admin-status-cancelled { background: #e1d5bd; color: #bd390e; }
 
 .admin-action-btn {
-  background: #222;
-  color: #fff;
+  background: #e1d5bd;
+  color: #bd390e;
   border: none;
   border-radius: 0.5rem;
   padding: 0.4rem 0.9rem;
@@ -139,14 +143,15 @@
   transition: background 0.2s, color 0.2s, transform 0.1s;
 }
 .admin-action-btn.view {
-  background: linear-gradient(90deg, #b30000 0%, #ff2222 100%);
+  background: linear-gradient(90deg, #bd390e 0%, #e1d5bd 100%);
+  color: #fff;
 }
 .admin-action-btn.cancel {
-  background: #2a0000;
-  color: #ff2222;
+  background: #000000;
+  color: #e1d5bd;
 }
 .admin-action-btn:hover {
-  background: #ff2222;
+  background: #bd390e;
   color: #fff;
   transform: scale(1.05);
 }
@@ -160,8 +165,8 @@
   margin-bottom: 2rem;
 }
 .admin-orders-pagination button {
-  background: #181818;
-  color: #fff;
+  background: #e1d5bd;
+  color: #000000;
   border: none;
   border-radius: 0.5rem;
   padding: 0.5rem 1rem;
@@ -170,12 +175,12 @@
   transition: background 0.2s, color 0.2s, transform 0.1s;
 }
 .admin-orders-pagination button.active, .admin-orders-pagination button:hover {
-  background: #ff2222;
+  background: #bd390e;
   color: #fff;
   transform: scale(1.08);
 }
 .admin-orders-pagination button:disabled {
-  background: #222;
+  background: #e1d5bd;
   color: #888;
   cursor: not-allowed;
 }
@@ -185,23 +190,23 @@
   to { opacity: 1; transform: translateX(0); }
 }
 .gradient-bg {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  background: linear-gradient(135deg, #f1eee8 0%, #e1d5bd 100%);
 }
 .table-row {
   animation: slideIn 0.4s ease-out;
   backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #e1d5bd;
+  border: 1px solid #f1eee8;
 }
 .table-row:hover {
-  background: rgba(255, 51, 51, 0.15);
+  background: #f1eee8;
   transform: scale(1.01);
   transition: all 0.3s ease;
 }
 .glass-effect {
-  background: rgba(255, 255, 255, 0.05);
+  background: #f1eee8;
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e1d5bd;
 }
 .admin-orders-container {
   width: 100%;
@@ -288,3 +293,9 @@
     gap: 0.3rem;
   }
 } 
+.table-order{
+  background-color: #bd390e;
+}
+.table-row{
+  color:crimson
+}

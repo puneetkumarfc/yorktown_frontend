@@ -5,8 +5,8 @@
   left: 0;
   height: 100vh;
   width: 220px;
-  background: #181818;
-  border-right: 2px solid #b30000;
+  background: #e1d5bd;
+  border-right: 2px solid #bd390e;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -20,7 +20,7 @@
 .admin-sidebar-toggle {
   background: none;
   border: none;
-  color: #ff2222;
+  color: #bd390e;
   font-size: 1.5rem;
   padding: 1.2rem 1rem 0.5rem 1rem;
   cursor: pointer;
@@ -29,7 +29,7 @@
   transition: color 0.2s;
 }
 .admin-sidebar-toggle:hover {
-  color: #fff;
+  color: #000000;
 }
 
 .admin-sidebar-nav {
@@ -44,7 +44,7 @@
   align-items: center;
   gap: 1.1rem;
   padding: 0.9rem 1.2rem;
-  color: #fff;
+  color: #000000;
   font-size: 1.1rem;
   font-weight: 500;
   background: none;
@@ -58,27 +58,32 @@
 }
 .admin-sidebar-link .admin-sidebar-icon {
   font-size: 1.3rem;
-  color: #ff2222;
+  color: #bd390e;
   min-width: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.2s;
 }
 .admin-sidebar-link .admin-sidebar-label {
   white-space: nowrap;
 }
+.admin-sidebar-link.active .admin-sidebar-icon,
+.admin-sidebar-link:hover .admin-sidebar-icon {
+  color: #fff;
+}
 .admin-sidebar-link.active, .admin-sidebar-link:hover {
-  background: #b30000;
+  background: #bd390e;
   color: #fff;
   transform: scale(1.04);
 }
 .admin-sidebar-link.logout {
   margin-top: 2rem;
-  color: #ff2222;
-  background: #2a0000;
+  color: #bd390e;
+  background: none;
 }
 .admin-sidebar-link.logout:hover {
-  background: #ff2222;
+  background: #bd390e;
   color: #fff;
 }
 
@@ -96,12 +101,12 @@
 .admin-sidebar.collapsed .admin-sidebar-link.active,
 .admin-sidebar.collapsed .admin-sidebar-link:hover {
   background: none;
-  color: #ff2222;
+  color: #bd390e;
   border-radius: 0;
   transform: none;
 }
 .admin-sidebar.collapsed .admin-sidebar-link .admin-sidebar-icon {
-  color: #ff2222;
+  color: #bd390e;
 }
 
 .admin-sidebar.collapsed .admin-sidebar-nav {
@@ -128,10 +133,10 @@
   font-size: 1.5rem;
 }
 .admin-sidebar.collapsed .admin-sidebar-link.active .admin-sidebar-icon {
-  background: #b30000;
+  background: #bd390e;
   border-radius: 50%;
   color: #fff;
-  box-shadow: 0 0 0 2px #ff2222;
+  box-shadow: 0 0 0 2px #bd390e;
 }
 .admin-sidebar.collapsed .admin-sidebar-link.active {
   background: none;
@@ -155,12 +160,12 @@
 }
 
 .logout-confirm-modal {
-  background: rgba(24, 24, 24, 0.95);
+  background: #f1eee8;
   border-radius: 1rem;
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5), 0 1.5px 12px 0 rgba(179,0,0,0.15);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.15), 0 1.5px 12px 0 rgba(189,57,14,0.10);
   max-width: 400px;
   width: 90%;
-  border: 1.5px solid rgba(179, 0, 0, 0.3);
+  border: 1.5px solid #bd390e;
   backdrop-filter: blur(16px);
   animation: logoutModalSlideIn 0.3s ease-out;
 }
@@ -181,11 +186,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-  border-bottom: 1px solid rgba(179, 0, 0, 0.2);
+  border-bottom: 1px solid #bd390e;
 }
 
 .logout-confirm-header h3 {
-  color: #ff2222;
+  color: #bd390e;
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
@@ -216,7 +221,7 @@
 }
 
 .logout-confirm-content p {
-  color: #fff;
+  color: #000000;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
@@ -242,26 +247,26 @@
 }
 
 .logout-confirm-btn.cancel {
-  background: #666;
-  color: #fff;
+  background: #e1d5bd;
+  color: #000000;
   box-shadow: 0 4px 16px 0 rgba(0,0,0,0.15);
 }
 
 .logout-confirm-btn.cancel:hover {
-  background: #777;
+  background: #f1eee8;
   transform: translateY(-1px);
 }
 
 .logout-confirm-btn.confirm {
-  background: linear-gradient(90deg, #a82323 0%, #ff2222 100%);
+  background: linear-gradient(90deg, #bd390e 0%, #e1d5bd 100%);
   color: #fff;
-  box-shadow: 0 4px 16px 0 rgba(179,0,0,0.15);
+  box-shadow: 0 4px 16px 0 rgba(189,57,14,0.15);
 }
 
 .logout-confirm-btn.confirm:hover {
-  background: linear-gradient(90deg, #ff2222 0%, #a82323 100%);
+  background: linear-gradient(90deg, #e1d5bd 0%, #bd390e 100%);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px 0 rgba(179,0,0,0.2);
+  box-shadow: 0 6px 20px 0 rgba(189,57,14,0.2);
 }
 
 @media (max-width: 900px) {

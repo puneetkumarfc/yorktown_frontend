@@ -80,7 +80,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
           ) : (
             <table className="w-full table-auto">
               <thead>
-                <tr className="bg-red-500 text-white">
+                <tr className="table-order text-white">
                   <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('id')}>
                     Order ID {sortBy === 'id' && (sortDir === 'asc' ? '↑' : '↓')}
                   </th>
@@ -105,10 +105,46 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                     <td className="px-6 py-4" data-label="Date">{order.placedAt ? new Date(order.placedAt).toLocaleString() : '-'}</td>
                     <td className="px-6 py-4" data-label="Total">${order.totalAmount?.toFixed(2)}</td>
                     <td className="px-6 py-4" data-label="Status">
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${order.status === 'delivered' ? 'bg-green-600' : order.status === 'pending' ? 'bg-yellow-600' : 'bg-red-600'}`}>{order.status}</span>
+                    <span
+                        className="px-3 py-1 rounded-full text-sm font-medium admin-status"
+                        style={{
+                          background:
+                            order.status === 'delivered' ? '#4CAF50' : // green
+                            order.status === 'pending' ? '#FFC107' : // amber
+                            order.status === 'cancelled' ? '#F44336' : // red
+                            order.status === 'in oven' ? '#FF9800' : // orange
+                            order.status === 'ready for pickup' ? '#2196F3' : // blue
+                            order.status === 'received' ? '#9C27B0' : // purple
+                            '#e1d5bd',
+                          color:
+                            order.status === 'pending' ? '#000' : '#fff',
+                          border: '1.5px solid #bd390e',
+                          minWidth: 110,
+                          display: 'inline-block',
+                          textAlign: 'center',
+                          textTransform: 'capitalize',
+                        }}
+                      >
+                        {order.status}
+                      </span>
                     </td>
                     <td className="px-6 py-4" data-label="Actions">
-                      <button className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition duration-300 shadow-md" onClick={() => navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(':orderId', order.id))}>
+                    <button
+                        style={{
+                          background: 'linear-gradient(90deg, #bd390e 0%, #e1d5bd 100%)',
+                          color: '#fff',
+                          fontWeight: 700,
+                          border: 'none',
+                          borderRadius: 12,
+                          padding: '0.7rem 2rem',
+                          boxShadow: '0 4px 16px 0 rgba(189,57,14,0.15)',
+                          letterSpacing: 1,
+                          fontSize: '1.1rem',
+                          cursor: 'pointer',
+                          transition: 'background 0.2s, color 0.2s',
+                        }}
+                        onClick={() => navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(':orderId', order.id))}
+                      >
                         View
                       </button>
                     </td>
