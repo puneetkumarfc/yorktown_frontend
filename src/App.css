@@ -21,3 +21,6 @@
 .category-swiper .swiper-scrollbar-drag {
   background: #F3D053;
 }
+.category-carousel .react-multiple-carousel__arrow {
+  z-index: 20 !important;
+}
