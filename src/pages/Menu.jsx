@@ -124,7 +124,7 @@ const Menu = () => {
       {/* Categories */}
       <div className='mt-4 flex items-center gap-3'>
         <p className='font-poppins text-sm'>Categories: </p>
-        <div className='w-full max-w-full'>
+        <div className='w-full'>
           <Carousel
             additionalTransfrom={0}
             arrows={true}
@@ -157,7 +157,7 @@ const Menu = () => {
               return (
                 <div
                   key={index}
-                  className={`text-nowrap py-2 px-4 mx-2 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
+                  className={`text-nowrap py-2 px-4 mx-2 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
                   onClick={() => setCategory(category)}
                   style={{ minWidth: 110, textAlign: 'center' }}
                 >
@@ -169,11 +169,11 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className='w-full flex flex-wrap gap-5 justify-between mt-10 font-poppins'>
+      <div className='w-full flex flex-wrap gap-5 mt-10 font-poppins'>
           {
             menu.map((menuItem, index) => {
               return (
-                  <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
               )
             })
           }

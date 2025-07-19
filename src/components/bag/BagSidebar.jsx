@@ -15,7 +15,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
 
   const cartItems = cart.map((item) => ({
     "itemId": item.id,
-    "sizeId": 11,
+    "sizeId": item.size,
     "quantity": item.quantity,
   }))
 
@@ -26,7 +26,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
     deliveryDetails: {},
   })
 
-  let options;
+  const [options, setOptions] = useState(null);
   
   const handleNext = async (data) => {
     if (formStep === 1) {
@@ -37,6 +37,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
       const input = {
         ...formData.userDetails,
         ...data,
+        "orderType": "takeaway",
         "cart": cartItems,
         "stripePayment": {
           "amount": Number(totalPrice()),
@@ -50,14 +51,14 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
       console.log(input)
       try {
         const response = await placeOrder(input);
-        console.log("Order placed:", response);
+        console.log("Order placed:", response.data.data.clientSecret);
         if(response.data.status) {
-          options = {
+          setOptions({
             clientSecret: response.data.data.clientSecret,
             appearance: {
               theme: 'stripe',
             },
-          };
+          });
         }
       } catch (error) {
         console.error("Error placing order:", error);
@@ -81,9 +82,11 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
         { 
           formStep === 1 ? <UserDetails setFormStep={setFormStep} formStep={formStep} handleNext={handleNext}/> :
           formStep === 2 ? <AddressDetails setFormStep={setFormStep} formStep={formStep} handleNext={handleNext}/> :
-          <Elements stripe={stripePromise} options={options}>
-            <PaymentDetails setFormStep={setFormStep} formStep={formStep} handleNext={handleNext}/>
-          </Elements>
+          options ? (
+            <Elements stripe={stripePromise} options={options}>
+              <PaymentDetails setFormStep={setFormStep} formStep={formStep} handleNext={handleNext}/>
+            </Elements>
+          ) : <p>Loading payment details...</p>
         }
       </div>
     </div>

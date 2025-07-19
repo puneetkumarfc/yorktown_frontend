@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import toast from 'react-hot-toast';
 import { fetchItemDetails } from '../../services/operations/menu';
-import { set } from 'react-hook-form';
 
 const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
@@ -56,7 +55,7 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
       const topping = toppings.find(t => t.id === toppingId);
       return total + (topping?.price || 0);
     }, 0);
-    return priceFrom + sizePrice + toppingsPrice;
+    return sizePrice + toppingsPrice;
   };
 
   const calculatePrice = () => {
