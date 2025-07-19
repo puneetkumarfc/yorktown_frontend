@@ -15,7 +15,7 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:5173/bag',
+        return_url: 'https://eatatyorktown.com/bag',
       },
     });
 

@@ -41,7 +41,7 @@ const HeroSection = () => {
                         Browse, order, and enjoy — it's that simple. Because good food should always be fast, fresh, and satisfying.
                     </p>
 
-                    <div className='flex justify-end gap-4'>
+                    <div className='flex justify-end gap-4'>r
                         <Button text={"Deliver at home"}/>
                         <Button text={"Take away"}/>
                     </div>
