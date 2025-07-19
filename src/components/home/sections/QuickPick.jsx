@@ -67,7 +67,7 @@ const QuickPick = () => {
                 categories.map((category, index) => {
                     const isActive = activeCategory.name === `${category.name}`;
                     return (
-                        <div key={index} className={`text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80" : "bg-mainRed/30 hover:bg-mainRed/50"} transition-all duration-200 rounded-full font-archivo text-sm cursor-pointer`}
+                        <div key={index} className={`flex justify-center text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
                         onClick={() => setCategory(category)}>
                             {category.name}
                         </div>

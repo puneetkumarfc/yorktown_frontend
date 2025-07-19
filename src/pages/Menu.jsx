@@ -81,7 +81,7 @@ const Menu = () => {
   }, [])
 
   return (
-    <div className='min-h-screen mb-10'>
+    <div className='min-h-screen mb-10 overflow-hidden'>
 
       {/* Heading, searchbar, filter */}
       <div className="relative mt-25">
@@ -124,48 +124,18 @@ const Menu = () => {
       {/* Categories */}
       <div className='mt-4 flex items-center gap-3'>
         <p className='font-poppins text-sm'>Categories: </p>
-        <div className='w-full'>
-          <Carousel
-            additionalTransfrom={0}
-            arrows={true}
-            autoPlay={false}
-            centerMode={false}
-            className="category-carousel"
-            containerClass="container-with-dots"
-            dotListClass=""
-            draggable
-            focusOnSelect={false}
-            infinite={false}
-            itemClass="carousel-item-padding-40-px"
-            keyBoardControl
-            minimumTouchDrag={40}
-            renderButtonGroupOutside={false}
-            renderDotsOutside={false}
-            responsive={{
-              superLargeDesktop: { breakpoint: { max: 4000, min: 1200 }, items: 7 },
-              desktop: { breakpoint: { max: 1200, min: 900 }, items: 5 },
-              tablet: { breakpoint: { max: 900, min: 600 }, items: 3 },
-              mobile: { breakpoint: { max: 600, min: 0 }, items: 2 }
-            }}
-            showDots={false}
-            sliderClass=""
-            slidesToSlide={1}
-            swipeable
-          >
-            {categories.map((category, index) => {
+        <div className='flex gap-2 overflow-auto'>
+         {categories.map((category, index) => {
               const isActive = activeCategory.name === `${category.name}`;
               return (
                 <div
                   key={index}
-                  className={`text-nowrap py-2 px-4 mx-2 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
-                  onClick={() => setCategory(category)}
-                  style={{ minWidth: 110, textAlign: 'center' }}
-                >
+                  className={`flex justify-center text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
+                  onClick={() => setCategory(category)}>
                   {category.name}
                 </div>
               );
             })}
-          </Carousel>
         </div>
       </div>
 

@@ -30,7 +30,7 @@ const HeroSection = () => {
                 </div>
                 
                 <div className='absolute left-1/2 transform -translate-x-1/2 top-0'>
-                    <img src="/MainPizza.png" alt="PizzaImg" width={582} />
+                    <img src="/MainPizza.png" alt="PizzaImg" width={582} loading="lazy" />
                 </div>
 
                 <div className='w-[300px] flex flex-col gap-5'>

@@ -7,7 +7,7 @@ import { placeOrder } from "../../services/operations/payments";
 import { Elements } from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 
-const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
+const BagSidebar = ({}) => {
 
   const stripePromise = loadStripe('pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P');
 
@@ -69,7 +69,7 @@ const BagSidebar = ({isSidebarOpen, setIsSidebarOpen}) => {
   };
 
   return (
-    <div className={`absolute z-0 -right-25 bottom-0 h-[100%] max-w-[400px] xl:w-[400px] w-[300px] bg-mainYellow/50`}>
+    <div className={`absolute z-0 -right-25 bottom-0 h-[100%] max-w-[400px] xl:w-[400px] w-[300px] bg-mainYellow/50 overflow-auto`}>
       <div className="flex flex-col p-8 mt-28">
         <div className="flex items-center w-full mb-8">
           <p className={`${formStep === 1 ? "text-2xl" : "text-sm"} cursor-pointer`} onClick={() => setFormStep(1)}>01</p>
