@@ -11,10 +11,10 @@ const ItemCard = ({id, name, img, desc, priceFrom}) => {
     }
 
   return (
-    <div className='rounded-md w-[18%] flex flex-col items-center gap-0'>
+    <div className='rounded-md w-full flex flex-col items-center gap-0 border border-black/10 overflow-hidden'>
         <div className='w-full flex justify-center relative'>
             {!imageLoaded && (
-                <div className="w-[120px] h-[120px] rounded-md shadow-md bg-gradient-to-r from-gray-300 via-gray-200 to-gray-400 bg-opacity-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden animate-pulse-slow" style={{opacity: 0.4}}>
+                <div className="w-full h-[120px] bg-gradient-to-r from-gray-300 via-gray-200 to-gray-400 bg-opacity-40 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden animate-pulse-slow" style={{opacity: 0.4}}>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <img src="/pizza.png" alt="Pizza icon" className="w-8 h-8 opacity-80" />
                   </div>
@@ -23,7 +23,7 @@ const ItemCard = ({id, name, img, desc, priceFrom}) => {
             )}
             <img
                 src={img}
-                className={`w-[120px] h-[120px] object-cover rounded-md transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                className={`w-full h-[120px] object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 loading="lazy"
                 onLoad={() => setImageLoaded(true)}
                 alt={name}
@@ -40,7 +40,7 @@ const ItemCard = ({id, name, img, desc, priceFrom}) => {
                     <p>{priceFrom.toFixed(2)}$</p>
                 </div>
 
-                <div className='text-mainYellow/50 hover:text-mainYellow text-xs rounded-full cursor-pointer hover:underline'
+                <div className='text-customOrange text-xs rounded-full cursor-pointer hover:underline'
                 onClick={showModal}>
                     Customize
                 </div>

@@ -5,17 +5,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-mainBg: #F4F9F5;
-  --color-primaryBg: #F1EEE9;
-
+  
   --color-mainRed: #C42A2A;
   --color-mainYellow: #F3D053;
-
+  
+  --color-mainBg: #F4F9F5;
+  --color-primaryBg: #F1EEE8;
   --color-customBeige: #E1D5BD;
-  --color-orange: #BD390E;
+  --color-customOrange: #BD390E;
+
   --color-primary: #1B1B1B;
   --color-secondary: #222328;
-
 
   --font-poppins: "Poppins", sans-serif; 
   --font-archivo: "Archivo", sans-serif; 

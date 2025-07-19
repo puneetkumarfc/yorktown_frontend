@@ -9,23 +9,24 @@ import { FaTwitter } from "react-icons/fa";
 import { CiFacebook } from "react-icons/ci";
 import { FaFacebook } from "react-icons/fa";
 import Button from '../../common/Button';
+import { routeConstant } from '../../../constants/RouteConstants';
 
 const HeroSection = () => {
   return (
     <div className='max-h-screen mt-[16vh]'>
-        <ScrollVelocity texts={['Original american']} velocity={90} className="text-[140px] uppercase font-black text-mainYellow/20"/>
+        <ScrollVelocity texts={['Original american']} velocity={90} className="text-[80px] md:text-[140px] font-roboto_serif uppercase font-thin text-black"/>
 
-        <div className='relative -translate-y-15 flex justify-between items-end w-full h-[582px]'>
+        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[582px]'>
 
-                <div className='flex flex-col gap-2'>
-                    <p className='uppercase font-archivo font-semibold'><span className='text-mainRed'>Follow</span> us on</p>
+                <div className='hidden xl:flex flex-col gap-2'>
+                    <p className='uppercase font-roboto font-medium'>Follow us on</p>
 
-                    <div className='flex gap-6 items-center text-3xl text-white'>
-                        <AiFillInstagram className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                    <div className='flex gap-6 items-center text-3xl text-black'>
+                        <AiFillInstagram className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
 
-                        <FaTwitter  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                        <FaTwitter  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
 
-                        <FaFacebook  className='hover:text-mainYellow/80 transition-all duration-100 cursor-pointer'/>
+                        <FaFacebook  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
                     </div>
                 </div>
                 
@@ -33,17 +34,17 @@ const HeroSection = () => {
                     <img src="/MainPizza.png" alt="PizzaImg" width={582} loading="lazy" />
                 </div>
 
-                <div className='w-[300px] flex flex-col gap-5'>
-                    <p className='text-end font-poppins font-light text-white/70'>
+                <div className='xl:w-[300px] flex flex-col gap-5'>
+                    <p className='text-center xl:text-end text-sm font-roboto font-light text-black'>
                         Craving your favorite dish? At YorkTown, we bring the 
                         best of our kitchen straight to your doorstep. No long waits, 
                         no confusion — just great food, delivered how you like it. 
                         Browse, order, and enjoy — it's that simple. Because good food should always be fast, fresh, and satisfying.
                     </p>
 
-                    <div className='flex justify-end gap-4'>r
+                    <div className='flex justify-center xl:justify-end gap-4'>
                         <Button text={"Deliver at home"}/>
-                        <Button text={"Take away"}/>
+                        <Button text={"Take away"} path={routeConstant.MENU}/>
                     </div>
                 </div>
             {/* <div className='flex items-end justify-between border'>

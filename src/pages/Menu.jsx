@@ -86,25 +86,25 @@ const Menu = () => {
       {/* Heading, searchbar, filter */}
       <div className="relative mt-25">
         {/* Heading */}
-        <p className='text-center mb-6 font-archivo uppercase font-semibold'>Your <span className='text-mainYellow/90'>favorite food </span> is just a click away!</p>
+        <p className='text-center mb-6 font-archivo uppercase font-semibold'>Your <span className='text-customBeige'>favorite food </span> is just a click away!</p>
         
         <div className='flex items-center gap-2'>
           {/* Searchbar */}
           <div className="relative flex items-center w-full">
-            <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-[#C4C7C5] w-9 h-9 transition-colors p-2 bg-secondary hover:bg-primary rounded-full cursor-pointer" />
+            <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white w-9 h-9 transition-colors p-2 bg-customOrange rounded-full cursor-pointer" />
             <input
               type="text"
               value={query}
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
               placeholder="Search anything"
-              className="w-full px-13 py-3 bg-secondary placeholder:text-white/40 placeholder:font-light placeholder:text-sm rounded-full focus:outline-none focus:border-white/50 text-white"
+              className="w-full px-13 py-3 bg-mainBg placeholder:text-black/50 placeholder:font-light placeholder:text-sm rounded-full border-2 border-black/10 focus:outline-none focus:border-black text-black"
               autoComplete="off"
             />
             {query && (
               <button type="button"
                 onClick={handleClear}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#C4C7C5] hover:text-white transition-colors cursor-pointer">
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black hover:text-black/40 transition-colors cursor-pointer">
                 <RxCross2 className="w-5 h-5" />
               </button>
             )}
@@ -112,8 +112,8 @@ const Menu = () => {
           
           {/* Filter */}
           <div className='relative'>
-            <VscSettings onClick={displayFilterModal} 
-            className='text-xl rotate-90 text-white hover:text-mainYellow transition-all duration-200 cursor-pointer'/>
+            <VscSettings strokeWidth={1} onClick={displayFilterModal} 
+            className='text-xl rotate-90 text-customOrange hover:text-customOrange/70 transition-all duration-200 cursor-pointer'/>
             {
               filterModal && (<FilterModal selectedFilters={selectedFilters} clearAllFilters={clearAllFilters} toggleFilters={toggleFilters}/>)
             }
@@ -139,7 +139,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className='w-full flex flex-wrap gap-5 mt-10 font-poppins'>
+      <div className='w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-10 font-poppins'>
           {
             menu.map((menuItem, index) => {
               return (

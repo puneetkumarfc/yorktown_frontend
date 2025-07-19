@@ -12,15 +12,15 @@ const Header = ({toggleSidebar}) => {
   const { totalItems } = useCartStore();
 
   return (
-    <div className='w-full flex items-center justify-between text-2xl py-4 px-[1rem] md:px-[6rem] fixed top-0 left-0 right-0 bg-black border-b border-white/20 z-10'>
-        <p onClick={() => navigate(routeConstant.HOME)} className='font-bold cursor-pointer'>York<span className='text-mainRed'>T</span>own</p>
+    <div className='w-full flex items-center justify-between text-2xl py-4 px-[1rem] xl:px-[2rem] fixed top-0 left-0 right-0 bg-mainBg border-b border-black/10 z-10'>
+        <p onClick={() => navigate(routeConstant.HOME)} className='font-bold cursor-pointer'>York<span className='text-customOrange'>T</span>own</p>
 
         <div className='flex items-center gap-8'>
             <div className='p-2 cursor-pointer relative'
             onClick={() => navigate(routeConstant.BAG)}>
               <FaShoppingBag />
               {
-                totalItems() > 0 && <p className='flex items-center justify-center text-sm h-5 w-5 rounded-full absolute top-0 right-0 bg-mainRed animate-bounce duration-500'>{totalItems()}</p>
+                totalItems() > 0 && <p className='text-white flex items-center justify-center text-sm h-5 w-5 rounded-full absolute top-0 right-0 bg-customOrange animate-bounce duration-500'>{totalItems()}</p>
               }
             </div>
 

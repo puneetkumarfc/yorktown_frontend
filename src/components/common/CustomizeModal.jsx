@@ -100,7 +100,7 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/40">
-      <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-black/20 backdrop-blur-xl border border-white/20">
+      <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-white/10 backdrop-blur-xl">
         <div className='h-[30vh] overflow-hidden rounded-t-md relative'>
           <div className='p-2 rounded-full absolute top-1 right-1 bg-white/70 hover:bg-white transition-all duration-200 text-black border cursor-pointer' onClick={showModal}><RxCross2/></div>
           <img src={img} className="h-full w-full object-cover rounded-t-md"/>
@@ -129,12 +129,12 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
             <p className="mb-2 font-medium">Size</p>
             <div className="w-full flex flex-wrap gap-3">
               {
-                itemDetails.prices?.map((size, key) => {
+                itemDetails.prices?.map((size) => {
                   return (
                     <button
                       key={size.sizeId}
                       onClick={() => setSelectedSize(size.sizeId)}
-                      className={`py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
+                      className={`flex flex-col py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
                         selectedSize === size.sizeId
                           ? 'border-mainRed/70 bg-red-50 text-mainRed'
                           : 'border-white/20 hover:border-gray-300 text-white'
@@ -142,7 +142,7 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
                     >
                       <div className="font-light text-sm font-poppins">{size.sizeName}</div>
                       {size.price > 0 && (
-                        <div className="text-sm ">+${size.price}</div>
+                        <div className="text-sm ">${size.price}</div>
                       )}
                     </button>
                   )
@@ -152,31 +152,31 @@ const CustomizeModal = ({id, name, img, desc, priceFrom, showModal}) => {
           </div>
 
           {/* Toppings */}
-          <div className='mt-6 mb-4'>
+          {itemDetails?.toppings?.length > 0 && <div className='mt-6 mb-4'>
             <p className="mb-2 font-medium">Toppings</p>
             <div className="w-full grid grid-cols-2 gap-3">
               {
-                toppings.map((topping) => (
+                itemDetails?.toppings?.map((topping) => (
                   <button
                     key={topping.id}
-                    onClick={() => toggleTopping(topping.id)}
+                    onClick={() => toggleTopping(topping.toppingId)}
                     className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
-                      selectedToppings.includes(topping.id)
+                      selectedToppings.includes(topping.toppingId)
                         ? 'border-mainRed/70 bg-red-50 text-mainRed'
                         : 'border-white/20 hover:border-gray-300 text-white'
                     }`}
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-light text-sm font-poppins">{topping.name}</span>
-                      <span className="text-sm">+${topping.price}</span>
+                      <span className="font-light text-sm font-poppins">{topping.toppingName}</span>
+                      {/* <span className="text-sm">${topping.price}</span> */}
                     </div>
                   </button>
                 ))
               }
             </div>
-          </div>
+          </div>}
 
-          <div className="flex items-center justify-between pt-4 border-t border-white/20">
+          <div className="flex items-center justify-between pt-4 mt-2 border-t border-white/20">
             <div className="flex items-center space-x-3">
               <span className="text-lg font-semibold text-white">Quantity:</span>
               <div className="flex items-center space-x-2">
