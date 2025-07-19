@@ -119,7 +119,7 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
         <div className="glass-effect rounded-2xl overflow-x-auto animate-fadein">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-red-500 text-white">
+              <tr className="table-order text-white">
                 <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('name')}>
                   Name {sortBy === 'name' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>

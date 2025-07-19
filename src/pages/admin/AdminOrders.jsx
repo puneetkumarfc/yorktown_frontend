@@ -98,6 +98,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                     Total {sortBy === 'totalAmount' && (sortDir === 'asc' ? '↑' : '↓')}
                   </th>
                   <th className="px-6 py-4 text-left font-semibold">Status</th>
+                  <th className="px-6 py-4 text-left font-semibold">Payment Status</th>
                   <th className="px-6 py-4 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
@@ -132,6 +133,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                         {order.status}
                       </span>
                     </td>
+                    <td className="px-6 py-4" data-label="Payment Status">{order.paymentStatus || '-'}</td>
                     <td className="px-6 py-4" data-label="Actions">
                     <button
                         style={{
@@ -154,7 +156,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                     </td>
                   </tr>
                 )) : (
-                  <tr><td colSpan={6} style={{ textAlign: 'center', color: '#ff2222' }}>No orders found.</td></tr>
+                  <tr><td colSpan={7} style={{ textAlign: 'center', color: '#ff2222' }}>No orders found.</td></tr>
                 )}
               </tbody>
             </table>
