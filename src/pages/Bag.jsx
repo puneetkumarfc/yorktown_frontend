@@ -10,15 +10,15 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
 const Bag = () => {
-  const { 
-    cart, 
-    addToCart, 
-    removeFromCart, 
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
     increaseQuantity,
-    decreaseQuantity, 
-    clearCart, 
+    decreaseQuantity,
+    clearCart,
     totalItems,
-    totalPrice
+    totalPrice,
   } = useCartStore();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,60 +28,68 @@ const Bag = () => {
 
   const displayAreYouSureModal = () => {
     setAreYouSureModal(!areYouSureModal);
-  }
+  };
 
   const removeItemFromCart = () => {
     removeFromCart(removeItem);
     setManuallyReducedItemId(null);
-  }
+  };
 
   console.log(removeItem);
-  console.log(cart)
+  console.log(cart);
 
   return (
     <div className="flex flex-col min-h-screen relative">
       <div className="flex flex-1">
-        <div className={`transition-all duration-300 px-6 mt-28 ${totalItems() > 0 ? 'w-[calc(100%-400px)] ' : "w-full"}`}>
-          <p className="uppercase font-archivo font-semibold">
-            Your<span className="text-mainRed"> food</span> bag
-          </p>
+        <div className={`transition-all duration-300 mt-28 w-full`}>
+          <p className="uppercase font-roboto font-medium">Your food bag</p>
 
           <div className="flex flex-col gap-4 mt-5 mb-10 w-full">
-            {
-              cart.length > 0 ?
+            {cart.length > 0 ? (
               cart.map((item, index) => (
                 <div key={index} className="flex items-center w-full gap-4">
-                  <div className="flex w-full border border-white/20 rounded-xl overflow-hidden">
-                    <div className="w-[30%] h-full">
-                      <img className="object-cover w-full h-full" src={item.image} />
+                  <div className="flex w-full border border-black/20 rounded-xl overflow-hidden">
+                    <div className="w-[20%] h-full hidden md:flex items-center justify-center">
+                      <img
+                        className="object-cover w-full h-32 rounded-l-md"
+                        src={item.image}
+                      />
                     </div>
 
-                    <div className="flex justify-between items-center p-4 w-[70%]">
-                      <div className="flex flex-col gap-1">
-                        <p className="font-archivo text-xl">{item.name}</p>
-                        <p className="font-poppins text-sm text-white/70">
-                          <span className="text-mainRed">$</span>{item.price}
+                    <div className="flex justify-between items-center p-4 w-full">
+                      <div className="flex flex-col gap-0">
+                        <p className="font-roboto text-xl">{item.name}</p>
+                        <p className="font-roboto text-sm text-black">
+                          <span className="text-mainRed">$</span>
+                          {item.price}
                         </p>
                       </div>
 
                       <div className="flex flex-col items-center gap-1">
                         <button
-                          className="cursor-pointer w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
+                          className="cursor-pointer w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-customOrange hover:text-customOrange transition-colors"
                           onClick={() =>
-                            increaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`, 1)
+                            increaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`,
+                              1
+                            )
                           }
                         >
                           <FiPlus className="w-4 h-4" />
                         </button>
                         <p>{item.quantity}</p>
                         <button
-                          className="cursor-pointer w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center hover:border-mainYellow/80 hover:text-mainYellow/80 transition-colors"
+                          className="cursor-pointer w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-customOrange hover:text-customOrange transition-colors"
                           onClick={() => {
                             if (item.quantity === 1) {
-                              setRemoveItem(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`);
+                              setRemoveItem(
+                                `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`
+                              );
                               displayAreYouSureModal();
                             } else {
-                              decreaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`, 1);
+                              decreaseQuantity(
+                                `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`,
+                                1
+                              );
                             }
                           }}
                         >
@@ -92,44 +100,60 @@ const Bag = () => {
                   </div>
 
                   <RxCross2
-                    className="text-xl text-white/50 hover:text-white cursor-pointer transition-colors duration-200"
+                    className="text-xl text-black hover:text-customOrange cursor-pointer transition-colors duration-200"
                     onClick={() => {
-                      setRemoveItem(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`);
+                      setRemoveItem(
+                        `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`
+                      );
                       setManuallyReducedItemId(null);
                       displayAreYouSureModal();
                     }}
                   />
                 </div>
-              )) :
+              ))
+            ) : (
               <div className="w-full h-[50vh] flex items-center justify-center text-white/70 text-lg italic">
-                Oops! No items in your bag.<span><a className="text-mainYellow/85" href={routeConstant.MENU}>Visit menu</a></span>
+                Oops! No items in your bag.
+                <span>
+                  <a className="text-mainYellow/85" href={routeConstant.MENU}>
+                    Visit menu
+                  </a>
+                </span>
               </div>
-            }
+            )}
 
-          {
-              totalItems() > 0 &&
+            {totalItems() > 0 && (
               <div className="w-full flex items-col justify-between">
-                <Link to={routeConstant.MENU} className="flex items-center gap-2 cursor-pointer hover:gap-3 transition-all duration-200"><span><IoIosArrowBack /></span>Back to Shop</Link>
-                <p>Subtotal: <span className="text-mainRed">$</span><span className="">{totalPrice()}</span></p>
+                <Link
+                  to={routeConstant.MENU}
+                  className="flex items-center gap-2 cursor-pointer hover:gap-3 transition-all duration-200 font-medium font-roboto"
+                >
+                  <span>
+                    <IoIosArrowBack />
+                  </span>
+                  Back to Shop
+                </Link>
+                <p className="font-medium font-roboto">
+                  Subtotal: <span className="text-mainRed">$</span>
+                  <span className="">{totalPrice()}</span>
+                </p>
               </div>
-            }
+            )}
           </div>
         </div>
 
-        {totalItems() > 0 && <BagSidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>}
+        {/* {totalItems() > 0 && <BagSidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>} */}
       </div>
 
-      {
-        areYouSureModal 
-        && 
-        <AreYouSureModal 
-          displayAreYouSureModal={displayAreYouSureModal} 
-          removeItemFromCart={removeItemFromCart} 
-          increaseQuantity={increaseQuantity} 
+      {areYouSureModal && (
+        <AreYouSureModal
+          displayAreYouSureModal={displayAreYouSureModal}
+          removeItemFromCart={removeItemFromCart}
+          increaseQuantity={increaseQuantity}
           removeItem={removeItem}
           manuallyReducedItemId={manuallyReducedItemId}
         />
-      }
+      )}
     </div>
   );
 };

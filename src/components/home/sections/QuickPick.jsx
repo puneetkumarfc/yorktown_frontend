@@ -4,7 +4,6 @@ import Button from '../../common/Button'
 import { routeConstant } from '../../../constants/RouteConstants'
 import ItemCard from '../../common/ItemCard'
 import { fetchCategories, fetchMenu } from '../../../services/operations/menu'
-import PizzaLoader from '../../common/PizzaLoader';
 import { useLoader } from '../../common/LoaderContext'
 
 const QuickPick = () => {
