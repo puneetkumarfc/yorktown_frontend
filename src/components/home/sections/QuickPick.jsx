@@ -87,7 +87,7 @@ const QuickPick = () => {
                 (
                     menu.map((menuItem, index) => {
                         return (
-                            <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                            <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
                         )
                     })
                 )
