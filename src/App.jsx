@@ -18,6 +18,7 @@ import AdminMenuList from './pages/admin/AdminMenuList';
 import AdminCoupon from './pages/admin/AdminCoupon';
 import { LoaderProvider, useLoader } from './components/common/LoaderContext';
 import PizzaLoader from './components/common/PizzaLoader';
+import NotFound from './pages/NotFound';
 
 function GlobalLoaderOverlay() {
   const { loading } = useLoader();
@@ -129,7 +130,7 @@ function App() {
   }
 
   return (
-    <div className={`custom-scrollbar bg-black min-h-screen w-full text-white px-[1rem] md:px-[6rem] overflow-x-hidden`}>
+    <div className={`custom-scrollbar bg-mainBg min-h-screen w-full text-black px-[1rem] xl:px-[2rem] overflow-x-hidden`}>
       <Header toggleSidebar={toggleSidebar}/>
       <div className={`fixed inset-0 bg-black/20 z-30 transition-opacity duration-300 ${
           sidebarOpen ? 'opacity-100 pointer-events-auto overflow-hidden' : 'opacity-0 pointer-events-none'
