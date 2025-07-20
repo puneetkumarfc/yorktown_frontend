@@ -35,6 +35,16 @@ const Bag = () => {
     setManuallyReducedItemId(null);
   };
 
+  function calculateStripeAdjustedAmount(desiredAmount) {
+    const stripePercentage = 0.029;  // 2.9%
+    const stripeFixedFee = 0.30;     // $0.30 flat fee
+  
+    const adjustedTotal = (desiredAmount + stripeFixedFee) / (1 - stripePercentage);
+    return parseFloat(adjustedTotal.toFixed(2));
+  }
+
+  const chargeCustomer = calculateStripeAdjustedAmount(totalPrice());
+
   console.log(removeItem);
   console.log(cart);
 
@@ -43,6 +53,37 @@ const Bag = () => {
       <div className="flex flex-1">
         <div className={`transition-all duration-300 mt-28 w-full`}>
           <p className="uppercase font-roboto font-medium">Your food bag</p>
+
+          {/* Summary box */}
+          <div className="w-full mt-6 mb-4">
+            <div className="w-full bg-sky-100 border border-sky-300 rounded-xl p-5 flex flex-col gap-3">
+              <h3 className="text-lg font-semibold text-sky-900 mb-2">
+                Order Summary
+              </h3>
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-sky-900">Subtotal</span>
+                <span className="font-semibold text-sky-900">
+                  ${totalPrice()}
+                </span>
+              </div>
+              <div className="flex justify-between items-center relative group">
+                <span className="font-medium text-sky-900 flex items-center gap-1">
+                  Platform Fee
+                  <button
+                    type="button"
+                    className="ml-1 text-sky-700 bg-blue-100 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold border border-sky-300 cursor-pointer relative focus:outline-none"
+                    tabIndex="0"
+                  >
+                    i
+                    <span className="absolute left-1/2 -translate-x-1/2 top-7 z-10 hidden group-hover:block group-focus:block bg-white text-sky-900 text-xs rounded-lg shadow-lg px-3 py-2 border border-sky-200 min-w-[180px] whitespace-normal">
+                      This fee helps us maintain and improve our platform.
+                    </span>
+                  </button>
+                </span>
+                <span className="font-semibold text-blue-900">$1.99</span>
+              </div>
+            </div>
+          </div>
 
           <div className="flex flex-col gap-4 mt-5 mb-10 w-full">
             {cart.length > 0 ? (
@@ -69,7 +110,10 @@ const Bag = () => {
                         <button
                           className="cursor-pointer w-8 h-8 rounded-full border border-black/20 flex items-center justify-center hover:border-customOrange hover:text-customOrange transition-colors"
                           onClick={() =>
-                            increaseQuantity(`${item.id}-${item.size}-${JSON.stringify(item.toppings)}`,
+                            increaseQuantity(
+                              `${item.id}-${item.size}-${JSON.stringify(
+                                item.toppings
+                              )}`,
                               1
                             )
                           }
@@ -82,12 +126,16 @@ const Bag = () => {
                           onClick={() => {
                             if (item.quantity === 1) {
                               setRemoveItem(
-                                `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`
+                                `${item.id}-${item.size}-${JSON.stringify(
+                                  item.toppings
+                                )}`
                               );
                               displayAreYouSureModal();
                             } else {
                               decreaseQuantity(
-                                `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`,
+                                `${item.id}-${item.size}-${JSON.stringify(
+                                  item.toppings
+                                )}`,
                                 1
                               );
                             }
@@ -103,7 +151,9 @@ const Bag = () => {
                     className="text-xl text-black hover:text-customOrange cursor-pointer transition-colors duration-200"
                     onClick={() => {
                       setRemoveItem(
-                        `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`
+                        `${item.id}-${item.size}-${JSON.stringify(
+                          item.toppings
+                        )}`
                       );
                       setManuallyReducedItemId(null);
                       displayAreYouSureModal();
@@ -133,10 +183,6 @@ const Bag = () => {
                   </span>
                   Back to Shop
                 </Link>
-                <p className="font-medium font-roboto">
-                  Subtotal: <span className="text-mainRed">$</span>
-                  <span className="">{totalPrice()}</span>
-                </p>
               </div>
             )}
           </div>
