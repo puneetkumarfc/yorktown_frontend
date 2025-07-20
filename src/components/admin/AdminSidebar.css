@@ -280,19 +280,32 @@
 
 @media (max-width: 600px) {
   .admin-sidebar {
-    width: 54px;
-    min-width: 54px;
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
   }
-  .admin-sidebar:not(.collapsed) {
-    width: 120px;
+  .admin-sidebar.collapsed {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
   }
   .admin-sidebar-link {
-    font-size: 1rem;
-    padding: 0.7rem 0.5rem;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    padding: 0 !important;
+    margin: 0 0 0.7rem 0 !important;
+    justify-content: center;
+  }
+  .admin-sidebar.collapsed .admin-sidebar-link .admin-sidebar-icon {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 1.1rem !important;
   }
   .admin-sidebar-toggle {
-    font-size: 1.2rem;
-    padding: 0.7rem 0.5rem 0.3rem 0.5rem;
+    font-size: 1.2rem !important;
+    padding: 0.7rem 0.2rem 0.2rem 0.2rem !important;
   }
   .logout-confirm-modal {
     width: 95%;

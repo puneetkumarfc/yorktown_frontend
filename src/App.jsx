@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Bag from './pages/Bag'
 import Header from './components/common/Header'
@@ -15,6 +15,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminOrderDetails from './pages/admin/AdminOrderDetails';
 import AdminMenuList from './pages/admin/AdminMenuList';
+import AdminCoupon from './pages/admin/AdminCoupon';
 import { LoaderProvider, useLoader } from './components/common/LoaderContext';
 import PizzaLoader from './components/common/PizzaLoader';
 import NotFound from './pages/NotFound';
@@ -47,11 +48,31 @@ function App() {
   }, [sidebarOpen]);
 
   const location = useLocation();
+  // Inject Tawk.to chatbot script only on non-admin pages
+  useEffect(() => {
+    if (!location.pathname.startsWith('/admin')) {
+      if (!window.Tawk_API && !document.getElementById('tawkto-script')) {
+        var s1 = document.createElement('script');
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/687d544df5f241191d3e9335/1j0kp2kmh';
+        s1.charset = 'UTF-8';
+        s1.id = 'tawkto-script';
+        s1.setAttribute('crossorigin', '*');
+        document.body.appendChild(s1);
+      }
+    } else {
+      // Remove the script if navigating to admin
+      const tawkScript = document.getElementById('tawkto-script');
+      if (tawkScript) tawkScript.remove();
+    }
+  }, [location.pathname]);
+
   const isAdminLogin = location.pathname === routeConstant.ADMIN_LOGIN;
   const isAdminDashboard = location.pathname === routeConstant.ADMIN_DASHBOARD;
   const isAdminOrders = location.pathname === routeConstant.ADMIN_ORDERS;
   const isAdminOrderDetails = /^\/admin\/orders\//.test(location.pathname) && !isAdminOrders;
   const isAdminMenuList = location.pathname === routeConstant.ADMIN_MENU_LIST;
+  const isAdminCoupon = location.pathname === routeConstant.ADMIN_COUPON;
 
   if (isAdminLogin) {
     return (
@@ -98,6 +119,15 @@ function App() {
       </div>
     );
   }
+  if (isAdminCoupon) {
+    return (
+      <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
+        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
+        <AdminCoupon collapsed={collapsed} setCollapsed={setCollapsed} />
+        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
+      </div>
+    );
+  }
 
   return (
     <div className={`custom-scrollbar bg-mainBg min-h-screen w-full text-black px-[1rem] xl:px-[2rem] overflow-x-hidden`}>
@@ -113,7 +143,6 @@ function App() {
         <Route path={routeConstant.BAG} element={<Bag/>}/>
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
-        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>
     </div>

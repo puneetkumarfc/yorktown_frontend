@@ -10,8 +10,9 @@ const AdminFooter = ({ sidebarWidth }) => {
     >
       <p className='font-archivo font-light text-[#000000]/70'>© 2025 YorkTown. All rights reserved.</p>
       <div className='flex gap-6 items-center text-2xl text-[#000000]'>
-        <AiFillInstagram className='hover:text-[#bd390e] transition-all duration-100 cursor-pointer'/>
-        <FaTwitter className='hover:text-[#bd390e] transition-all duration-100 cursor-pointer'/>
+        <a href='https://instagram.com/eatatyorktown' target='_blank' rel='noopener noreferrer'>
+          <AiFillInstagram className='hover:text-[#bd390e] transition-all duration-100 cursor-pointer'/>
+        </a>
         <FaFacebook className='hover:text-[#bd390e] transition-all duration-100 cursor-pointer'/>
       </div>
     </div>

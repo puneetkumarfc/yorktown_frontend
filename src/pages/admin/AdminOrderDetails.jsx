@@ -3,6 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styles from './AdminOrderDetails.module.css';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { adminOrders } from '../../utils/api';
+import { useLoader } from '../../components/common/LoaderContext';
+import Receipt from '../../components/admin/Receipt';
+import { useReactToPrint } from 'react-to-print';
+import html2pdf from 'html2pdf.js';
 
 const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   let { orderId } = useParams();
@@ -22,9 +26,32 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   const [error, setError] = useState('');
   const [submitLoading, setSubmitLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const { showLoader, hideLoader } = useLoader();
+  const [showPrintModal, setShowPrintModal] = useState(false);
+  const receiptRef = React.useRef();
+  const handlePrint = useReactToPrint({
+    content: () => receiptRef.current,
+    documentTitle: orderData && orderData.order ? `Order_${orderData.order.id}_Receipt` : 'Order_Receipt',
+  });
+
+  const handleDownloadPDF = () => {
+    if (!receiptRef.current) return;
+    const orderId = order?.id || 'Receipt';
+    html2pdf()
+      .set({
+        margin: 0.5,
+        filename: `Order_${orderId}.pdf`,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      })
+      .from(receiptRef.current)
+      .save();
+  };
+
   useEffect(() => {
     const fetchOrderDetails = async () => {
       setLoading(true);
+      showLoader();
       setError('');
       try {
         const response = await adminOrders.getOrderDetailsById(orderId);
@@ -40,6 +67,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
         setError(err.message || 'Failed to fetch order details');
       } finally {
         setLoading(false);
+        hideLoader();
       }
     };
     fetchOrderDetails();
@@ -56,6 +84,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   // Handle submit
   const handleSubmit = async () => {
     setSubmitLoading(true);
+    showLoader();
     setSubmitError('');
     try {
       const response = await adminOrders.updateOrderStatusApi({ orderId: Number(orderId), statusId });
@@ -68,6 +97,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
       setSubmitError(err.message || 'Failed to update order status');
     } finally {
       setSubmitLoading(false);
+      hideLoader();
     }
   };
 
@@ -84,6 +114,23 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
 
   return (
     <div className={styles.adminDashboardFlexLayout + (collapsed ? ' ' + styles.collapsed : '')}>
+      {/* Print Receipt Modal */}
+      {showPrintModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <div style={{ background: '#fff', borderRadius: 8, boxShadow: '0 2px 16px #0002', padding: 24, minWidth: 400, maxWidth: '95vw', maxHeight: '95vh', overflow: 'auto', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
+              <button onClick={handleDownloadPDF} style={{ background: '#bd390e', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Download PDF</button>
+              <button onClick={() => setShowPrintModal(false)} style={{ background: '#eee', color: '#222', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Close</button>
+            </div>
+            <div>
+              <Receipt ref={receiptRef} order={order} orderItems={orderItems} payments={payments} />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Main content */}
       <div className={styles.sidebarFlex + (collapsed ? ' ' + styles.collapsed : '')}>
         <AdminSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       </div>
@@ -91,6 +138,12 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
         <div className={styles.adminOrderDetailsWrapper + ' ' + styles.glassEffect}>
           <div className={styles.titlebar}>
             <h1 className={styles.title}>Order Details</h1>
+            <button
+              style={{ marginLeft: 'auto', background: '#bd390e', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}
+              onClick={() => setShowPrintModal(true)}
+            >
+              Print Receipt
+            </button>
           </div>
           <div className={styles.detailsItemsLayout}>
             <div className={styles.detailsCol}>
@@ -148,6 +201,12 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
                     <div className={styles.detailLabel}>Order Notes</div>
                     <div className={styles.detailValue}>{order.orderNotes || '-'}</div>
                   </div>
+                  {payments && payments.length > 0 && (
+                    <div className={styles.fullWidth}>
+                      <div className={styles.detailLabel}>Payment Status</div>
+                      <div className={styles.detailValue}>{payments && payments.length > 0 ? payments[0].paymentStatus || '-' : '-'}</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
