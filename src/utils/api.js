@@ -313,6 +313,166 @@ export const adminOrders = {
   },
 };
 
+// Admin coupons functions
+export const adminCoupons = {
+  // Fetch coupon list
+  getCouponList: async (payload = {}) => {
+    const response = await apiCall('/coupon/list', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      const responseData = response.data;
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Coupons fetched successfully',
+          data: responseData.data
+        };
+      } else {
+        let errorMessage = 'Failed to fetch coupons. Please try again.';
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0];
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        throw new Error(errorMessage);
+      }
+    } else {
+      let errorMessage = 'Failed to fetch coupons. Please try again.';
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. You do not have permission to view coupons.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (response.status === 404) {
+        errorMessage = 'Coupons service not found.';
+      }
+      throw new Error(errorMessage);
+    }
+  },
+  // Add or update a coupon
+  upsertCoupon: async (payload = {}) => {
+    const response = await apiCall('/coupon/upsert', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      const responseData = response.data;
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Coupon saved successfully',
+          data: responseData.data
+        };
+      } else {
+        let errorMessage = 'Failed to save coupon. Please try again.';
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0];
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        throw new Error(errorMessage);
+      }
+    } else {
+      let errorMessage = 'Failed to save coupon. Please try again.';
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. You do not have permission to add/edit coupons.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (response.status === 404) {
+        errorMessage = 'Coupon service not found.';
+      }
+      throw new Error(errorMessage);
+    }
+  },
+  // Fetch coupon details by id
+  getCouponDetails: async (id) => {
+    const response = await apiCall(`/coupon/coupon-details/${id}`, {
+      method: 'GET',
+    });
+    if (response.ok) {
+      const responseData = response.data;
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Coupon details fetched successfully',
+          data: responseData.data
+        };
+      } else {
+        let errorMessage = 'Failed to fetch coupon details. Please try again.';
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0];
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        throw new Error(errorMessage);
+      }
+    } else {
+      let errorMessage = 'Failed to fetch coupon details. Please try again.';
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. You do not have permission to view coupon details.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (response.status === 404) {
+        errorMessage = 'Coupon not found.';
+      }
+      throw new Error(errorMessage);
+    }
+  },
+  // Delete a coupon by id
+  deleteCoupon: async (id) => {
+    const response = await apiCall(`/coupon/${id}`, {
+      method: 'DELETE',
+    });
+    if (response.ok) {
+      const responseData = response.data;
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Coupon deleted successfully',
+          data: responseData.data
+        };
+      } else {
+        let errorMessage = 'Failed to delete coupon. Please try again.';
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0];
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        throw new Error(errorMessage);
+      }
+    } else {
+      let errorMessage = 'Failed to delete coupon. Please try again.';
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. You do not have permission to delete coupons.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (response.status === 404) {
+        errorMessage = 'Coupon not found.';
+      }
+      throw new Error(errorMessage);
+    }
+  },
+};
+
 // Error handling utility
 export const handleApiError = (error) => {
   if (error.name === 'TypeError' && error.message.includes('fetch')) {

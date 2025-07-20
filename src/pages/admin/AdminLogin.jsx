@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminAuth, validation, handleApiError } from '../../utils/api';
+import { useLoader } from '../../components/common/LoaderContext';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ const AdminLogin = () => {
   const [successMessage, setSuccessMessage] = useState('');
   
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
 
   const validateForm = () => {
     if (!validation.required(email)) {

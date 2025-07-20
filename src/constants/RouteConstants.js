@@ -7,4 +7,5 @@ export const routeConstant = {
     ADMIN_ORDERS: "/admin/orders",
     ADMIN_ORDER_DETAILS: "/admin/orders/:orderId",
     ADMIN_MENU_LIST: "/admin/menu",
+    ADMIN_COUPON: "/admin/coupon",
 }

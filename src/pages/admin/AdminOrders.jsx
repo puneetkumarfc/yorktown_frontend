@@ -4,6 +4,7 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 import { useNavigate } from 'react-router-dom';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminOrders } from '../../utils/api';
+import { useLoader } from '../../components/common/LoaderContext';
 
 const PAGE_SIZE = 20;
 
@@ -17,10 +18,12 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
+      showLoader();
       setError('');
       try {
         const payload = {
@@ -36,6 +39,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
         setError(err.message || 'Failed to fetch orders');
       } finally {
         setLoading(false);
+        hideLoader();
       }
     };
     fetchOrders();
@@ -94,6 +98,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                     Total {sortBy === 'totalAmount' && (sortDir === 'asc' ? '↑' : '↓')}
                   </th>
                   <th className="px-6 py-4 text-left font-semibold">Status</th>
+                  <th className="px-6 py-4 text-left font-semibold">Payment Status</th>
                   <th className="px-6 py-4 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
@@ -109,16 +114,16 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                         className="px-3 py-1 rounded-full text-sm font-medium admin-status"
                         style={{
                           background:
-                            order.status === 'delivered' ? '#4CAF50' : // green
-                            order.status === 'pending' ? '#FFC107' : // amber
-                            order.status === 'cancelled' ? '#F44336' : // red
-                            order.status === 'in oven' ? '#FF9800' : // orange
-                            order.status === 'ready for pickup' ? '#2196F3' : // blue
-                            order.status === 'received' ? '#9C27B0' : // purple
+                            order.status === 'delivered' ? '#198754' : // green
+                            order.status === 'preparing' ? '#FFD700' : // yellow
+                            order.status === 'cancelled' ? '#DC3545' : // red
+                            order.status === 'in oven' ? '#FD7E14' : // orange
+                            order.status === 'ready for pickup' ? '#6F42C1' : // purple
+                            order.status === 'received' ? '#0D6EFD' : // blue
                             '#e1d5bd',
                           color:
                             order.status === 'pending' ? '#000' : '#fff',
-                          border: '1.5px solid #bd390e',
+                          // border: '1.5px solid #bd390e',
                           minWidth: 110,
                           display: 'inline-block',
                           textAlign: 'center',
@@ -128,6 +133,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                         {order.status}
                       </span>
                     </td>
+                    <td className="px-6 py-4" data-label="Payment Status">{order.paymentStatus || '-'}</td>
                     <td className="px-6 py-4" data-label="Actions">
                     <button
                         style={{
@@ -150,7 +156,7 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                     </td>
                   </tr>
                 )) : (
-                  <tr><td colSpan={6} style={{ textAlign: 'center', color: '#ff2222' }}>No orders found.</td></tr>
+                  <tr><td colSpan={7} style={{ textAlign: 'center', color: '#ff2222' }}>No orders found.</td></tr>
                 )}
               </tbody>
             </table>
