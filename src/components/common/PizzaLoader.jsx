@@ -21,7 +21,7 @@ const PizzaLoader = ({ loading, size = 80 }) => {
   }, [loading]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[200px] w-full">
+    <div className="flex flex-col items-center justify-center min-h-[200px] w-full absolute inset-0 bg-black/60 z-50">
       <div className="relative">
         <PuffLoader color="#F3D053" loading={loading} size={size} speedMultiplier={1.2} />
         <img

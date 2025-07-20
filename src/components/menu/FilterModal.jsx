@@ -4,7 +4,7 @@ import { filters } from "../../constants/Menu";
 
 const FilterModal = ({selectedFilters, clearAllFilters, toggleFilters}) => {
   return (
-    <div className="absolute top-10 rounded-xl right-0 w-fit bg-[#1a1a1a] py-4 px-6">
+    <div className="absolute top-10 rounded-xl right-0 w-fit bg-[#1a1a1a] py-4 px-6 z-10">
       <p className="text-lg font-semibold text-center">Filters</p>
 
       {/* Filters */}

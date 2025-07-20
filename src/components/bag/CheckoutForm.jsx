@@ -15,7 +15,7 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:5173/bag',
+        return_url: 'https://eatatyorktown.com/bag',
       },
     });
 
@@ -29,7 +29,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement id="payment-element"/>
-      <button type="submit" disabled={!stripe || loading} className='py-2 border rounded-xl w-full hover:bg-white hover:text-black transition-all duration-150'>
+      <button type="submit" disabled={!stripe || loading} className='mt-4 py-2 border rounded-xl w-full hover:bg-white hover:text-black transition-all duration-150'>
         {loading ? 'Processing…' : 'Pay'}
       </button>
     </form>
