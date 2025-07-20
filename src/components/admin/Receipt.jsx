@@ -1,7 +1,19 @@
 import React from 'react';
 
+const pdfStyles = {
+  fontFamily: "'Segoe UI', Arial, sans-serif",
+  maxWidth: '800px',
+  margin: '0 auto',
+  padding: '32px',
+  background: '#fff',
+  borderRadius: '12px',
+  boxShadow: '0 2px 16px #0001',
+  fontSize: '1.1rem',
+  color: '#222',
+};
+
 const Receipt = React.forwardRef(({ order, orderItems, payments }, ref) => (
-  <div ref={ref} style={{ width: '380px', margin: '0 auto', fontFamily: 'monospace', background: '#fff', color: '#222', padding: 24 }}>
+  <div ref={ref} className="receipt-pdf-wrapper" style={pdfStyles}>
     <h2 style={{ textAlign: 'center', marginBottom: 8 }}>Order Receipt</h2>
     <hr />
     <div style={{ marginBottom: 8 }}>

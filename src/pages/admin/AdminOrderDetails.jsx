@@ -39,10 +39,10 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
     const orderId = order?.id || 'Receipt';
     html2pdf()
       .set({
-        margin: 0.5,
+        margin: [0.2, 0.2, 0.2, 0.2], // top, left, bottom, right (inches)
         filename: `Order_${orderId}.pdf`,
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
       })
       .from(receiptRef.current)
       .save();

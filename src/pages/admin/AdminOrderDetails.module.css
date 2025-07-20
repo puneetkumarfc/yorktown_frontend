@@ -26,10 +26,6 @@
   box-sizing: border-box;
 }
 
-.gradientBg {
-  /* If you want a gradient, put it here, but not on the whole viewport */
-}
-
 .adminOrderDetailsWrapper {
   background: rgba(225, 213, 189, 0.85);
   border-radius: 1.5rem;
