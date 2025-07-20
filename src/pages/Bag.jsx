@@ -21,7 +21,7 @@ const Bag = () => {
     totalPrice,
   } = useCartStore();
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [checkoutModal, setCheckoutModal] = useState(false);
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
   const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
@@ -36,10 +36,11 @@ const Bag = () => {
   };
 
   function calculateStripeAdjustedAmount(desiredAmount) {
-    const stripePercentage = 0.029;  // 2.9%
-    const stripeFixedFee = 0.30;     // $0.30 flat fee
-  
-    const adjustedTotal = (desiredAmount + stripeFixedFee) / (1 - stripePercentage);
+    const stripePercentage = 0.029; // 2.9%
+    const stripeFixedFee = 0.3; // $0.30 flat fee
+
+    const adjustedTotal =
+      (desiredAmount + stripeFixedFee) / (1 - stripePercentage);
     return parseFloat(adjustedTotal.toFixed(2));
   }
 
@@ -55,7 +56,7 @@ const Bag = () => {
           <p className="uppercase font-roboto font-medium">Your food bag</p>
 
           {/* Summary box */}
-          <div className="w-full mt-6 mb-4">
+          {cart.length > 0 && <div className="w-full mt-6 mb-4">
             <div className="w-full bg-sky-100 border border-sky-300 rounded-xl p-5 flex flex-col gap-3">
               <h3 className="text-lg font-semibold text-sky-900 mb-2">
                 Order Summary
@@ -80,10 +81,19 @@ const Bag = () => {
                     </span>
                   </button>
                 </span>
-                <span className="font-semibold text-blue-900">$1.99</span>
+                <span className="font-semibold text-sky-900">$1.99</span>
               </div>
+              <button
+                className="mt-4 w-full py-3 rounded-xl bg-sky-700 hover:bg-sky-800 text-white font-semibold text-base transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow"
+                disabled={cart.length === 0}
+                onClick={() => {
+                  setCheckoutModal(true);
+                }}
+              >
+                Continue to Checkout
+              </button>
             </div>
-          </div>
+          </div>}
 
           <div className="flex flex-col gap-4 mt-5 mb-10 w-full">
             {cart.length > 0 ? (
@@ -162,10 +172,10 @@ const Bag = () => {
                 </div>
               ))
             ) : (
-              <div className="w-full h-[50vh] flex items-center justify-center text-white/70 text-lg italic">
+              <div className="w-full h-[50vh] flex items-center justify-center text-black/70 text-lg italic">
                 Oops! No items in your bag.
                 <span>
-                  <a className="text-mainYellow/85" href={routeConstant.MENU}>
+                  <a className="text-customOrange" href={routeConstant.MENU}>
                     Visit menu
                   </a>
                 </span>
@@ -188,7 +198,7 @@ const Bag = () => {
           </div>
         </div>
 
-        {/* {totalItems() > 0 && <BagSidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen}/>} */}
+        {checkoutModal && <BagSidebar setCheckoutModal={setCheckoutModal}/>}
       </div>
 
       {areYouSureModal && (
