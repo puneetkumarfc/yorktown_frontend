@@ -24,14 +24,16 @@
 }
 
 /* App.css */
-html, body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+html, body, .custom-scrollbar, * {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE 10+ */
 }
 
 html::-webkit-scrollbar, 
-body::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+body::-webkit-scrollbar, 
+.custom-scrollbar::-webkit-scrollbar, 
+*::-webkit-scrollbar {
+  display: none !important; /* Safari, Chrome, Edge */
 }
 
 input:-webkit-autofill,
@@ -56,24 +58,4 @@ input:-webkit-autofill:active {
   background-size: 200px 100%;
   animation: shimmer 2.5s infinite;
   opacity: 0.7;
-}
-
-/* Custom themed scrollbar */
-html, body, .custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #BD390E #F1EEE8; /* thumb, track */
-}
-
-html::-webkit-scrollbar, body::-webkit-scrollbar, .custom-scrollbar::-webkit-scrollbar {
-  width: 10px;
-  background: #F1EEE8;
-  border-radius: 8px;
-}
-html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #BD390E;
-  border-radius: 8px;
-  border: 2px solid #F1EEE8;
-}
-html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #C42A2A;
 }
