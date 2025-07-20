@@ -149,6 +149,7 @@ function App() {
             ? <Navigate to={routeConstant.ADMIN_DASHBOARD} replace />
             : <Navigate to={routeConstant.ADMIN_LOGIN} replace />
         } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>
     </div>
