@@ -114,16 +114,16 @@ const AdminOrders = ({ collapsed, setCollapsed }) => {
                         className="px-3 py-1 rounded-full text-sm font-medium admin-status"
                         style={{
                           background:
-                            order.status === 'delivered' ? '#4CAF50' : // green
-                            order.status === 'pending' ? '#FFC107' : // amber
-                            order.status === 'cancelled' ? '#F44336' : // red
-                            order.status === 'in oven' ? '#FF9800' : // orange
-                            order.status === 'ready for pickup' ? '#2196F3' : // blue
-                            order.status === 'received' ? '#9C27B0' : // purple
+                            order.status === 'delivered' ? '#198754' : // green
+                            order.status === 'preparing' ? '#FFD700' : // yellow
+                            order.status === 'cancelled' ? '#DC3545' : // red
+                            order.status === 'in oven' ? '#FD7E14' : // orange
+                            order.status === 'ready for pickup' ? '#6F42C1' : // purple
+                            order.status === 'received' ? '#0D6EFD' : // blue
                             '#e1d5bd',
                           color:
                             order.status === 'pending' ? '#000' : '#fff',
-                          border: '1.5px solid #bd390e',
+                          // border: '1.5px solid #bd390e',
                           minWidth: 110,
                           display: 'inline-block',
                           textAlign: 'center',

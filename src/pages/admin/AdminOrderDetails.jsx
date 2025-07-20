@@ -6,6 +6,7 @@ import { adminOrders } from '../../utils/api';
 import { useLoader } from '../../components/common/LoaderContext';
 import Receipt from '../../components/admin/Receipt';
 import { useReactToPrint } from 'react-to-print';
+import html2pdf from 'html2pdf.js';
 
 const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
   let { orderId } = useParams();
@@ -32,6 +33,20 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
     content: () => receiptRef.current,
     documentTitle: orderData && orderData.order ? `Order_${orderData.order.id}_Receipt` : 'Order_Receipt',
   });
+
+  const handleDownloadPDF = () => {
+    if (!receiptRef.current) return;
+    const orderId = order?.id || 'Receipt';
+    html2pdf()
+      .set({
+        margin: 0.5,
+        filename: `Order_${orderId}.pdf`,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      })
+      .from(receiptRef.current)
+      .save();
+  };
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -106,7 +121,7 @@ const AdminOrderDetails = ({ collapsed, setCollapsed }) => {
         }}>
           <div style={{ background: '#fff', borderRadius: 8, boxShadow: '0 2px 16px #0002', padding: 24, minWidth: 400, maxWidth: '95vw', maxHeight: '95vh', overflow: 'auto', position: 'relative' }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
-              <button onClick={handlePrint} style={{ background: '#bd390e', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Print</button>
+              <button onClick={handleDownloadPDF} style={{ background: '#bd390e', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Download PDF</button>
               <button onClick={() => setShowPrintModal(false)} style={{ background: '#eee', color: '#222', border: 'none', borderRadius: 4, padding: '6px 16px', fontWeight: 600, cursor: 'pointer' }}>Close</button>
             </div>
             <div>
