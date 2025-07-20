@@ -51,13 +51,11 @@ const Bag = () => {
 
   return (
     <div className="flex flex-col min-h-screen relative">
-      <div className="flex flex-1">
-        <div className={`transition-all duration-300 mt-28 w-full`}>
-          <p className="uppercase font-roboto font-medium">Your food bag</p>
-
-          {/* Summary box */}
-          {cart.length > 0 && <div className="w-full mt-6 mb-4">
-            <div className="w-full bg-sky-100 border border-sky-300 rounded-xl p-5 flex flex-col gap-3">
+      <div className="flex flex-1 w-full">
+        {/* Summary box - fixed on top right for desktop, full width on mobile */}
+        {cart.length > 0 && (
+          <div className="block relative sm:fixed top-28 right-8 w-full max-w-xs z-30">
+            <div className="bg-sky-100 border border-sky-300 rounded-xl p-5 flex flex-col gap-3 shadow-xl">
               <h3 className="text-lg font-semibold text-sky-900 mb-2">
                 Order Summary
               </h3>
@@ -93,7 +91,16 @@ const Bag = () => {
                 Continue to Checkout
               </button>
             </div>
-          </div>}
+          </div>
+        )}
+
+        {/* Items list - take remaining space, add right margin for summary box on desktop */}
+        <div
+          className={`transition-all duration-300 mt-28 w-full ${
+            cart.length > 0 ? "lg:pr-[340px]" : ""
+          }`}
+        >
+          <p className="uppercase font-roboto font-medium">Your food bag</p>
 
           <div className="flex flex-col gap-4 mt-5 mb-10 w-full">
             {cart.length > 0 ? (
@@ -198,7 +205,7 @@ const Bag = () => {
           </div>
         </div>
 
-        {checkoutModal && <BagSidebar setCheckoutModal={setCheckoutModal}/>}
+        {checkoutModal && <BagSidebar setCheckoutModal={setCheckoutModal} />}
       </div>
 
       {areYouSureModal && (

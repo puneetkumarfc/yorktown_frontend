@@ -6,8 +6,9 @@ import useCartStore from "../../hooks/useCartStore";
 import { placeOrder } from "../../services/operations/payments";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { RxCross2 } from "react-icons/rx";
 
-const BagSidebar = ({setCheckoutModal}) => {
+const BagSidebar = ({ setCheckoutModal }) => {
   const stripePromise = loadStripe(
     "pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P"
   );
@@ -72,6 +73,15 @@ const BagSidebar = ({setCheckoutModal}) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-auto p-0 m-4">
+        {/* Close button */}
+        <button
+          className="absolute top-4 right-4 z-10 text-sm text-black hover:text-customOrange transition-colors bg-white/70 rounded-full p-1 shadow focus:outline-none"
+          aria-label="Close checkout modal"
+          onClick={() => setCheckoutModal(false)}
+        >
+          <RxCross2 />
+        </button>
+        
         <div className="flex flex-col p-8 mt-4">
           <div className="flex items-center w-full mb-8">
             <p
