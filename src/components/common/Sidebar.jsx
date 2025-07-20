@@ -41,19 +41,19 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-40 bg-black/20 transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         onClick={toggleSidebar}
         aria-label="Close sidebar overlay"
       />
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className="fixed top-0 bottom-0 right-0 z-50 w-[300px] max-w-full h-full bg-black/80 backdrop-blur-2xl shadow-2xl border-l border-white/10 flex flex-col transition-all duration-300 will-change-transform hidden rounded-l-3xl overflow-hidden"
-        style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)' }}
+        className="fixed top-0 bottom-0 right-0 z-50 w-[300px] max-w-full h-full bg-primaryBg backdrop-blur-2xl shadow-2xl border-l border-customBeige/80 flex flex-col transition-all duration-300 will-change-transform hidden rounded-l-3xl overflow-hidden"
+        style={{ boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.07)' }}
       >
         {/* Close button */}
         <button
-          className="absolute top-5 right-5 text-white hover:text-mainYellow transition-colors p-2 rounded-full bg-black/30 hover:bg-mainYellow/20"
+          className="absolute top-5 right-5 text-customOrange hover:text-mainRed transition-colors p-2 rounded-full bg-customBeige/60 hover:bg-mainYellow/40"
           onClick={toggleSidebar}
           aria-label="Close sidebar"
         >
@@ -61,7 +61,7 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
         </button>
         {/* Logo */}
         <div className="px-8 pt-10 pb-6">
-          <span className="text-2xl font-bold font-archivo text-white tracking-wide">York<span className="text-mainRed">T</span>own</span>
+          <span className="text-2xl font-bold font-archivo text-primary tracking-wide">York<span className="text-customOrange">T</span>own</span>
         </div>
         <div className="flex-1 flex flex-col gap-2 px-6 mt-2">
           {sideLinks.map(link => {
@@ -71,7 +71,7 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
               <button
                 key={link.name}
                 className={`flex items-center gap-4 w-full px-4 py-3 rounded-2xl text-lg font-semibold font-archivo transition-all duration-200
-                  ${isActive ? 'bg-mainRed/90 text-white shadow-lg' : 'bg-white/10 text-white/80 hover:bg-mainYellow/20 hover:text-mainYellow'}`}
+                  ${isActive ? 'bg-mainYellow/40 text-customOrange shadow-lg' : 'bg-customBeige/40 text-primary hover:bg-mainYellow/20 hover:text-customOrange'}`}
                 onClick={() => {
                   navigate(link.link);
                   toggleSidebar();
@@ -83,7 +83,7 @@ const Sidebar = ({toggleSidebar, sidebarOpen}) => {
             );
           })}
         </div>
-        <div className="px-8 py-6 text-xs text-white/40 font-poppins border-t border-white/10 mt-6">
+        <div className="px-8 py-6 text-xs text-primary/40 font-poppins border-t border-customBeige/80 mt-6">
           &copy; {new Date().getFullYear()} YorkTown. All rights reserved.
         </div>
       </div>
