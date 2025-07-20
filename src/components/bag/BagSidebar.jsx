@@ -70,7 +70,7 @@ const BagSidebar = ({setCheckoutModal}) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setCheckoutModal(false)}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-auto p-0 m-4">
         <div className="flex flex-col p-8 mt-4">
           <div className="flex items-center w-full mb-8">
