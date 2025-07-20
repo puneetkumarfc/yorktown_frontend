@@ -66,7 +66,7 @@ const QuickPick = () => {
   return (
     <div className='flex flex-col items-center mt-12 mb-20 relative'>
         <p className='uppercase font-roboto font-medium'>Quick Picks</p>
-        <p className='text-black/70 font-roboto font-light mt-1 text-center'>Out most popular items ready for quick customization</p>
+        <p className='text-black/70 font-roboto font-light mt-1 text-center'>Our most popular items ready for quick customization</p>
 
         <div className='flex gap-2 mt-4 flex-wrap'>
             {
@@ -87,7 +87,7 @@ const QuickPick = () => {
                 (
                     menu.map((menuItem, index) => {
                         return (
-                            <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                            <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
                         )
                     })
                 )
