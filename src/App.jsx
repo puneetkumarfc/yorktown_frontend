@@ -17,6 +17,7 @@ import AdminOrderDetails from './pages/admin/AdminOrderDetails';
 import AdminMenuList from './pages/admin/AdminMenuList';
 import { LoaderProvider, useLoader } from './components/common/LoaderContext';
 import PizzaLoader from './components/common/PizzaLoader';
+import NotFound from './pages/NotFound';
 
 function GlobalLoaderOverlay() {
   const { loading } = useLoader();
@@ -112,6 +113,7 @@ function App() {
         <Route path={routeConstant.BAG} element={<Bag/>}/>
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>
     </div>
