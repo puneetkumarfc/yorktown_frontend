@@ -4,6 +4,7 @@ import { FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './AdminOrders.css'; // Use the same theme as orders/menu list
 import { adminCoupons } from '../../utils/api';
 import toast from 'react-hot-toast';
+import { useLoader } from '../../components/common/LoaderContext';
 
 const PAGE_SIZE = 10;
 
@@ -266,10 +267,12 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
   const [error, setError] = useState('');
   // Add a ref to trigger reload
   const [reload, setReload] = useState(0);
+  const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      showLoader();
       setError('');
       try {
         const body = {
@@ -305,6 +308,7 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
         setError(err.message || 'Failed to fetch coupons');
       } finally {
         setLoading(false);
+        hideLoader();
       }
     };
     fetchData();
@@ -324,7 +328,8 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
   };
 
   const handleView = async (coupon) => {
-    setModalLoading(true);
+    // setModalLoading(true);
+    showLoader();
     try {
       const res = await adminCoupons.getCouponDetails(coupon.id);
       if (res.success) {
@@ -333,11 +338,13 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
     } catch (err) {
       toast.error(err.message || 'Failed to fetch coupon details.');
     } finally {
-      setModalLoading(false);
+    //   setModalLoading(false);
+      hideLoader();
     }
   };
   const handleEdit = async (coupon) => {
-    setModalLoading(true);
+    // setModalLoading(true);
+    showLoader();
     try {
       const res = await adminCoupons.getCouponDetails(coupon.id);
       if (res.success) {
@@ -346,7 +353,8 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
     } catch (err) {
       toast.error(err.message || 'Failed to fetch coupon details.');
     } finally {
-      setModalLoading(false);
+    //   setModalLoading(false);
+      hideLoader();
     }
   };
   // Helper to map API details to modal fields
@@ -414,6 +422,7 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
   const handleConfirmDelete = async () => {
     const couponId = deleteModal.couponId;
     if (!couponId) return;
+    showLoader();
     try {
       await adminCoupons.deleteCoupon(couponId);
       toast.success('Coupon deleted successfully!');
@@ -421,6 +430,8 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
       setReload(r => r + 1); // refresh list
     } catch (err) {
       toast.error(err.message || 'Failed to delete coupon.');
+    } finally {
+      hideLoader();
     }
   };
 
