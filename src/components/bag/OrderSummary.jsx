@@ -6,7 +6,7 @@ import { applyPromoCode } from "../../services/operations/menu";
 import { useLoader } from "../common/LoaderContext";
 import PizzaLoader from "../common/PizzaLoader";
 
-const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader}) => {
+const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
   const { cart, totalPrice } = useCartStore();
 
   const [promoCode, setPromoCode] = useState("");
@@ -101,13 +101,17 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader}) => {
                 className="flex-1 border border-customBeige rounded-lg px-3 py-2 text-sm focus:outline-none"
                 placeholder="Promo code"
                 value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                disabled={!!appliedPromo}
+                onChange={(e) => {
+                  setPromoCode(e.target.value);
+                  setPromoError("");
+                  setAppliedPromo("");
+                  setPromoDiscount(0);
+                }}
               />
               <button
                 className="px-3 py-2 rounded-lg bg-customOrange text-white text-sm font-semibold disabled:opacity-50"
                 onClick={() => handleApplyPromo(promoCode)}
-                disabled={!!appliedPromo || !promoCode.trim()}
+                disabled={!promoCode.trim()}
               >
                 {appliedPromo ? "Applied" : "Apply"}
               </button>

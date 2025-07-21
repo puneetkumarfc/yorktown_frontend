@@ -72,7 +72,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-auto p-0 m-4">
+      <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-y-auto p-0 m-4 max-h-[80vh]">
         {/* Close button */}
         <button
           className="absolute top-4 right-4 z-10 text-sm text-black hover:text-customOrange transition-colors bg-white/70 rounded-full p-1 shadow focus:outline-none"

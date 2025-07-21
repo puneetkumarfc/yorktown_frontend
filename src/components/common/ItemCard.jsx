@@ -120,17 +120,15 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
         </div>
 
         {displayModal && (
-            <LoaderProvider>
-                <CustomizeModal
-                    id={id}
-                    name={name}
-                    img={img}
-                    desc={desc}
-                    priceFrom={priceFrom}
-                    showModal={showModal}
-                    onShowConfirmation={handleShowConfirmation}
-                />
-            </LoaderProvider>
+            <CustomizeModal
+                id={id}
+                name={name}
+                img={img}
+                desc={desc}
+                priceFrom={priceFrom}
+                showModal={showModal}
+                onShowConfirmation={handleShowConfirmation}
+            />
         )}
       </div>
     </>

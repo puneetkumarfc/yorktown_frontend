@@ -238,6 +238,9 @@ const CustomizeModal = ({
                 <button
                   className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200
                   border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
+                  onClick={() => {
+                    navigate(routeConstant.BAG);
+                  }}
                 >
                   Buy Now
                 </button>

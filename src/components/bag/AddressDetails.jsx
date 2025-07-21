@@ -16,8 +16,7 @@ const AddressDetails = ({handleNext}) => {
   return (
     <div className='flex flex-col items-center gap-2'>
       <p className='text-xl font-poppins font-bold uppercase text-center'>Choose an option</p>
-      <p className='text-sm text-black/70 text-center'>Choose an option below to select your delivery method. Want this later?
-      <span onClick={toggleModal} className='underline hover:text-white cursor-pointer transition-all duration-150'> Schedule it now</span></p>
+      <p className='text-sm text-black/70 text-center'>Choose an option below to select your delivery method</p>
 
       <div className='w-fit flex items-center gap-4 py-1 px-1 mt-2 rounded-full border border-black/50'>
         <p className={`${orderType === "delivery" ? "bg-white text-black" : "text-black/50 hover:bg-white/20"} cursor-pointer font-normal  h-full px-3 py-3 rounded-full`}
