@@ -54,7 +54,7 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
           </div>
         </div>
       )}
-      <div className="rounded-2xl w-full flex flex-col items-center gap-0 border border-customBeige/60 bg-white shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[300px]">
+      <div className="rounded-2xl w-full flex flex-col items-center gap-0 border border-customBeige/60 bg-mainBg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[300px]">
         <div className="w-full flex justify-center items-center relative h-[240px] bg-customBeige/40 overflow-hidden">
           {hasImage ? (
             <>
@@ -111,7 +111,7 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
             </div>
 
             <div
-              className="text-white bg-customOrange text-xs rounded-full cursor-pointer hover:bg-mainYellow hover:text-customOrange px-4 py-2 transition-all duration-200 font-semibold shadow-md"
+              className="text-white border border-customOrange bg-customOrange text-xs rounded-xl font-light cursor-pointer hover:bg-transparent hover:text-customOrange px-4 py-2 transition-all duration-200 shadow-md"
               onClick={showModal}
             >
               Customize

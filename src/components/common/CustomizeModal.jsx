@@ -46,7 +46,8 @@ const CustomizeModal = ({
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedToppings, setSelectedToppings] = useState([]);
-  const [selectedBreads, setSelectedBreads] = useState([]);
+  // Change selectedBreads from array to single value
+  const [selectedBreads, setSelectedBreads] = useState(null);
   const [selectedCheese, setSelectedCheese] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isPresent, setIsPresent] = useState(false);
@@ -60,38 +61,65 @@ const CustomizeModal = ({
     );
   };
 
+  // Update toggleBreads to allow only one selection
   const toggleBreads = (breadId) => {
-    setSelectedBreads((prev) =>
-      prev.includes(breadId)
-        ? prev.filter((id) => id !== breadId)
-        : [...prev, breadId]
-    );
+    setSelectedBreads((prev) => (prev === breadId ? null : breadId));
   };
 
+  // Update toggleCheese to always use numbers
   const toggleCheese = (cheeseId) => {
     setSelectedCheese((prev) =>
-      prev.includes(cheeseId)
-        ? prev.filter((id) => id !== cheeseId)
-        : [...prev, cheeseId]
+      prev.includes(Number(cheeseId))
+        ? prev.filter((id) => id !== Number(cheeseId))
+        : [...prev, Number(cheeseId)]
     );
   };
 
   const computeUnitPrice = () => {
-    const sizePrice = itemDetails.prices?.find((size) => size.sizeId === selectedSize)?.price || 0;
+    const sizePrice =
+      itemDetails.prices?.find((size) => size.sizeId === selectedSize)?.price ||
+      0;
+    // Toppings
     const toppingsPrice = selectedToppings.reduce((total, toppingId) => {
-      const topping = itemDetails.toppings?.find((t) => t.id === toppingId);
-      return total + (topping?.price || 0);
-    }, 0);
-    const breadsPrice = selectedBreads.reduce((total, breadId) => {
-      const bread = itemDetails.breads?.find((b) => b.id === breadId);
-      return total + (bread?.price || 0);
-    }, 0);
-    const cheesePrice = selectedCheese.reduce((total, cheeseId) => {
-      const cheese = itemDetails.cheeses?.find((c) => c.id === cheeseId);
-      return total + (cheese?.price || 0);
+      const topping = itemDetails.toppings?.find(
+        (t) => t.toppingId === toppingId || t.id === toppingId
+      );
+      if (!topping || !Array.isArray(topping.sizePrices)) return total;
+      let sizePriceObj = topping.sizePrices.find(
+        (sp) => sp.sizeId === selectedSize
+      );
+      if (!sizePriceObj)
+        sizePriceObj = topping.sizePrices.find((sp) => sp.sizeId === null);
+      return (
+        total +
+        (sizePriceObj && Number(sizePriceObj.price)
+          ? Number(sizePriceObj.price)
+          : 0)
+      );
     }, 0);
 
-    return sizePrice + toppingsPrice;
+    // Breads (single selection)
+    const breadsPrice = selectedBreads
+      ? itemDetails.breads?.find((b) => b.id === selectedBreads)?.price || 0
+      : 0;
+
+    // Cheeses
+    const cheesePrice = selectedCheese.reduce((total, cheeseId) => {
+      const cheese = itemDetails.cheeses?.find((c) => c.id === cheeseId);
+      if (!cheese || !Array.isArray(cheese.sizePrices)) return total;
+      let sizePriceObj = cheese.sizePrices.find(
+        (sp) => sp.sizeId === selectedSize
+      );
+      if (!sizePriceObj)
+        sizePriceObj = cheese.sizePrices.find((sp) => sp.sizeId === null);
+      return (
+        total +
+        (sizePriceObj && Number(sizePriceObj.price)
+          ? Number(sizePriceObj.price)
+          : 0)
+      );
+    }, 0);
+    return sizePrice + toppingsPrice + breadsPrice + cheesePrice;
   };
 
   const calculatePrice = () => {
@@ -105,11 +133,17 @@ const CustomizeModal = ({
 
   useEffect(() => {
     setFinalPrice(calculatePrice().toFixed(2));
-  }, [selectedSize, selectedToppings, quantity]);
+  }, [
+    selectedSize,
+    selectedToppings,
+    selectedCheese,
+    selectedBreads,
+    itemDetails,
+    quantity,
+  ]);
 
   const { cart, addToCart, removeFromCart, totalItems } = useCartStore();
 
-  //todo: create a delay of 2 seconds and toast the message
   const handleAddToCart = () => {
     const unitPrice = parseFloat(computeUnitPrice().toFixed(2));
     const newItem = {
@@ -163,10 +197,20 @@ const CustomizeModal = ({
             >
               <RxCross2 />
             </div>
-            <img
-              src={img}
-              className="h-full w-full object-cover rounded-t-md"
-            />
+            {img ? (
+              <img
+                src={img}
+                className="h-full w-full object-cover rounded-t-md"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-customBeige/40">
+                <img
+                  src="/pizza.png"
+                  alt="No image"
+                  className="w-12 h-12 opacity-70 mt-6 mb-4"
+                />
+              </div>
+            )}
           </div>
 
           <div className="p-6">
@@ -232,26 +276,49 @@ const CustomizeModal = ({
               <div className="mt-6 mb-4">
                 <p className="mb-2 text-black font-medium">Toppings</p>
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {itemDetails?.toppings?.map((topping) => (
-                    <button
-                      key={topping.id}
-                      onClick={() => toggleTopping(topping.toppingId)}
-                      className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
-                        selectedToppings.includes(topping.toppingId)
-                          ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-light text-sm font-poppins">
-                          {topping.toppingName}
-                        </span>
-                        {topping.sizePrices && (
-                          <span className="text-sm">+${topping.price}</span>
-                        )}
-                      </div>
-                    </button>
-                  ))}
+                  {itemDetails?.toppings
+                    .filter((topping) => {
+                      if (!Array.isArray(topping.sizePrices)) return false;
+                      // Show if there is a sizePrice for selectedSize or for null (universal/free toppings)
+                      return topping.sizePrices.some(
+                        (sizePrice) =>
+                          sizePrice.sizeId === selectedSize ||
+                          sizePrice.sizeId === null
+                      );
+                    })
+                    .map((topping) => {
+                      // Prefer selectedSize, fallback to null
+                      let sizePriceObj = topping.sizePrices.find(
+                        (sizePrice) => sizePrice.sizeId === selectedSize
+                      );
+                      if (!sizePriceObj) {
+                        sizePriceObj = topping.sizePrices.find(
+                          (sizePrice) => sizePrice.sizeId === null
+                        );
+                      }
+                      let priceLabel = "Free";
+                      if (sizePriceObj && Number(sizePriceObj.price) > 0) {
+                        priceLabel = `+$${sizePriceObj.price}`;
+                      }
+                      return (
+                        <button
+                          key={topping.toppingId || topping.id}
+                          onClick={() => toggleTopping(topping.toppingId)}
+                          className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                            selectedToppings.includes(topping.toppingId)
+                              ? "border-mainRed/70 bg-red-50 text-mainRed"
+                              : "border-black/5 hover:border-gray-300 text-black"
+                          }`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span className="font-light text-sm font-poppins">
+                              {topping.toppingName}
+                            </span>
+                            <span className="text-sm">{priceLabel}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
                 </div>
               </div>
             )}
@@ -266,7 +333,7 @@ const CustomizeModal = ({
                       key={bread.id}
                       onClick={() => toggleBreads(bread.id)}
                       className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
-                        selectedBreads.includes(bread.id)
+                        selectedBreads === bread.id
                           ? "border-mainRed/70 bg-red-50 text-mainRed"
                           : "border-black/5 hover:border-gray-300 text-black"
                       }`}
@@ -275,9 +342,6 @@ const CustomizeModal = ({
                         <span className="font-light text-sm font-poppins">
                           {bread.name}
                         </span>
-                        {bread.price && (
-                          <span className="text-sm">+${bread.price}</span>
-                        )}
                       </div>
                     </button>
                   ))}
@@ -290,26 +354,48 @@ const CustomizeModal = ({
               <div className="mt-6 mb-4">
                 <p className="mb-2 text-black font-medium">Cheeses</p>
                 <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {itemDetails?.cheeses?.map((size) => (
-                    <button
-                      key={size.id}
-                      onClick={() => toggleCheese(size.id)}
-                      className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
-                        selectedCheese.includes(size.id)
-                          ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-light text-sm font-poppins">
-                          {size.name}
-                        </span>
-                        {size.sizePrices && (
-                          <span className="text-sm">{selectedSize === 1 ? "+$0.50" : selectedSize === 2 ? "+$1.50" : "+$1.00"}</span>
-                        )}
-                      </div>
-                    </button>
-                  ))}
+                  {itemDetails?.cheeses
+                    .filter((cheese) => {
+                      if (!Array.isArray(cheese.sizePrices)) return false;
+                      return cheese.sizePrices.some(
+                        (sizePrice) =>
+                          sizePrice.sizeId === selectedSize ||
+                          sizePrice.sizeId === null
+                      );
+                    })
+                    .map((cheese) => {
+                      // Prefer selectedSize, fallback to null
+                      let sizePriceObj = cheese.sizePrices.find(
+                        (sizePrice) => sizePrice.sizeId === selectedSize
+                      );
+                      if (!sizePriceObj) {
+                        sizePriceObj = cheese.sizePrices.find(
+                          (sizePrice) => sizePrice.sizeId === null
+                        );
+                      }
+                      let priceLabel = "Free";
+                      if (sizePriceObj && Number(sizePriceObj.price) > 0) {
+                        priceLabel = `+$${sizePriceObj.price}`;
+                      }
+                      return (
+                        <button
+                          key={cheese.id}
+                          onClick={() => toggleCheese(cheese.id)}
+                          className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
+                            selectedCheese.includes(Number(cheese.id))
+                              ? "border-mainRed/70 bg-red-50 text-mainRed"
+                              : "border-black/5 hover:border-gray-300 text-black"
+                          }`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span className="font-light text-sm font-poppins">
+                              {cheese.name}
+                            </span>
+                            <span className="text-sm">{priceLabel}</span>
+                          </div>
+                        </button>
+                      );
+                    })}
                 </div>
               </div>
             )}
