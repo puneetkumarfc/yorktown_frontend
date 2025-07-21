@@ -155,7 +155,7 @@ const CustomizeModal = ({
         </div>
       )}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/20">
-        <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-white backdrop-blur-xl">
+        <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-mainBg backdrop-blur-xl">
           <div className="h-[30vh] overflow-hidden rounded-t-md relative">
             <div
               className="p-2 rounded-full absolute top-1 right-1 bg-white/70 hover:bg-white transition-all duration-200 text-black border cursor-pointer"

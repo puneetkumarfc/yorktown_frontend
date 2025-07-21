@@ -66,14 +66,14 @@ const QuickPick = () => {
   return (
     <div className='flex flex-col items-center mt-12 mb-20 relative'>
         <p className='uppercase font-roboto font-medium'>Quick Picks</p>
-        <p className='text-black/70 font-roboto font-light mt-1 text-center'>Our most popular items ready for quick customization</p>
+        <p className='text-black/70 font-roboto text-sm font-light mt-1 text-center'>Our most popular items ready for quick customization</p>
 
         <div className='flex gap-2 mt-4 flex-wrap'>
             {
                 categories.map((category, index) => {
                     const isActive = activeCategory.name === `${category.name}`;
                     return (
-                        <div key={index} className={`flex justify-center text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer shadow-md border border-mainRed/30 hover:border-mainRed/80`}
+                        <div key={index} className={`flex justify-center text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer border border-mainRed/30 hover:border-mainRed/80`}
                         onClick={() => setCategory(category)}>
                             {category.name}
                         </div>
