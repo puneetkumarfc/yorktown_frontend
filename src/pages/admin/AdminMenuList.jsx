@@ -1,19 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
 import './AdminOrders.css'; // Reuse admin table styles for consistency
 import MenuItemModal from './MenuItemModal';
+import { fetchCategories, fetchMenu } from '../../services/operations/menu';
+import { useLoader } from '../../components/common/LoaderContext';
 
-const staticMenuItems = [
-  { id: 1, name: 'Margherita Pizza', price: 12.99, category: 'Pizza', status: 'Active', image: '', description: 'Classic cheese & tomato pizza.' },
-  { id: 2, name: 'Veggie Sub', price: 9.99, category: 'Submarines', status: 'Active', image: '', description: 'Loaded with fresh veggies.' },
-  { id: 3, name: 'Chicken Wrap', price: 10.99, category: 'Wraps', status: 'Inactive', image: '', description: 'Grilled chicken with sauce.' },
-  { id: 4, name: 'Cheesecake', price: 6.99, category: 'Deserts', status: 'Active', image: '', description: 'Rich and creamy.' },
-  { id: 5, name: 'Pepperoni Pizza', price: 13.99, category: 'Pizza', status: 'Active', image: '', description: 'Pepperoni and cheese.' },
-  { id: 6, name: 'Club Sandwich', price: 11.99, category: 'Clubs', status: 'Inactive', image: '', description: 'Triple layered sandwich.' },
-];
-
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 20;
 
 const AdminMenuList = ({ collapsed, setCollapsed }) => {
   const [search, setSearch] = useState('');
@@ -25,20 +18,58 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('view');
   const [modalItem, setModalItem] = useState(null);
-  const [menuItems, setMenuItems] = useState(staticMenuItems);
+  const [categories, setCategories] = useState([]);
+  const [categoryMenuItems, setCategoryMenuItems] = useState({}); // { [categoryId]: [items] }
+  const [error, setError] = useState(null);
+  const { showLoader, hideLoader } = useLoader();
 
-  // Filter, sort, and paginate static data
-  const filtered = menuItems.filter(item =>
+  // Fetch categories and menu items on mount
+  useEffect(() => {
+    const fetchData = async () => {
+      setError(null);
+      showLoader('Loading menu...');
+      try {
+        const catRes = await fetchCategories(2);
+        const cats = catRes.data.data || [];
+        setCategories(cats);
+        // Fetch menu items for all categories in parallel
+        const menuPromises = cats.map(cat => fetchMenu(cat.id, 2));
+        const menuResults = await Promise.all(menuPromises);
+        const menuMap = {};
+        cats.forEach((cat, idx) => {
+          menuMap[cat.id] = menuResults[idx]?.data?.data || [];
+        });
+        setCategoryMenuItems(menuMap);
+      } catch (err) {
+        setError('Failed to fetch menu data.');
+      } finally {
+        hideLoader();
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line
+  }, []);
+
+  // Helper to flatten all items for search/sort/pagination
+  const allItems = categories.flatMap(cat =>
+    (categoryMenuItems[cat.id] || []).map(item => ({
+      ...item,
+      category: cat.name
+    }))
+  );
+
+  // Filter, sort, and paginate
+  const filtered = allItems.filter(item =>
     item.name.toLowerCase().includes(search.toLowerCase()) ||
-    item.category.toLowerCase().includes(search.toLowerCase())
+    (item.category || '').toLowerCase().includes(search.toLowerCase())
   );
   const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === 'price') {
-      return sortDir === 'asc' ? a.price - b.price : b.price - a.price;
+    if (sortBy === 'price' || sortBy === 'startingPrice') {
+      return sortDir === 'asc' ? (a.startingPrice - b.startingPrice) : (b.startingPrice - a.startingPrice);
     } else {
       return sortDir === 'asc'
-        ? a[sortBy].localeCompare(b[sortBy])
-        : b[sortBy].localeCompare(a[sortBy]);
+        ? (a[sortBy] || '').localeCompare(b[sortBy] || '')
+        : (b[sortBy] || '').localeCompare(a[sortBy] || '');
     }
   });
   const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
@@ -80,14 +111,7 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
     setModalOpen(true);
   };
   const handleSave = (updatedItem) => {
-    if (modalMode === 'add') {
-      setMenuItems(prev => [
-        { ...updatedItem, id: prev.length ? Math.max(...prev.map(i => i.id)) + 1 : 1 },
-        ...prev
-      ]);
-    } else if (modalMode === 'edit') {
-      setMenuItems(prev => prev.map(i => i.id === updatedItem.id ? updatedItem : i));
-    }
+    // Not implemented for API data
     setModalOpen(false);
   };
 
@@ -98,7 +122,7 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
   };
 
   return (
-    <div className={`admin-dashboard-layout${collapsed ? ' collapsed' : ''} px-[1rem] md:px-[6rem]`}> 
+    <div className={`admin-dashboard-layout${collapsed ? ' collapsed' : ''} px-[1rem] md:px-[6rem]`}>
       <AdminSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <div className="admin-orders-container px-[1rem] md:px-[6rem]">
         <div className="glass-effect admin-titlebar flex-col md:flex-row gap-4 md:gap-0">
@@ -116,6 +140,9 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
             </button>
           </div>
         </div>
+        {error && (
+          <div style={{ textAlign: 'center', color: '#ff2222', margin: '2rem 0' }}>{error}</div>
+        )}
         <div className="glass-effect rounded-2xl overflow-x-auto animate-fadein">
           <table className="w-full table-auto">
             <thead>
@@ -126,8 +153,8 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
                 <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('category')}>
                   Category {sortBy === 'category' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('price')}>
-                  Price {sortBy === 'price' && (sortDir === 'asc' ? '↑' : '↓')}
+                <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('startingPrice')}>
+                  Price {sortBy === 'startingPrice' && (sortDir === 'asc' ? '↑' : '↓')}
                 </th>
                 <th className="px-6 py-4 text-left font-semibold">Status</th>
                 <th className="px-6 py-4 text-left font-semibold">Actions</th>
@@ -137,13 +164,13 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
               {paginated.map(item => (
                 <tr key={item.id} className="table-row transition-all duration-300 hover:bg-red-900/10">
                   <td className="px-6 py-4 font-semibold flex items-center gap-3">
-                    {item.image ? <img src={item.image} alt={item.name} className="w-10 h-10 rounded-full object-cover" /> : <span className="w-10 h-10 rounded-full bg-mainRed/30 flex items-center justify-center text-lg font-bold text-mainRed">{item.name[0]}</span>}
+                    {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className="w-10 h-10 rounded-full object-cover" /> : <span className="w-10 h-10 rounded-full bg-mainRed/30 flex items-center justify-center text-lg font-bold text-mainRed">{item.name[0]}</span>}
                     <span>{item.name}</span>
                   </td>
                   <td className="px-6 py-4">{item.category}</td>
-                  <td className="px-6 py-4">${item.price.toFixed(2)}</td>
+                  <td className="px-6 py-4">${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}</td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${item.status === 'Active' ? 'bg-green-700 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{item.status}</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold bg-green-700 text-green-200`}>Active</span>
                   </td>
                   <td className="px-6 py-4 flex gap-3 items-center">
                     <button className="p-2 rounded-lg bg-black/30 hover:bg-mainRed/80 text-white transition-all duration-200" title="View" onClick={() => handleView(item)}><FaEye /></button>
