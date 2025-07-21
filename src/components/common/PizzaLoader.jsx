@@ -25,7 +25,7 @@ const PizzaLoader = ({ loading, size = 80 }) => {
       <div className="relative">
         <PuffLoader color="#F3D053" loading={loading} size={size} speedMultiplier={1.2} />
         <img
-          src="/mainPizza.png"
+          src="/MainPizza.png"
           alt="Pizza Loader"
           className="absolute top-1/2 left-1/2 w-[48px] h-[48px] -translate-x-1/2 -translate-y-1/2 animate-spin-slow"
           style={{ animationDuration: '2.5s' }}
