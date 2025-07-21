@@ -8,6 +8,8 @@ import { routeConstant } from "../constants/RouteConstants";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import OrderSummary from "../components/bag/OrderSummary";
+import { LoaderProvider, useLoader } from "../components/common/LoaderContext";
+import PizzaLoader from "../components/common/PizzaLoader";
 
 const Bag = () => {
   const {
@@ -21,6 +23,7 @@ const Bag = () => {
     totalPrice,
   } = useCartStore();
 
+  const { showLoader, hideLoader, loading} = useLoader();
   const [checkoutModal, setCheckoutModal] = useState(false);
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
@@ -39,7 +42,7 @@ const Bag = () => {
     <div className="flex flex-col min-h-screen bg-mainBg py-10 px-2">
       <div className="relative w-full flex flex-col gap-8 min-h-[70vh] mt-18">
         {/* Order Summary (Right) */}
-        <OrderSummary setCheckoutModal={setCheckoutModal}/>
+        <OrderSummary setCheckoutModal={setCheckoutModal} showLoader={showLoader} hideLoader={hideLoader}/>
 
         {/* Cart Items (Left) */}
         <div className="lg:w-2/3 w-full flex flex-col">
@@ -190,6 +193,8 @@ const Bag = () => {
           manuallyReducedItemId={manuallyReducedItemId}
         />
       )}
+
+      {loading && <PizzaLoader />}
     </div>
   );
 };
