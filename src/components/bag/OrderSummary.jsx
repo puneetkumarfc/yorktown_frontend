@@ -69,7 +69,7 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
   return (
     <div className="md:w-[360px] w-full flex lg:fixed right-0">
       <div className="w-full md:max-w-xs">
-        <div className="bg-mainBg backdrop-blur-xl border border-customBeige rounded-2xl shadow-xl p-7 flex flex-col gap-5">
+        <div className="bg-mainBg backdrop-blur-xl border border-black/10 rounded-2xl shadow-xl p-7 flex flex-col gap-5">
           <h3 className="text-xl font-bold text-customOrange mb-2">
             Order Summary
           </h3>
@@ -141,8 +141,8 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
                 tabIndex="0"
               >
                 i
-                <span className="absolute left-1/2 -translate-x-1/2 top-7 z-10 hidden group-hover:block group-focus:block bg-white text-black text-xs rounded-lg shadow-lg px-3 py-2 border border-customBeige min-w-[180px] whitespace-normal">
-                  This fee is calculated as $0.30 + 2.9% of your subtotal after discount and tax, and helps us maintain and improve our platform.
+                <span className="absolute left-1/2 -translate-x-1/2 top-7 z-10 hidden group-hover:block group-focus:block bg-mainBg text-black text-xs font-medium rounded-lg shadow-lg px-3 py-2 border border-black/10 min-w-[180px] whitespace-normal">
+                  This fee helps us maintain and improve our platform.
                 </span>
               </button>
             </span>

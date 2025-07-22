@@ -91,7 +91,6 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
               className={`${
                 formStep === 1 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(1)}
             >
               01
             </p>
@@ -100,7 +99,6 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
               className={`${
                 formStep === 2 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(2)}
             >
               02
             </p>
@@ -109,7 +107,6 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
               className={`${
                 formStep === 3 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(3)}
             >
               03
             </p>
