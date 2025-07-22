@@ -31,14 +31,14 @@ const Contact = () => {
               </a>
 
               {/* Email */}
-              <a href="mailto:contact@eatatyorktown.com" className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group">
+              <a href="mailto:Eatatyorktown@gmail.com" className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group">
                 <div className="flex items-center gap-5">
                   <div className="bg-white p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
                     <FiMail className="w-6 h-6 text-customOrange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-black">Email</h3>
-                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">contact@eatatyorktown.com</p>
+                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">Eatatyorktown@gmail.com</p>
                   </div>
                 </div>
               </a>
