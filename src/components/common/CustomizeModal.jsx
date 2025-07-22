@@ -22,6 +22,8 @@ const CustomizeModal = ({
   size: initialSize,
   toppings: initialToppings,
   quantity: initialQuantity,
+  bread: initialBread,
+  cheese: initialCheese,
   uniqueId: originalUniqueId,
   // add more as needed
 }) => {
@@ -62,19 +64,22 @@ const CustomizeModal = ({
 
   useEffect(() => {
     // This effect correctly depends on itemDetails and sets the default size.
-    if (itemDetails.prices && itemDetails.prices.length > 0) {
+    // Only set a default size if we are NOT in edit mode.
+    if (!editMode && itemDetails.prices && itemDetails.prices.length > 0) {
       setSelectedSize(itemDetails.prices[0].sizeId);
     }
-  }, [itemDetails]);
+  }, [itemDetails, editMode]);
 
   // Pre-fill state if in edit mode
   useEffect(() => {
     if (editMode) {
       if (initialSize) setSelectedSize(initialSize);
       if (initialToppings) setSelectedToppings(initialToppings);
+      if (initialBread) setSelectedBreads(initialBread);
+      if (initialCheese) setSelectedCheese(initialCheese);
       if (initialQuantity) setQuantity(initialQuantity);
     }
-  }, [editMode, initialSize, initialToppings, initialQuantity]);
+  }, [editMode, initialSize, initialToppings, initialQuantity, initialBread, initialCheese]);
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(null);
@@ -188,7 +193,11 @@ const CustomizeModal = ({
       quantity: quantity,
       size: selectedSize,
       toppings: selectedToppings,
+      cheese: selectedCheese,
+      bread: selectedBreads,
     };
+    
+    console.log(newItem)
 
     addToCart(newItem);
     showModal(); // closes the customize modal
@@ -211,6 +220,8 @@ const CustomizeModal = ({
       quantity: quantity,
       size: selectedSize,
       toppings: selectedToppings,
+      cheese: selectedCheese,
+      bread: selectedBreads,
     };
     addToCart(updatedItem);
     showModal();
@@ -218,15 +229,14 @@ const CustomizeModal = ({
   };
 
   useEffect(() => {
+    const currentUniqueId = `${id}-${selectedSize}-${JSON.stringify(
+      selectedToppings.sort()
+    )}-${JSON.stringify(selectedCheese.sort())}-${selectedBreads}`;
     const matchedItem = cart.find(
-      (item) =>
-        item.id === id &&
-        item.size === selectedSize &&
-        JSON.stringify(item.toppings.sort()) ===
-          JSON.stringify(selectedToppings.sort())
+      (item) => item.uniqueId === currentUniqueId
     );
     setIsPresent(!!matchedItem);
-  }, [cart, selectedSize, selectedToppings]);
+  }, [cart, id, selectedSize, selectedToppings, selectedCheese, selectedBreads]);
 
   // Auto-dismiss the added modal after 1.5s
   useEffect(() => {

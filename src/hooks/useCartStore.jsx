@@ -7,7 +7,9 @@ const useCartStore = create(
         (set, get) => ({
             cart: [],
             addToCart: (item) => { 
-                const uniqueId = `${item.id}-${item.size}-${JSON.stringify(item.toppings)}`
+                const uniqueId = `${item.id}-${item.size}-${JSON.stringify(
+                    item.toppings.sort()
+                  )}-${JSON.stringify(item.cheese.sort())}-${item.bread}`;
                 const existing = get().cart.find(cartItem => cartItem.uniqueId === uniqueId);
                 if(existing) {
                     set({

@@ -8,10 +8,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
 
-const BagSidebar = ({ setCheckoutModal }) => {
-  const stripePromise = loadStripe(
-    "pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P"
-  );
+const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
+  const stripePromise = loadStripe("pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P");
 
   const { cart, totalPrice } = useCartStore();
 
@@ -19,6 +17,9 @@ const BagSidebar = ({ setCheckoutModal }) => {
     itemId: item.id,
     sizeId: item.size,
     quantity: item.quantity,
+    toppings: item.toppings,
+    cheese: item.cheese,
+    bread: item.bread,
   }));
 
   const [formStep, setFormStep] = useState(1);
@@ -29,7 +30,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
   });
 
   const [options, setOptions] = useState(null);
-  const [orderId, setOrderId] = useState(null);
+  
 
   const handleNext = async (data) => {
     if (formStep === 1) {
@@ -70,17 +71,6 @@ const BagSidebar = ({ setCheckoutModal }) => {
     }
 
     setFormStep(formStep + 1);
-  };
-
-  // Callback to close modal and check payment status
-  const handlePaymentComplete = async (orderId) => {
-    setCheckoutModal(false);
-    try {
-      const response = await checkStatus(orderId);
-      console.log("Payment status:", response.data.data)
-    } catch (err) {
-      console.error("Error checking payment status:", err);
-    }
   };
 
   return (
@@ -143,7 +133,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
                 setFormStep={setFormStep}
                 formStep={formStep}
                 handleNext={handleNext}
-                handlePaymentComplete={handlePaymentComplete}
+                orderId={orderId}
               />
             </Elements>
           ) : (

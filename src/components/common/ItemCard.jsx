@@ -26,7 +26,7 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
 
   return (
     <>
-      <div className="rounded-2xl w-full flex flex-col items-center gap-0 border border-customBeige/60 bg-mainBg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[300px]">
+      <div className="rounded-2xl w-full flex flex-col items-center gap-0 border border-black/10 bg-mainBg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[300px]">
         <div className="w-full flex justify-center items-center relative h-[240px] bg-customBeige/40 overflow-hidden">
           {hasImage ? (
             <>

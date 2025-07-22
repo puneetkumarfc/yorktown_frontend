@@ -1,7 +1,7 @@
 import React from "react";
 import CheckoutForm from "./CheckoutForm";
 
-const PaymentDetails = ({ handlePaymentComplete }) => {
+const PaymentDetails = ({ orderId }) => {
   return (
     <>
       <p className="mb-2 text-xl font-poppins font-bold uppercase text-center">
@@ -11,7 +11,7 @@ const PaymentDetails = ({ handlePaymentComplete }) => {
         Fill in your payment details to securely process your payments
       </p>
 
-      <CheckoutForm handlePaymentComplete={handlePaymentComplete} />
+      <CheckoutForm orderId={orderId} />
     </>
   );
 };
