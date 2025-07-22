@@ -27,11 +27,12 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
   const desiredAmount = 100; // you want to receive $100
   const chargeCustomer = calculateStripeAdjustedAmount(desiredAmount);
 
-  const platformFee = 1.99;
   const subtotal = Number(totalPrice());
-
-  const totalBeforeDiscount = subtotal + platformFee;
-  const total = totalBeforeDiscount - promoDiscount;
+  const discount = promoDiscount > 0 ? promoDiscount : 0;
+  const taxableAmount = subtotal - discount;
+  const tax = parseFloat((taxableAmount * 0.06).toFixed(2));
+  const platformFee = parseFloat(((taxableAmount + tax) * 0.029 + 0.3).toFixed(2));
+  const total = parseFloat((taxableAmount + tax + platformFee).toFixed(2));
 
   //promocode
   //tax (6%)
@@ -61,6 +62,10 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
     }
   };
 
+  if (!cart || cart.length === 0) {
+    return null;
+  }
+
   return (
     <div className="md:w-[360px] w-full flex lg:fixed right-0">
       <div className="w-full md:max-w-xs">
@@ -68,33 +73,8 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
           <h3 className="text-xl font-bold text-customOrange mb-2">
             Order Summary
           </h3>
-          <div className="flex justify-between items-center text-base">
-            <span className="font-roboto text-sm font-medium text-black/80">
-              Subtotal
-            </span>
-            <span className="font-semibold text-black/90">
-              ${subtotal.toFixed(2)}
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-base relative group">
-            <span className="font-medium font-roboto text-sm text-black/80 flex items-center gap-1">
-              Platform Fee
-              <button
-                type="button"
-                className="ml-1 text-customOrange bg-mainBg rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold border border-customOrange cursor-pointer relative focus:outline-none"
-                tabIndex="0"
-              >
-                i
-                <span className="absolute left-1/2 -translate-x-1/2 top-7 z-10 hidden group-hover:block group-focus:block bg-white text-black text-xs rounded-lg shadow-lg px-3 py-2 border border-customBeige min-w-[180px] whitespace-normal">
-                  This fee helps us maintain and improve our platform.
-                </span>
-              </button>
-            </span>
-            <span className="font-semibold text-black/90">${platformFee}</span>
-          </div>
-
-          {/* Promo code input */}
-          <div className="flex flex-col gap-2 mt-2">
+          {/* Promo code input - moved above subtotal */}
+          <div className="flex flex-col gap-2 mb-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
@@ -125,7 +105,14 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
               </span>
             )}
           </div>
-
+          <div className="flex justify-between items-center text-base">
+            <span className="font-roboto text-sm font-medium text-black/80">
+              Subtotal
+            </span>
+            <span className="font-semibold text-black/90">
+              ${subtotal.toFixed(2)}
+            </span>
+          </div>
           {/* Discount row */}
           {promoDiscount > 0 && (
             <div className="flex justify-between items-center text-base">
@@ -137,10 +124,33 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
               </span>
             </div>
           )}
-
+          {/* Tax row */}
+          <div className="flex justify-between items-center text-base mt-2">
+            <span className="font-roboto text-sm font-medium text-black/80 flex items-center gap-1">
+              Tax
+            </span>
+            <span className="font-semibold text-black/90">${tax.toFixed(2)}</span>
+          </div>
+          {/* Platform Fee row - moved just above Total */}
+          <div className="flex justify-between items-center text-base relative group mt-2">
+            <span className="font-medium font-roboto text-sm text-black/80 flex items-center gap-1">
+              Platform Fee
+              <button
+                type="button"
+                className="ml-1 text-customOrange bg-mainBg rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold border border-customOrange cursor-pointer relative focus:outline-none"
+                tabIndex="0"
+              >
+                i
+                <span className="absolute left-1/2 -translate-x-1/2 top-7 z-10 hidden group-hover:block group-focus:block bg-white text-black text-xs rounded-lg shadow-lg px-3 py-2 border border-customBeige min-w-[180px] whitespace-normal">
+                  This fee is calculated as $0.30 + 2.9% of your subtotal after discount and tax, and helps us maintain and improve our platform.
+                </span>
+              </button>
+            </span>
+            <span className="font-semibold text-black/90">${platformFee.toFixed(2)}</span>
+          </div>
           <div className="flex justify-between items-center text-lg font-bold border-t border-customBeige pt-3">
             <span className="text-semibold font-roboto">Total</span>
-            <span className="text-customOrange">${total}</span>
+            <span className="text-customOrange">${total.toFixed(2)}</span>
           </div>
           <button
             className="mt-1 w-full py-3 text-sm cursor-pointer rounded-xl bg-transparent hover:bg-customOrange text-customOrange hover:text-white border border-customOrange font-medium transition-colors duration-150 disabled:opacity-50 shadow"

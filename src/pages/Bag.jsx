@@ -10,6 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import OrderSummary from "../components/bag/OrderSummary";
 import { LoaderProvider, useLoader } from "../components/common/LoaderContext";
 import PizzaLoader from "../components/common/PizzaLoader";
+import CustomizeModal from "../components/common/CustomizeModal";
+import { FiEdit2 } from "react-icons/fi";
 
 const Bag = () => {
   const {
@@ -28,6 +30,7 @@ const Bag = () => {
   const [removeItem, setRemoveItem] = useState({});
   const [areYouSureModal, setAreYouSureModal] = useState(false);
   const [manuallyReducedItemId, setManuallyReducedItemId] = useState(null);
+  const [editItem, setEditItem] = useState(null);
 
   const displayAreYouSureModal = () => {
     setAreYouSureModal(!areYouSureModal);
@@ -45,7 +48,7 @@ const Bag = () => {
         <OrderSummary setCheckoutModal={setCheckoutModal} showLoader={showLoader} hideLoader={hideLoader}/>
 
         {/* Cart Items (Left) */}
-        <div className="lg:w-2/3 w-full flex flex-col">
+        <div className={(cart.length > 0 ? "lg:w-2/3 " : "") + "w-full flex flex-col"}>
           <h2 className="uppercase font-roboto font-medium text-md mb-2 text-black">
             Your Bag
           </h2>
@@ -75,7 +78,6 @@ const Bag = () => {
                   >
                     <RxCross2 />
                   </button>
-
                   {/* Image */}
                   <div className="w-30 h-30 flex-shrink-0 flex items-center justify-center bg-customBeige/40 rounded-xl overflow-hidden">
                     {item.image ? (
@@ -104,9 +106,15 @@ const Bag = () => {
                       <p className="font-roboto text-center md:text-start text-base text-customOrange font-bold">
                         ${item.price}
                       </p>
+                      <button
+                        className="mt-3 mx-auto px-6 py-2 bg-customOrange text-white rounded-full font-semibold hover:bg-white hover:text-customOrange border border-customOrange transition-all duration-200 cursor-pointer"
+                        onClick={() => setEditItem(item)}
+                      >
+                        Edit
+                      </button>
                     </div>
                     {/* Quantity controls */}
-                    <div className="flex md:flex-col items-center gap-3 mt-2">
+                    <div className="flex flex-row items-center gap-3 mt-2">
                       <button
                         className="w-8 h-8 rounded-full border border-customOrange flex items-center justify-center text-customOrange hover:bg-customOrange hover:text-white transition-colors"
                         onClick={() => {
@@ -152,16 +160,19 @@ const Bag = () => {
                 </div>
               ))
             ) : (
-              <div className="w-full h-[50vh] flex items-center justify-center text-black/70 text-lg italic">
-                Oops! No items in your bag.{" "}
-                <span>
+              <div className="flex flex-1 min-h-[70vh] items-center justify-center animate-fade-in-simple">
+                <div className="flex flex-col items-center w-full">
+                  {/* SVG illustration */}
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="4rem" width="4rem" xmlns="http://www.w3.org/2000/svg"><path d="M352 160v-32C352 57.42 294.579 0 224 0 153.42 0 96 57.42 96 128v32H0v272c0 44.183 35.817 80 80 80h288c44.183 0 80-35.817 80-80V160h-96zm-192-32c0-35.29 28.71-64 64-64s64 28.71 64 64v32H160v-32zm160 120c-13.255 0-24-10.745-24-24s10.745-24 24-24 24 10.745 24 24-10.745 24-24 24zm-192 0c-13.255 0-24-10.745-24-24s10.745-24 24-24 24 10.745 24 24-10.745 24-24 24z"></path></svg>
+                  <h2 className="text-3xl font-extrabold text-black mb-2 text-center font-roboto">Your bag is empty</h2>
+                  <p className="text-lg text-black/60 mb-8 text-center font-poppins max-w-lg">You haven&apos;t added anything yet. Discover our delicious menu and add your favorites to your bag!</p>
                   <Link
-                    className="text-customOrange ml-2 underline"
                     to={routeConstant.MENU}
+                    className="inline-flex items-center gap-2 px-7 py-3 bg-customOrange hover:bg-transparent border border-customOrange rounded-full text-lg text-white hover:text-customOrange font-semibold shadow transition-all duration-200"
                   >
-                    Visit menu
+                    <span>Browse Menu</span>
                   </Link>
-                </span>
+                </div>
               </div>
             )}
 
@@ -191,6 +202,22 @@ const Bag = () => {
           increaseQuantity={increaseQuantity}
           removeItem={removeItem}
           manuallyReducedItemId={manuallyReducedItemId}
+        />
+      )}
+
+      {editItem && (
+        <CustomizeModal
+          id={editItem.id}
+          name={editItem.name}
+          img={editItem.image}
+          desc={editItem.desc}
+          priceFrom={editItem.unitPrice}
+          showModal={() => setEditItem(null)}
+          editMode={true}
+          size={editItem.size}
+          toppings={editItem.toppings}
+          quantity={editItem.quantity}
+          uniqueId={editItem.uniqueId}
         />
       )}
 

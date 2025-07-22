@@ -2,6 +2,7 @@ export const routeConstant = {
     HOME: "/",
     BAG: "/bag",
     MENU: "/menu",
+    CONTACT: "/contact",
     ADMIN_LOGIN: "/admin/login",
     ADMIN_DASHBOARD: "/admin/dashboard",
     ADMIN_ORDERS: "/admin/orders",

@@ -18,6 +18,13 @@ const CustomizeModal = ({
   priceFrom,
   showModal,
   onShowConfirmation,
+  onShowNextActionModal,
+  editMode = false,
+  size: initialSize,
+  toppings: initialToppings,
+  quantity: initialQuantity,
+  uniqueId: originalUniqueId,
+  // add more as needed
 }) => {
   const { showLoader, hideLoader, loading } = useLoader();
   const [itemDetails, setItemDetails] = useState({});
@@ -42,6 +49,15 @@ const CustomizeModal = ({
   useEffect(() => {
     setSelectedSize(itemDetails.prices?.[0]?.sizeId);
   }, [itemDetails]);
+
+  // Pre-fill state if in edit mode
+  useEffect(() => {
+    if (editMode) {
+      if (initialSize) setSelectedSize(initialSize);
+      if (initialToppings) setSelectedToppings(initialToppings);
+      if (initialQuantity) setQuantity(initialQuantity);
+    }
+  }, [editMode, initialSize, initialToppings, initialQuantity]);
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(null);
@@ -158,6 +174,28 @@ const CustomizeModal = ({
     };
 
     addToCart(newItem);
+    showModal(); // closes the customize modal
+    if (onShowNextActionModal) {
+      setTimeout(() => onShowNextActionModal(), 300);
+    }
+    if (onShowConfirmation) onShowConfirmation();
+  };
+
+  const handleUpdateItem = () => {
+    // Remove the old item by its original uniqueId
+    if (originalUniqueId) removeFromCart(originalUniqueId);
+    const unitPrice = parseFloat(computeUnitPrice().toFixed(2));
+    const updatedItem = {
+      id,
+      name: name,
+      image: img,
+      price: parseFloat((unitPrice * quantity).toFixed(2)),
+      unitPrice,
+      quantity: quantity,
+      size: selectedSize,
+      toppings: selectedToppings,
+    };
+    addToCart(updatedItem);
     showModal();
     if (onShowConfirmation) onShowConfirmation();
   };
@@ -188,6 +226,7 @@ const CustomizeModal = ({
           <span className="font-semibold mr-2">✔</span> Item added to bag!
         </div>
       )}
+      {/* Main Customize Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/20">
         <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-mainBg backdrop-blur-xl">
           <div className="h-[30vh] overflow-hidden rounded-t-md relative">
@@ -223,21 +262,25 @@ const CustomizeModal = ({
               </div>
 
               <div className="flex gap-3 font-light text-sm">
+                {editMode ? (
+                  <button
+                    type="button"
+                    className="py-2 px-4 bg-customOrange text-white rounded-xl font-semibold hover:bg-orange-600 transition-all duration-200"
+                    onClick={handleUpdateItem}
+                  >
+                    Update Item
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
+                    onClick={isPresent ? () => navigate(routeConstant.BAG) : handleAddToCart}
+                  >
+                    {isPresent ? "View Cart" : "Add to Bag"}
+                  </button>
+                )}
                 <button
-                  type="button"
-                  className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200
-                  border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
-                  onClick={
-                    isPresent
-                      ? () => navigate(routeConstant.BAG)
-                      : handleAddToCart
-                  }
-                >
-                  {isPresent ? "View Cart" : "Add to Bag"}
-                </button>
-                <button
-                  className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200
-                  border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
+                  className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
                   onClick={() => {
                     navigate(routeConstant.BAG);
                   }}
