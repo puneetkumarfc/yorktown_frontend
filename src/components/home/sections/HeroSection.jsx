@@ -22,11 +22,15 @@ const HeroSection = () => {
                     <p className='uppercase font-roboto font-medium'>Follow us on</p>
 
                     <div className='flex gap-6 items-center text-3xl text-black'>
-                        <AiFillInstagram className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        <a href="https://www.instagram.com/eatatyorktown?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <AiFillInstagram className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        </a>
 
-                        <FaTwitter  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        {/* <FaTwitter  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/> */}
 
-                        <FaFacebook  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        <a href="" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <FaFacebook  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        </a>
                     </div>
                 </div>
                 
@@ -43,7 +47,7 @@ const HeroSection = () => {
                     </p>
 
                     <div className='flex justify-center xl:justify-end gap-4'>
-                        <Button text={"Deliver at home"}/>
+                        <Button text={"Deliver at home"} path={"/coming-soon"}/>
                         <Button text={"Take away"} path={routeConstant.MENU}/>
                     </div>
                 </div>

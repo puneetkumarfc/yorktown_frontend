@@ -9,6 +9,7 @@ import Sidebar from './components/common/Sidebar'
 import Menu from './pages/Menu'
 import Contact from './pages/Contact'
 import { routeConstant } from './constants/RouteConstants'
+import ComingSoon from './pages/ComingSoon'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminHeader from './components/admin/AdminHeader';
 import AdminFooter from './components/admin/AdminFooter';
@@ -144,6 +145,7 @@ function App() {
         <Route path={routeConstant.BAG} element={<Bag/>}/>
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.CONTACT} element={<Contact/>}/>
+        <Route path="/coming-soon" element={<ComingSoon/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
         {/* Redirect /admin to dashboard if token, else to login */}
         <Route path="/admin" element={
