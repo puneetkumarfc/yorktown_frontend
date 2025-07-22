@@ -25,7 +25,6 @@ const CustomizeModal = ({
   bread: initialBread,
   cheese: initialCheese,
   uniqueId: originalUniqueId,
-  // add more as needed
 }) => {
   const { showLoader, hideLoader } = useLoader();
   const [itemDetails, setItemDetails] = useState({});
@@ -287,7 +286,7 @@ const CustomizeModal = ({
                 {editMode ? (
                   <button
                     type="button"
-                    className="py-2 px-4 bg-customOrange text-white rounded-xl font-semibold hover:bg-orange-600 transition-all duration-200"
+                    className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
                     onClick={handleUpdateItem}
                   >
                     Update Item
@@ -301,14 +300,14 @@ const CustomizeModal = ({
                     {isPresent ? "View Cart" : "Add to Bag"}
                   </button>
                 )}
-                <button
+                {!editMode && <button
                   className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
                   onClick={() => {
                     navigate(routeConstant.BAG);
                   }}
                 >
                   Buy Now
-                </button>
+                </button>}
               </div>
             </div>
 

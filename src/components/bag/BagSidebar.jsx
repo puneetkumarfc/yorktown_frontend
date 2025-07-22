@@ -17,8 +17,8 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
     itemId: item.id,
     sizeId: item.size,
     quantity: item.quantity,
-    toppings: item.toppings,
-    cheese: item.cheese,
+    toppingIds: item.toppings,
+    cheeseIds: item.cheese,
     bread: item.bread,
   }));
 
@@ -47,7 +47,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
           amount: Number(totalPrice()),
           currency: "usd",
           metadata: {
-            orderId: "ORDER123",
+            orderId: orderId,
             notes: "Takeaway order",
           },
         },

@@ -34,11 +34,6 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
   const platformFee = parseFloat(((taxableAmount + tax) * 0.029 + 0.3).toFixed(2));
   const total = parseFloat((taxableAmount + tax + platformFee).toFixed(2));
 
-  //promocode
-  //tax (6%)
-
-  //fxn value
-
   // Demo promo code logic
   const handleApplyPromo = async (promoCode) => {
     showLoader();
@@ -69,7 +64,7 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
   return (
     <div className="md:w-[360px] w-full flex lg:fixed right-0">
       <div className="w-full md:max-w-xs">
-        <div className="bg-mainBg backdrop-blur-xl border border-black/10 rounded-2xl shadow-xl p-7 flex flex-col gap-5">
+        <div className="bg-mainBg backdrop-blur-xl border border-black/10 rounded-xl shadow-xl p-7 flex flex-col gap-5">
           <h3 className="text-xl font-bold text-customOrange mb-2">
             Order Summary
           </h3>
@@ -125,14 +120,14 @@ const OrderSummary = ({ setCheckoutModal, showLoader, hideLoader }) => {
             </div>
           )}
           {/* Tax row */}
-          <div className="flex justify-between items-center text-base mt-2">
+          <div className="flex justify-between items-center text-base ">
             <span className="font-roboto text-sm font-medium text-black/80 flex items-center gap-1">
               Tax
             </span>
             <span className="font-semibold text-black/90">${tax.toFixed(2)}</span>
           </div>
           {/* Platform Fee row - moved just above Total */}
-          <div className="flex justify-between items-center text-base relative group mt-2">
+          <div className="flex justify-between items-center text-base relative group ">
             <span className="font-medium font-roboto text-sm text-black/80 flex items-center gap-1">
               Platform Fee
               <button
