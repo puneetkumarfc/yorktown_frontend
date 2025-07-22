@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CustomizeModal from "./CustomizeModal";
 import { LoaderProvider } from "./LoaderContext";
 import { useNavigate } from "react-router-dom";
+import AddedToBagModal from "./AddedToBagModal";
 
 const ItemCard = ({ id, name, img, desc, priceFrom }) => {
   const [displayModal, setDisplayModal] = useState(null);
@@ -25,76 +26,6 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
 
   return (
     <>
-      {showConfirmation && (
-        <div className="fixed bottom-8 right-8 z-[9999] flex items-end justify-end pointer-events-none">
-          <div className="flex flex-row items-center gap-3 px-6 py-3 bg-white rounded-xl shadow-2xl border border-green-100 animate-fade-in-simple min-w-[320px] max-w-[400px] h-[56px]">
-            <div className="flex items-center justify-center w-9 h-9 rounded-full bg-green-100">
-              <svg
-                className="w-6 h-6 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="11"
-                  stroke="currentColor"
-                  strokeOpacity="0.15"
-                  fill="white"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M7 13l3 3 6-6"
-                />
-              </svg>
-            </div>
-            <span className="text-green-600 font-semibold text-base">
-              Added to bag
-            </span>
-          </div>
-        </div>
-      )}
-      {/* Next Action Modal */}
-      {showNextActionModal && (
-        <div className="fixed inset-0 z-[99999] flex items-center justify-center px-4 bg-black/30">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-10 shadow-2xl flex flex-col items-center relative animate-fade-in-simple">
-            {/* Icon */}
-            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4 shadow-md">
-              <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="11" stroke="currentColor" strokeOpacity="0.15" fill="white" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7 13l3 3 6-6" />
-              </svg>
-            </div>
-            {/* Message */}
-            <h2 className="text-2xl font-extrabold mb-2 text-black text-center font-roboto">Item added to your bag!</h2>
-            <p className="text-lg text-black/70 text-center mb-8 font-poppins">Would you like to keep shopping for more delicious items, or view your bag to checkout?</p>
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-              <div
-                className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-customOrange hover:bg-transparent transition-all duration-200 border border-customOrange hover:border-customOrange rounded-full text-base text-white hover:text-customOrange cursor-pointer font-semibold shadow-md"
-                onClick={() => {
-                  setShowNextActionModal(false);
-                  navigate('/menu');
-                }}
-              >
-                <span>Continue Shopping</span>
-              </div>
-              <div
-                className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 bg-customOrange hover:bg-transparent transition-all duration-200 border border-customOrange hover:border-customOrange rounded-full text-base text-white hover:text-customOrange cursor-pointer font-semibold shadow-md"
-                onClick={() => {
-                  setShowNextActionModal(false);
-                  navigate('/bag');
-                }}
-              >
-                <span>View Bag</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="rounded-2xl w-full flex flex-col items-center gap-0 border border-customBeige/60 bg-mainBg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden h-[300px]">
         <div className="w-full flex justify-center items-center relative h-[240px] bg-customBeige/40 overflow-hidden">
           {hasImage ? (
@@ -172,6 +103,9 @@ const ItemCard = ({ id, name, img, desc, priceFrom }) => {
                 onShowNextActionModal={() => setShowNextActionModal(true)}
             />
         )}
+
+        {/* Next Action Modal */}
+        {showNextActionModal && <AddedToBagModal showNextActionModal={showNextActionModal} setShowNextActionModal={setShowNextActionModal}/>}
       </div>
     </>
   );

@@ -68,7 +68,7 @@ const QuickPick = () => {
         <p className='uppercase font-roboto font-medium'>Quick Picks</p>
         <p className='text-black/70 font-roboto text-sm font-light mt-1 text-center'>Our most popular items ready for quick customization</p>
 
-        <div className='flex gap-2 mt-4 flex-wrap'>
+        <div className='flex gap-2 mt-4 overflow-auto'>
             {
                 categories.map((category, index) => {
                     const isActive = activeCategory.name === `${category.name}`;

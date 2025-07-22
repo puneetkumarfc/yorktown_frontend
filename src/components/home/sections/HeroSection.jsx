@@ -16,7 +16,7 @@ const HeroSection = () => {
     <div className='max-h-screen mt-[16vh]'>
         <ScrollVelocity texts={['Original american']} velocity={90} className="text-[80px] md:text-[140px] font-roboto_serif uppercase font-thin text-black"/>
 
-        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[582px]'>
+        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[80vh] sm:h-[582px]'>
 
                 <div className='hidden xl:flex flex-col gap-2'>
                     <p className='uppercase font-roboto font-medium'>Follow us on</p>
@@ -30,8 +30,8 @@ const HeroSection = () => {
                     </div>
                 </div>
                 
-                <div className='absolute left-1/2 transform -translate-x-1/2 top-0'>
-                    <img src="/MainPizza.png" alt="PizzaImg" width={582} loading="lazy" />
+                <div className='absolute left-1/2 transform -translate-x-1/2 top-0 h-[80%] xl:h-[100%]'>
+                    <img src="/MainPizza.png" alt="PizzaImg" className="h-full w-auto object-contain" loading="lazy" />
                 </div>
 
                 <div className='xl:w-[300px] flex flex-col gap-5'>

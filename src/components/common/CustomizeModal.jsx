@@ -8,7 +8,6 @@ import { routeConstant } from "../../constants/RouteConstants";
 import toast from "react-hot-toast";
 import { fetchItemDetails } from "../../services/operations/menu";
 import { useLoader } from "./LoaderContext";
-import PizzaLoader from "./PizzaLoader";
 
 const CustomizeModal = ({
   id,
@@ -26,28 +25,46 @@ const CustomizeModal = ({
   uniqueId: originalUniqueId,
   // add more as needed
 }) => {
-  const { showLoader, hideLoader, loading } = useLoader();
+  const { showLoader, hideLoader } = useLoader();
   const [itemDetails, setItemDetails] = useState({});
 
-  const displayDetails = async (id) => {
-    showLoader();
-    try {
-      const response = await fetchItemDetails(id);
-      console.log(response.data.data);
-      setItemDetails(response.data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      hideLoader();
+  // This useEffect now correctly handles data fetching and cleanup.
+  useEffect(() => {
+    // AbortController to cancel the request if the component unmounts.
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    const fetchAndSetDetails = async () => {
+      showLoader();
+      try {
+        const response = await fetchItemDetails(id);
+
+        // Only update state if the request was not aborted.
+        if (!signal.aborted) {
+          setItemDetails(response.data.data);
+        }
+      } catch (error) {
+        if (!signal.aborted) {
+          console.error("Error fetching item details:", error);
+        }
+      } finally {
+        if (!signal.aborted) {
+          hideLoader();
+        }
+      }
+    };
+
+    fetchAndSetDetails();
+
+    // Cleanup function to abort the fetch on unmount.
+    return () => controller.abort();
+  }, [id, showLoader, hideLoader]); // Correct dependencies.
+
+  useEffect(() => {
+    // This effect correctly depends on itemDetails and sets the default size.
+    if (itemDetails.prices && itemDetails.prices.length > 0) {
+      setSelectedSize(itemDetails.prices[0].sizeId);
     }
-  };
-
-  useEffect(() => {
-    displayDetails(id);
-  }, []);
-
-  useEffect(() => {
-    setSelectedSize(itemDetails.prices?.[0]?.sizeId);
   }, [itemDetails]);
 
   // Pre-fill state if in edit mode
@@ -221,11 +238,6 @@ const CustomizeModal = ({
 
   return (
     <>
-      {showAddedModal && (
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[9999] flex items-center px-6 py-3 bg-green-500 text-white rounded-full shadow-lg animate-bounce-in">
-          <span className="font-semibold mr-2">✔</span> Item added to bag!
-        </div>
-      )}
       {/* Main Customize Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/20">
         <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-mainBg backdrop-blur-xl">
@@ -302,7 +314,7 @@ const CustomizeModal = ({
                       className={`flex flex-col py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
                         selectedSize === size.sizeId
                           ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
+                          : "border-black/10 hover:border-gray-300 text-black"
                       }`}
                     >
                       <div className="font-light text-sm font-poppins">
@@ -353,7 +365,7 @@ const CustomizeModal = ({
                           className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                             selectedToppings.includes(topping.toppingId)
                               ? "border-mainRed/70 bg-red-50 text-mainRed"
-                              : "border-black/5 hover:border-gray-300 text-black"
+                              : "border-black/10 hover:border-gray-300 text-black"
                           }`}
                         >
                           <div className="flex justify-between items-center">
@@ -381,7 +393,7 @@ const CustomizeModal = ({
                       className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                         selectedBreads === bread.id
                           ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
+                          : "border-black/10 hover:border-gray-300 text-black"
                       }`}
                     >
                       <div className="flex justify-between items-center">
@@ -430,7 +442,7 @@ const CustomizeModal = ({
                           className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                             selectedCheese.includes(Number(cheese.id))
                               ? "border-mainRed/70 bg-red-50 text-mainRed"
-                              : "border-black/5 hover:border-gray-300 text-black"
+                              : "border-black/10 hover:border-gray-300 text-black"
                           }`}
                         >
                           <div className="flex justify-between items-center">
@@ -479,7 +491,6 @@ const CustomizeModal = ({
             </div>
           </div>
         </div>
-        {loading && <PizzaLoader />}
       </div>
     </>
   );

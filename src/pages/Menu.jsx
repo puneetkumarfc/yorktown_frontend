@@ -72,7 +72,7 @@ const Menu = () => {
       {/* Heading, searchbar, filter */}
       <div className="relative mt-25">
         {/* Heading */}
-        <p className='text-center mb-6 font-roboto uppercase font-semibold'>Your <span className='text-customBeige'>favorite food </span> is just a click away!</p>
+        <p className='text-center mb-6 font-roboto uppercase font-semibold'>Your favorite food is just a click away!</p>
         
         <div className='flex items-center gap-2'>
           {/* Searchbar */}
