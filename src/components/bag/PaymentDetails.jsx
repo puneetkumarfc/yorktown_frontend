@@ -1,15 +1,19 @@
-import React from 'react'
-import CheckoutForm from './CheckoutForm'
+import React from "react";
+import CheckoutForm from "./CheckoutForm";
 
-const PaymentDetails = () => {
+const PaymentDetails = ({ handlePaymentComplete }) => {
   return (
     <>
-      <p className='mb-2 text-xl font-poppins font-bold uppercase text-center'>Complete your payment</p>
-      <p className='text-sm text-black/50 text-center mb-7'>Fill in your payment details to securely process your payments</p>
+      <p className="mb-2 text-xl font-poppins font-bold uppercase text-center">
+        Complete your payment
+      </p>
+      <p className="text-sm text-black/50 text-center mb-7">
+        Fill in your payment details to securely process your payments
+      </p>
 
-      <CheckoutForm />
+      <CheckoutForm handlePaymentComplete={handlePaymentComplete} />
     </>
-  )
-}
+  );
+};
 
-export default PaymentDetails
+export default PaymentDetails;

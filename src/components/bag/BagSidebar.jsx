@@ -29,6 +29,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
   });
 
   const [options, setOptions] = useState(null);
+  const [orderId, setOrderId] = useState(null);
 
   const handleNext = async (data) => {
     if (formStep === 1) {
@@ -61,6 +62,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
               theme: "stripe",
             },
           });
+          setOrderId(response.data.data.orderId); // Store real orderId from backend
         }
       } catch (error) {
         console.error("Error placing order:", error);
@@ -68,6 +70,17 @@ const BagSidebar = ({ setCheckoutModal }) => {
     }
 
     setFormStep(formStep + 1);
+  };
+
+  // Callback to close modal and check payment status
+  const handlePaymentComplete = async (orderId) => {
+    setCheckoutModal(false);
+    try {
+      const response = await checkStatus(orderId);
+      console.log("Payment status:", response.data.data)
+    } catch (err) {
+      console.error("Error checking payment status:", err);
+    }
   };
 
   return (
@@ -81,7 +94,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
         >
           <RxCross2 />
         </button>
-        
+
         <div className="flex flex-col p-8 mt-4">
           <div className="flex items-center w-full mb-8">
             <p
@@ -130,6 +143,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
                 setFormStep={setFormStep}
                 formStep={formStep}
                 handleNext={handleNext}
+                handlePaymentComplete={handlePaymentComplete}
               />
             </Elements>
           ) : (

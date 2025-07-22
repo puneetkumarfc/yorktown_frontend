@@ -8,5 +8,7 @@ export const menuEndpoints = {
 }
 
 export const stripeEndpoints = {
-    PLACE_ORDER: BASE_URL + "order/place"
+    PLACE_ORDER: BASE_URL + "order/place",
+    CHECK_STATUS: (orderId) => BASE_URL + `payment/check-payment-status/${orderId}`,
+
 }

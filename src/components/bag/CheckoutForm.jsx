@@ -1,7 +1,11 @@
-import { useState } from 'react';
-import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useState } from "react";
+import {
+  PaymentElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ handlePaymentComplete }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -15,7 +19,7 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'https://eatatyorktown.com/bag',
+        return_url: "http://localhost:5173/bag",
       },
     });
 
@@ -24,13 +28,20 @@ const CheckoutForm = () => {
     }
 
     setLoading(false);
+    if (handlePaymentComplete) {
+      handlePaymentComplete();
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <PaymentElement id="payment-element"/>
-      <button type="submit" disabled={!stripe || loading} className='mt-4 py-2 border rounded-xl w-full hover:bg-white hover:text-black transition-all duration-150'>
-        {loading ? 'Processing…' : 'Pay'}
+      <PaymentElement id="payment-element" />
+      <button
+        type="submit"
+        disabled={!stripe || loading}
+        className="mt-4 py-2 border rounded-xl w-full hover:bg-white hover:text-black transition-all duration-150"
+      >
+        {loading ? "Processing…" : "Pay"}
       </button>
     </form>
   );
