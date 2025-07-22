@@ -6,7 +6,7 @@ import { VscSettings } from "react-icons/vsc";
 import {filters} from "../constants/Menu"
 import ItemCard from '../components/common/ItemCard';
 import FilterModal from '../components/menu/FilterModal';
-import { fetchCategories, fetchMenu } from '../services/operations/menu';
+import { fetchCategoriesCopy, fetchMenu } from '../services/operations/menu';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useLoader } from '../components/common/LoaderContext';
@@ -37,7 +37,7 @@ const Menu = () => {
   const displayCategories = async(displayHome=2) => {
     showLoader();
     try {
-        const response = await fetchCategories(displayHome);
+        const response = await fetchCategoriesCopy(displayHome);
         setCategories(response.data.data);
         if (response.data.data.length > 0) {
           setActiveCategory(response.data.data[0]);

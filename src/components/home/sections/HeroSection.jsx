@@ -16,7 +16,7 @@ const HeroSection = () => {
     <div className='max-h-screen mt-[16vh]'>
         <ScrollVelocity texts={['Original american']} velocity={90} className="text-[80px] md:text-[140px] font-roboto_serif uppercase font-thin text-black"/>
 
-        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[76vh] sm:h-[582px]'>
+        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[76vh] sm:h-[590px]'>
 
                 <div className='hidden xl:flex flex-col gap-2'>
                     <p className='uppercase font-roboto font-medium'>Follow us on</p>
