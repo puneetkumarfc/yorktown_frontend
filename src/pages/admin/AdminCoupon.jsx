@@ -254,7 +254,7 @@ function DeleteModal({ open, onClose, onConfirm, coupon }) {
   );
 }
 
-const AdminCoupon = ({ collapsed, setCollapsed }) => {
+const AdminCoupon = () => {
   const [coupons, setCoupons] = useState([]);
   const [modal, setModal] = useState({ open: false, coupon: null, mode: null });
   const [modalLoading, setModalLoading] = useState(false);
@@ -436,97 +436,99 @@ const AdminCoupon = ({ collapsed, setCollapsed }) => {
   };
 
   return (
-    <div className={`admin-dashboard-layout${collapsed ? ' collapsed' : ''} px-[1rem] md:px-[6rem]`}> 
-      <AdminSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-      <div className="admin-orders-container px-[1rem] md:px-[6rem]">
-        <div className="glass-effect admin-titlebar flex-col md:flex-row gap-4 md:gap-0">
-          <h1 className="admin-title">Coupons</h1>
-          <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center w-full md:w-auto justify-between md:justify-end">
+    <div className="min-h-screen bg-gray-50 flex">
+      <AdminSidebar />
+      <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px'  }}>
+        <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Coupons</h1>
+          <hr className="mb-6" />
+          {/* Search and Add */}
+          <div className="flex flex-col md:flex-row gap-4 md:gap-0 mb-4 items-center justify-between w-full">
             <input
-              className="admin-titlebar-search-input w-full md:w-64"
+              className="border rounded px-3 py-2 w-full md:w-64"
               type="text"
               placeholder="Search coupons..."
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(0); }}
             />
-            <button className="admin-titlebar-search-btn flex items-center gap-2" style={{ minWidth: 120 }} onClick={handleAdd}>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2 flex items-center gap-2" style={{ minWidth: 120 }} onClick={handleAdd}>
               <FaPlus /> Add Coupon
             </button>
           </div>
-        </div>
-        <div className="glass-effect rounded-2xl overflow-x-auto animate-fadein">
-          {loading ? (
-            <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>Loading coupons...</div>
-          ) : error ? (
-            <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>{error}</div>
-          ) : (
-          <table className="w-full table-auto admin-orders-table">
-            <thead>
-              <tr className="table-order text-white">
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('code')}>Code {sort.startsWith('code') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('discountType')}>Discount Type {sort.startsWith('discountType') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('discountValue')}>Discount {sort.startsWith('discountValue') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('startDate')}>Start Date {sort.startsWith('startDate') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('endDate')}>Expiry Date {sort.startsWith('endDate') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff', cursor: 'pointer'}} onClick={() => handleSort('isActive')}>Status {sort.startsWith('isActive') ? (sort.endsWith('asc') ? '↑' : '↓') : ''}</th>
-                <th className="px-6 py-4 text-left font-semibold" style={{color: '#fff'}}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coupons.map(coupon => (
-                <tr key={coupon.id} className="table-row transition-all duration-300 hover:bg-red-900/10">
-                  <td className="px-6 py-4 font-semibold">{coupon.code}</td>
-                  <td className="px-6 py-4">{coupon.discountType}</td>
-                  <td className="px-6 py-4">{coupon.discount}</td>
-                  <td className="px-6 py-4">{coupon.startDate}</td>
-                  <td className="px-6 py-4">{coupon.expiry}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${coupon.status === 'Active' ? 'bg-green-700 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{coupon.status}</span>
-                  </td>
-                  <td className="px-6 py-4 flex gap-3 items-center">
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-mainRed/80 text-white transition-all duration-200" title="View" onClick={() => handleView(coupon)}><FaEye /></button>
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-yellow-600 text-white transition-all duration-200" title="Edit" onClick={() => handleEdit(coupon)}><FaEdit /></button>
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-red-600 text-white transition-all duration-200" title="Delete" onClick={() => handleDelete(coupon.id)}><FaTrash /></button>
-                  </td>
-                </tr>
-              ))}
-              {coupons.length === 0 && !loading && !error && (
-                <tr><td colSpan={7} style={{ textAlign: 'center', color: '#ff2222' }}>No coupons found.</td></tr>
-              )}
-            </tbody>
-          </table>
+          <div className="rounded-2xl overflow-x-auto animate-fadein">
+            {loading ? (
+              <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>Loading coupons...</div>
+            ) : error ? (
+              <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>{error}</div>
+            ) : (
+              <table className="min-w-full bg-white rounded-lg overflow-hidden">
+                <thead>
+                  <tr>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Code</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Discount Type</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Discount</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Start Date</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Expiry Date</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Status</th>
+                    <th className="px-6 py-4 text-left font-medium text-gray-500">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {coupons.map((coupon, idx) => (
+                    <tr key={coupon.id} className={idx % 2 === 1 ? 'bg-gray-50' : ''}>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.code}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.discountType}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.discount}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.startDate}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.expiry}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.status}</td>
+                      <td className="px-6 py-4 whitespace-nowrap flex gap-2">
+                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="View" onClick={() => handleView(coupon)}>View</button>
+                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Edit" onClick={() => handleEdit(coupon)}>Edit</button>
+                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Delete" onClick={() => handleDelete(coupon.id)}>Delete</button>
+                      </td>
+                    </tr>
+                  ))}
+                  {coupons.length === 0 && !loading && !error && (
+                    <tr><td colSpan={7} className="text-center text-red-500 py-8">No coupons found.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            )}
+          </div>
+          {/* Pagination */}
+          <div className="flex justify-end mt-4 animate-fadein">
+            <button onClick={() => handlePage(page - 1)} disabled={page === 0} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&lt;</button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                className={`px-3 py-1 rounded mx-1 ${page === i ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                onClick={() => handlePage(i)}
+              >{i + 1}</button>
+            ))}
+            <button onClick={() => handlePage(page + 1)} disabled={page === totalPages - 1} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&gt;</button>
+          </div>
+          {/* Modals */}
+          <CouponModal
+            open={modal.open}
+            onClose={() => setModal({ open: false, coupon: null, mode: null })}
+            coupon={modal.coupon}
+            mode={modal.mode}
+            onSave={handleSaveEdit}
+          />
+          {modalLoading && (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
+              <div className="bg-white/90 rounded-lg px-8 py-6 text-lg font-semibold text-[#bd390e] shadow-lg">Loading coupon details...</div>
+            </div>
           )}
-        </div>
-        <div className="admin-orders-pagination animate-fadein" style={{ justifyContent: 'flex-end', marginRight: 0 }}>
-          <button onClick={() => handlePage(page - 1)} disabled={page === 0}>&lt;</button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              className={page === i ? 'active' : ''}
-              onClick={() => handlePage(i)}
-            >{i + 1}</button>
-          ))}
-          <button onClick={() => handlePage(page + 1)} disabled={page === totalPages - 1}>&gt;</button>
+          <DeleteModal
+            open={deleteModal.open}
+            onClose={() => setDeleteModal({ open: false, couponId: null })}
+            onConfirm={handleConfirmDelete}
+            coupon={coupons.find(c => c.id === deleteModal.couponId)}
+          />
         </div>
       </div>
-      <CouponModal
-        open={modal.open}
-        onClose={() => setModal({ open: false, coupon: null, mode: null })}
-        coupon={modal.coupon}
-        mode={modal.mode}
-        onSave={handleSaveEdit}
-      />
-      {modalLoading && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
-          <div className="bg-white/90 rounded-lg px-8 py-6 text-lg font-semibold text-[#bd390e] shadow-lg">Loading coupon details...</div>
-        </div>
-      )}
-      <DeleteModal
-        open={deleteModal.open}
-        onClose={() => setDeleteModal({ open: false, couponId: null })}
-        onConfirm={handleConfirmDelete}
-        coupon={coupons.find(c => c.id === deleteModal.couponId)}
-      />
     </div>
   );
 };

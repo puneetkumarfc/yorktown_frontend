@@ -10,8 +10,6 @@ import Menu from './pages/Menu'
 import Contact from './pages/Contact'
 import { routeConstant } from './constants/RouteConstants'
 import AdminLogin from './pages/admin/AdminLogin'
-import AdminHeader from './components/admin/AdminHeader';
-import AdminFooter from './components/admin/AdminFooter';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminOrderDetails from './pages/admin/AdminOrderDetails';
@@ -20,6 +18,7 @@ import AdminCoupon from './pages/admin/AdminCoupon';
 import { LoaderProvider, useLoader } from './components/common/LoaderContext';
 import PizzaLoader from './components/common/PizzaLoader';
 import NotFound from './pages/NotFound';
+import SidebarDemo from './pages/SidebarDemo';
 
 function GlobalLoaderOverlay() {
   const { loading } = useLoader();
@@ -74,60 +73,52 @@ function App() {
   const isAdminOrderDetails = /^\/admin\/orders\//.test(location.pathname) && !isAdminOrders;
   const isAdminMenuList = location.pathname === routeConstant.ADMIN_MENU_LIST;
   const isAdminCoupon = location.pathname === routeConstant.ADMIN_COUPON;
+  const isSidebarDemo = location.pathname === '/sidebar-demo';
 
   if (isAdminLogin) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader />
         <AdminLogin />
-        <AdminFooter />
       </div>
     );
   }
   if (isAdminDashboard) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminDashboard collapsed={collapsed} setCollapsed={setCollapsed} />
-        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );
   }
   if (isAdminOrders) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminOrders collapsed={collapsed} setCollapsed={setCollapsed} />
-        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );
   }
   if (isAdminOrderDetails) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminOrderDetails collapsed={collapsed} setCollapsed={setCollapsed} />
-        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );
   }
   if (isAdminMenuList) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminMenuList collapsed={collapsed} setCollapsed={setCollapsed} />
-        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );
   }
   if (isAdminCoupon) {
     return (
       <div className="bg-black min-h-screen w-full text-white overflow-x-hidden custom-scrollbar">
-        <AdminHeader sidebarWidth={collapsed ? 64 : 220} />
         <AdminCoupon collapsed={collapsed} setCollapsed={setCollapsed} />
-        <AdminFooter sidebarWidth={collapsed ? 64 : 220} />
       </div>
     );
+  }
+  if (isSidebarDemo) {
+    return <SidebarDemo />;
   }
 
   return (
@@ -151,6 +142,7 @@ function App() {
             ? <Navigate to={routeConstant.ADMIN_DASHBOARD} replace />
             : <Navigate to={routeConstant.ADMIN_LOGIN} replace />
         } />
+        <Route path="/sidebar-demo" element={<SidebarDemo/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer/>

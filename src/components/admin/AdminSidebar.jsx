@@ -1,95 +1,73 @@
-import React, { useState } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import {
+  HomeIcon,
+  ClipboardDocumentListIcon,
+  MegaphoneIcon,
+  Cog6ToothIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+} from '@heroicons/react/24/outline';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminAuth } from '../../utils/api';
-import { FaTachometerAlt, FaListAlt, FaSignOutAlt, FaBars, FaUtensils, FaTicketAlt } from 'react-icons/fa';
-import './AdminSidebar.css';
 
-const links = [
-  { label: 'Dashboard', to: routeConstant.ADMIN_DASHBOARD, icon: <FaTachometerAlt /> },
-  { label: 'Orders', to: routeConstant.ADMIN_ORDERS, icon: <FaListAlt /> },
-  { label: 'Menu', to: routeConstant.ADMIN_MENU_LIST, icon: <FaUtensils /> },
-  { label: 'Coupons', to: routeConstant.ADMIN_COUPON, icon: <FaTicketAlt /> },
+const navLinks = [
+  { name: 'Dashboard', icon: HomeIcon, to: routeConstant.ADMIN_DASHBOARD },
+  { name: 'Orders', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_ORDERS },
+  { name: 'Menu', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_MENU_LIST },
+  { name: 'Coupons', icon: MegaphoneIcon, to: routeConstant.ADMIN_COUPON },
+  { name: 'Settings', icon: Cog6ToothIcon, to: routeConstant.ADMIN_SETTINGS }, // Add this route if it exists
 ];
 
-const AdminSidebar = ({ collapsed, setCollapsed }) => {
+export default function AdminSidebar() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
-  const handleLogout = () => {
-    setShowLogoutConfirm(true);
-  };
-
-  const confirmLogout = () => {
-    adminAuth.logout();
-    navigate(routeConstant.ADMIN_LOGIN);
-    setShowLogoutConfirm(false);
-  };
-
-  const cancelLogout = () => {
-    setShowLogoutConfirm(false);
-  };
+  const currentUser = adminAuth.getCurrentUser() || { email: 'erica@example.com', name: 'Erica' };
 
   return (
-    <>
-      <div className={`admin-sidebar${collapsed ? ' collapsed' : ''}`}> 
-        <button className="admin-sidebar-toggle" onClick={() => setCollapsed(!collapsed)}>
-          <FaBars />
-        </button>
-        <nav className="admin-sidebar-nav">
-          {links.map(link => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                'admin-sidebar-link' + (isActive ? ' active' : '')
-              }
-              end
-            >
-              <span className="admin-sidebar-icon">{link.icon}</span>
-              {!collapsed && <span className="admin-sidebar-label">{link.label}</span>}
-            </NavLink>
-          ))}
-          <button className="admin-sidebar-link logout" onClick={handleLogout}>
-            <span className="admin-sidebar-icon"><FaSignOutAlt /></span>
-            {!collapsed && <span className="admin-sidebar-label">Logout</span>}
-          </button>
-        </nav>
+    <aside className="flex flex-col w-64 h-screen border-gray-200 fixed top-0 left-0 z-30" style={{ minHeight: '100vh' }}>
+      {/* Logo/title and collapse button */}
+      <div className="flex items-center h-16 px-6 border-b border-gray-100">
+        <span className="font-bold text-lg tracking-tight text-gray-900 flex-1">
+          <p className="font-bold cursor-pointer">York<span className="text-customOrange">T</span>own</p>
+        </span>
+        <ChevronLeftIcon className="w-5 h-5 text-gray-400" />
       </div>
-
-      {/* Logout Confirmation Modal */}
-      {showLogoutConfirm && (
-        <div className="logout-confirm-overlay animate-fadein">
-          <div className="logout-confirm-modal">
-            <div className="logout-confirm-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3>Confirm Logout</h3>
-              <button
-                className="logout-confirm-close"
-                onClick={cancelLogout}
-                style={{ color: '#bd390e', fontSize: 28, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.2s' }}
-                onMouseOver={e => e.currentTarget.style.color = '#a82a0c'}
-                onMouseOut={e => e.currentTarget.style.color = '#bd390e'}
+      {/* Main navigation */}
+      <nav className="flex-1 px-2 py-6 overflow-y-auto">
+        <ul className="space-y-1">
+          {navLinks.map((link) => (
+            <li key={link.name}>
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 w-full px-4 py-2 rounded-lg font-medium transition group ${
+                    isActive
+                      ? 'bg-gray-100 text-gray-900'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'
+                  }`
+                }
+                end
               >
-                &times;
-              </button>
-            </div>
-            <div className="logout-confirm-content">
-              <p>Are you sure you want to logout?</p>
-            </div>
-            <div className="logout-confirm-footer">
-              <button className="logout-confirm-btn cancel" onClick={cancelLogout}>
-                Cancel
-              </button>
-              <button className="logout-confirm-btn confirm" onClick={confirmLogout}>
-                Logout
-              </button>
-            </div>
-          </div>
+                <link.icon className="w-5 h-5" />
+                <span>{link.name}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      {/* User profile */}
+      <div className="flex items-center gap-3 px-6 py-4 border-t border-gray-100 mt-auto">
+        <img
+          src="https://randomuser.me/api/portraits/women/44.jpg"
+          alt="User avatar"
+          className="w-10 h-10 rounded-full object-cover border"
+        />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900 truncate">{currentUser.name || 'Admin'}</p>
+          <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
         </div>
-      )}
-    </>
+        <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+      </div>
+    </aside>
   );
-};
-
-export default AdminSidebar; 
+} 

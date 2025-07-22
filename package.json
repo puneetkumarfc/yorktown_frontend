@@ -16,7 +16,7 @@
     "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.10",
     "axios": "^1.10.0",
-    "framer-motion": "^12.18.1",
+    "framer-motion": "^12.23.6",
     "gsap": "^3.13.0",
     "html2pdf.js": "^0.10.3",
     "react": "^19.1.0",

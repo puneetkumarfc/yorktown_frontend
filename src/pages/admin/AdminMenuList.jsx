@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
-import './AdminOrders.css'; // Reuse admin table styles for consistency
 import MenuItemModal from './MenuItemModal';
 import { fetchCategories, fetchMenu } from '../../services/operations/menu';
 import { useLoader } from '../../components/common/LoaderContext';
 
 const PAGE_SIZE = 20;
 
-const AdminMenuList = ({ collapsed, setCollapsed }) => {
+const AdminMenuList = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState('asc');
@@ -122,110 +121,81 @@ const AdminMenuList = ({ collapsed, setCollapsed }) => {
   };
 
   return (
-    <div className={`admin-dashboard-layout${collapsed ? ' collapsed' : ''} px-[1rem] md:px-[6rem]`}>
-      <AdminSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-      <div className="admin-orders-container px-[1rem] md:px-[6rem]">
-        <div className="glass-effect admin-titlebar flex-col md:flex-row gap-4 md:gap-0">
-          <h1 className="admin-title">Menu Items</h1>
-          <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center w-full md:w-auto justify-between md:justify-end">
+    <div className="min-h-screen bg-gray-50 flex">
+      <AdminSidebar />
+      <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px'  }}>
+        <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Menu Items</h1>
+          <hr className="mb-6" />
+          {/* Search and Add */}
+          <div className="flex flex-col md:flex-row gap-4 md:gap-0 mb-4 items-center justify-between w-full">
             <input
-              className="admin-titlebar-search-input w-full md:w-64"
+              className="border rounded px-3 py-2 w-full md:w-64"
               type="text"
               placeholder="Search menu..."
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1); }}
             />
-            <button className="admin-titlebar-search-btn flex items-center gap-2" style={{ minWidth: 120 }} onClick={handleAdd}>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2 flex items-center gap-2" style={{ minWidth: 120 }} onClick={handleAdd}>
               <FaPlus /> Add Menu Item
             </button>
           </div>
-        </div>
-        {error && (
-          <div style={{ textAlign: 'center', color: '#ff2222', margin: '2rem 0' }}>{error}</div>
-        )}
-        <div className="glass-effect rounded-2xl overflow-x-auto animate-fadein">
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="table-order text-white">
-                <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('name')}>
-                  Name {sortBy === 'name' && (sortDir === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('category')}>
-                  Category {sortBy === 'category' && (sortDir === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="px-6 py-4 text-left cursor-pointer font-semibold" onClick={() => handleSort('startingPrice')}>
-                  Price {sortBy === 'startingPrice' && (sortDir === 'asc' ? '↑' : '↓')}
-                </th>
-                <th className="px-6 py-4 text-left font-semibold">Status</th>
-                <th className="px-6 py-4 text-left font-semibold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.map(item => (
-                <tr key={item.id} className="table-row transition-all duration-300 hover:bg-red-900/10">
-                  <td className="px-6 py-4 font-semibold flex items-center gap-3">
-                    {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className="w-10 h-10 rounded-full object-cover" /> : <span className="w-10 h-10 rounded-full bg-mainRed/30 flex items-center justify-center text-lg font-bold text-mainRed">{item.name[0]}</span>}
-                    <span>{item.name}</span>
-                  </td>
-                  <td className="px-6 py-4">{item.category}</td>
-                  <td className="px-6 py-4">${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold bg-green-700 text-green-200`}>Active</span>
-                  </td>
-                  <td className="px-6 py-4 flex gap-3 items-center">
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-mainRed/80 text-white transition-all duration-200" title="View" onClick={() => handleView(item)}><FaEye /></button>
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-yellow-600 text-white transition-all duration-200" title="Edit" onClick={() => handleEdit(item)}><FaEdit /></button>
-                    <button className="p-2 rounded-lg bg-black/30 hover:bg-red-600 text-white transition-all duration-200" title="Delete" onClick={() => handleDelete(item.id)}><FaTrash /></button>
-                  </td>
+          <div className="rounded-2xl overflow-x-auto animate-fadein">
+            <table className="min-w-full bg-white rounded-lg overflow-hidden">
+              <thead>
+                <tr>
+                  <th className="px-6 py-4 text-left font-medium text-gray-500">Name</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-500">Category</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-500">Price</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-500">Status</th>
+                  <th className="px-6 py-4 text-left font-medium text-gray-500">Actions</th>
                 </tr>
-              ))}
-              {paginated.length === 0 && (
-                <tr><td colSpan={5} style={{ textAlign: 'center', color: '#ff2222' }}>No menu items found.</td></tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="admin-orders-pagination animate-fadein" style={{ justifyContent: 'flex-end', marginRight: 0 }}>
-          <button onClick={() => handlePage(page - 1)} disabled={page === 1}>&lt;</button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              className={page === i + 1 ? 'active' : ''}
-              onClick={() => handlePage(i + 1)}
-            >{i + 1}</button>
-          ))}
-          <button onClick={() => handlePage(page + 1)} disabled={page === totalPages}>&gt;</button>
-        </div>
-        {/* Delete Confirmation Modal */}
-        {showDelete && (
-          <div className="logout-confirm-overlay animate-fadein">
-            <div className="logout-confirm-modal">
-              <div className="logout-confirm-header">
-                <h3>Confirm Delete</h3>
-                <button className="logout-confirm-close" onClick={() => setShowDelete(false)}>&times;</button>
-              </div>
-              <div className="logout-confirm-content">
-                <p>Are you sure you want to delete this menu item?</p>
-              </div>
-              <div className="logout-confirm-footer">
-                <button className="logout-confirm-btn cancel" onClick={() => setShowDelete(false)}>Cancel</button>
-                <button className="logout-confirm-btn confirm" onClick={confirmDelete}>Delete</button>
-              </div>
-            </div>
+              </thead>
+              <tbody>
+                {paginated.map((item, idx) => (
+                  <tr key={item.id} className={idx % 2 === 1 ? 'bg-gray-50' : ''}>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-900 flex items-center gap-3">
+                      {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className="w-10 h-10 rounded-full object-cover" /> : <span className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold text-gray-500">{item.name[0]}</span>}
+                      <span>{item.name}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">{item.category}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">Active</td>
+                    <td className="px-6 py-4 whitespace-nowrap flex gap-2">
+                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="View" onClick={() => handleView(item)}>View</button>
+                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Edit" onClick={() => handleEdit(item)}>Edit</button>
+                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Delete" onClick={() => handleDelete(item.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+                {paginated.length === 0 && (
+                  <tr><td colSpan={5} className="text-center text-red-500 py-8">No menu items found.</td></tr>
+                )}
+              </tbody>
+            </table>
           </div>
-        )}
-        <MenuItemModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          item={modalItem}
-          mode={modalMode}
-          onSave={handleSave}
-        />
+          {/* Pagination */}
+          <div className="flex justify-end mt-4 animate-fadein">
+            <button onClick={() => handlePage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&lt;</button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                className={`px-3 py-1 rounded mx-1 ${page === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                onClick={() => handlePage(i + 1)}
+              >{i + 1}</button>
+            ))}
+            <button onClick={() => handlePage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&gt;</button>
+          </div>
+          {/* Modals */}
+          <MenuItemModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            item={modalItem}
+            mode={modalMode}
+            onSave={handleSave}
+          />
+        </div>
       </div>
-      <style>{`
-        .animate-fadein { animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none; } }
-      `}</style>
     </div>
   );
 };
