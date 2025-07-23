@@ -136,12 +136,12 @@ function App() {
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.CONTACT} element={<Contact/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
-        {/* Redirect /admin to dashboard if token, else to login */}
         <Route path="/admin" element={
           localStorage.getItem('adminToken')
             ? <Navigate to={routeConstant.ADMIN_DASHBOARD} replace />
             : <Navigate to={routeConstant.ADMIN_LOGIN} replace />
-        } />
+          }
+        />
         <Route path="/sidebar-demo" element={<SidebarDemo/>}/>
         <Route path="*" element={<NotFound />} />
       </Routes>

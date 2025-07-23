@@ -61,14 +61,15 @@ const AdminOrders = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
+      
       <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px' }}>
         <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Orders Dashboard</h1>
-          <hr className="mb-6" />
+          <h1 className="text-xl font-semibold text-gray-900 mb-2 font-roboto_serif">Your Orders</h1>
+        
           {/* Search and Table */}
           <div className="flex flex-col md:flex-row gap-4 md:gap-0 mb-4 items-center justify-between w-full">
             <input
-              className="border rounded px-3 py-2 w-full md:w-64"
+              className="border border-black rounded px-3 py-2 w-full md:w-64"
               type="text"
               placeholder="Search orders..."
               value={search}
@@ -76,6 +77,7 @@ const AdminOrders = () => {
             />
             <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2" onClick={() => setPage(1)}>Search</button>
           </div>
+
           <div className="rounded-2xl overflow-x-auto animate-fadein">
             {loading ? (
               <div style={{ textAlign: 'center', color: '#ff2222', padding: '2rem' }}>Loading orders...</div>
