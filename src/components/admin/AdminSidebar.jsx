@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   HomeIcon,
   ClipboardDocumentListIcon,
   MegaphoneIcon,
   Cog6ToothIcon,
-  ChevronDownIcon,
-  ChevronLeftIcon,
+  ChevronDownIcon
 } from '@heroicons/react/24/outline';
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminAuth } from '../../utils/api';
 
-const navLinks = [
-  { name: 'Dashboard', icon: HomeIcon, to: routeConstant.ADMIN_DASHBOARD },
-  { name: 'Orders', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_ORDERS },
-  { name: 'Menu', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_MENU_LIST },
-  { name: 'Coupons', icon: MegaphoneIcon, to: routeConstant.ADMIN_COUPON },
-  { name: 'Settings', icon: Cog6ToothIcon, to: routeConstant.ADMIN_SETTINGS }, // Add this route if it exists
-];
-
 export default function AdminSidebar() {
   const navigate = useNavigate();
+
+  const navLinks = [
+    { name: 'Dashboard', icon: HomeIcon, to: routeConstant.ADMIN_DASHBOARD },
+    { name: 'Orders', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_ORDERS },
+    { name: 'Menu', icon: ClipboardDocumentListIcon, to: routeConstant.ADMIN_MENU_LIST },
+    { name: 'Coupons', icon: MegaphoneIcon, to: routeConstant.ADMIN_COUPON },
+    { name: 'Settings', icon: Cog6ToothIcon, to: routeConstant.ADMIN_SETTINGS },
+  ];
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   const currentUser = adminAuth.getCurrentUser() || { email: 'erica@example.com', name: 'Erica' };
 
   return (
@@ -30,7 +38,10 @@ export default function AdminSidebar() {
         <span className="font-bold text-lg tracking-tight text-gray-900 flex-1">
           <p className="font-bold cursor-pointer">York<span className="text-customOrange">T</span>own</p>
         </span>
-        <ChevronLeftIcon className="w-5 h-5 text-gray-400" />
+
+        <div className='' onClick={toggleSidebar}>
+          {sidebarOpen ? <IoIosArrowForward className="w-5 h-5 text-gray-400" /> : <IoIosArrowBack className="w-5 h-5 text-gray-400" />}
+        </div>
       </div>
       {/* Main navigation */}
       <nav className="flex-1 px-2 py-6 overflow-y-auto">
@@ -55,6 +66,7 @@ export default function AdminSidebar() {
           ))}
         </ul>
       </nav>
+
       {/* User profile */}
       <div className="flex items-center gap-3 px-6 py-4 border-t border-gray-100 mt-auto">
         <img

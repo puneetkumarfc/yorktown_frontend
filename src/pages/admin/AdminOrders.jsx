@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import AdminSidebar from '../../components/admin/AdminSidebar';
-import { useNavigate } from 'react-router-dom';
-import { routeConstant } from '../../constants/RouteConstants';
-import { adminOrders } from '../../utils/api';
-import { useLoader } from '../../components/common/LoaderContext';
+import React, { useState, useEffect } from "react";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import { useNavigate } from "react-router-dom";
+import { routeConstant } from "../../constants/RouteConstants";
+import { adminOrders } from "../../utils/api";
+import { useLoader } from "../../components/common/LoaderContext";
+import DataTable from "../../components/admin/DataTable";
+import { VscEye } from "react-icons/vsc";
+import Searchbar from "../../components/admin/Searchbar";
+import Pagination from "../../components/admin/Pagination";
+
 
 const PAGE_SIZE = 20;
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState('id');
-  const [sortDir, setSortDir] = useState('desc');
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("id");
+  const [sortDir, setSortDir] = useState("desc");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
+
+  const [query, setQuery] = useState("");
+  const handleInputChange = (e) => setQuery(e.target.value);
+  const handleClear = () => setQuery("");
+
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       showLoader();
-      setError('');
+      setError("");
       try {
         const payload = {
           search,
@@ -35,7 +45,7 @@ const AdminOrders = () => {
         setOrders(response.data.orders || []);
         setTotalPages(response.data.totalPages || 1);
       } catch (err) {
-        setError(err.message || 'Failed to fetch orders');
+        setError(err.message || "Failed to fetch orders");
       } finally {
         setLoading(false);
         hideLoader();
@@ -46,10 +56,10 @@ const AdminOrders = () => {
 
   const handleSort = (col) => {
     if (sortBy === col) {
-      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
       setSortBy(col);
-      setSortDir('asc');
+      setSortDir("asc");
     }
     setPage(1);
   };
@@ -58,80 +68,117 @@ const AdminOrders = () => {
     if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
   };
 
+  const columns = [
+    {
+      header: "Order Id",
+      cell: (row) => row.id,
+    },
+    {
+      header: "User",
+      cell: (row) => row.customerName,
+    },
+    {
+      header: "Date Placed",
+      cell: (row) =>
+        row.placedAt ? new Date(row.placedAt).toLocaleDateString() : "-",
+    },
+    {
+      header: "Total",
+      cell: (row) =>
+        row.totalAmount != null ? `$${row.totalAmount.toFixed(2)}` : "-",
+    },
+    {
+      header: "Status",
+      cell: (row) => row.status || "unknown",
+    },
+    {
+      header: "Payment Status",
+      headerClassName: "text-center",
+      cellClassName: "text-center",
+      cell: (row, index) => (
+        <span
+          key={index}
+          className={`border text-center ${
+            row.paymentStatus === "PAID"
+              ? "border-green-600 bg-green-100 text-green-600"
+              : "border-yellow-400 bg-yellow-100 text-yellow-500"
+          } rounded-full px-2 py-1 text-xs`}
+        >
+          {row.paymentStatus || "-"}
+        </span>
+      ),
+    },
+    {
+      header: "Actions",
+      headerClassName: "text-center",
+      cellClassName: "flex justify-center items-center",
+      cell: (row) => (
+        <button
+          className="text-black text-xl cursor-pointer hover:text-black/50 transition"
+          onClick={() =>
+            navigate(
+              routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.id)
+            )
+          }
+        >
+          <VscEye />
+        </button>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
-      
-      <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px' }}>
-        <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
-          <h1 className="text-xl font-semibold text-gray-900 mb-2 font-roboto_serif">Your Orders</h1>
-        
-          {/* Search and Table */}
-          <div className="flex flex-col md:flex-row gap-4 md:gap-0 mb-4 items-center justify-between w-full">
-            <input
-              className="border border-black rounded px-3 py-2 w-full md:w-64"
-              type="text"
-              placeholder="Search orders..."
-              value={search}
-              onChange={e => { setSearch(e.target.value); setPage(1); }}
-            />
-            <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2" onClick={() => setPage(1)}>Search</button>
-          </div>
 
-          <div className="rounded-2xl overflow-x-auto animate-fadein">
+      <div
+        className="flex-1 flex flex-col items-center justify-start py-2"
+        style={{ paddingRight: "10px", marginLeft: "256px" }}
+      >
+        <div
+          className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+          style={{ height: "100%" }}
+        >
+          <h1 className="text-xl font-semibold text-gray-900 mb-2 font-roboto_serif">
+            Your Orders
+          </h1>
+
+          {/* Search and Table */}
+           <Searchbar/>
+
+          <div className="rounded-2xl overflow-x-auto animate-fadein text-black">
             {loading ? (
-              <div style={{ textAlign: 'center', color: '#ff2222', padding: '2rem' }}>Loading orders...</div>
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#ff2222",
+                  padding: "2rem",
+                }}
+              >
+                Loading orders...
+              </div>
             ) : error ? (
-              <div style={{ textAlign: 'center', color: '#ff2222', padding: '2rem' }}>{error}</div>
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#ff2222",
+                  padding: "2rem",
+                }}
+              >
+                {error}
+              </div>
             ) : (
-              <table className="min-w-full bg-white rounded-lg overflow-hidden">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Order ID</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">User</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Date</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Total</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Status</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Payment Status</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.length > 0 ? orders.map((order, idx) => (
-                    <tr key={order.id} className={idx % 2 === 1 ? 'bg-gray-50' : ''}>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{order.id}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{order.customerName}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{order.placedAt ? new Date(order.placedAt).toLocaleDateString() : '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">${order.totalAmount?.toFixed(2)}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{order.status}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{order.paymentStatus || '-'}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button className="bg-black text-white px-4 py-2 rounded font-medium hover:bg-gray-800 transition" onClick={() => navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(':orderId', order.id))}>View</button>
-                      </td>
-                    </tr>
-                  )) : (
-                    <tr><td colSpan={7} className="text-center text-red-500 py-8">No orders found.</td></tr>
-                  )}
-                </tbody>
-              </table>
+              <DataTable columns={columns} data={orders} />
             )}
           </div>
+          
           {/* Pagination */}
-          <div className="flex justify-end mt-4 animate-fadein">
-            <button onClick={() => handlePage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&lt;</button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                className={`px-3 py-1 rounded mx-1 ${page === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                onClick={() => handlePage(i + 1)}
-              >{i + 1}</button>
-            ))}
-            <button onClick={() => handlePage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&gt;</button>
-          </div>
+          <Pagination page={page} totalPages={totalPages} handlePage={handlePage} />
+
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminOrders; 
+export default AdminOrders;
