@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/common/Button';
+import { routeConstant } from '../constants/RouteConstants';
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -27,14 +29,10 @@ const NotFound = () => {
           <text x="90" y="95" textAnchor="middle" fill="#C42A2A" fontSize="13" fontFamily="Poppins, sans-serif">(Empty)</text>
         </svg>
       </div>
-      <h1 className="text-3xl font-bold text-customOrange mb-2">404 - Page Not Found</h1>
-      <p className="text-lg text-black/70 mb-6 text-center max-w-md">Looks like this pizza box is empty! The page you’re looking for doesn’t exist or has been moved.</p>
-      <button
-        className="px-6 py-3 bg-customOrange text-white rounded-full font-semibold text-base shadow-md hover:bg-mainRed transition-colors"
-        onClick={() => navigate('/menu')}
-      >
-        Go to Menu
-      </button>
+      <h1 className="text-xl font-bold text-customOrange font-roboto_serif mb-2">404 - Page Not Found</h1>
+      <p className="text-sm font-roboto text-black/50 mb-6 text-center max-w-md">Looks like this pizza box is empty! The page you’re looking for doesn’t exist or has been moved.</p>
+      
+      <Button text={"Back to Home"} path={routeConstant.HOME}/>
     </div>
   );
 };

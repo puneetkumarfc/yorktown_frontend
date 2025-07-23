@@ -6,7 +6,7 @@ import { VscSettings } from "react-icons/vsc";
 import {filters} from "../constants/Menu"
 import ItemCard from '../components/common/ItemCard';
 import FilterModal from '../components/menu/FilterModal';
-import { fetchCategories, fetchMenu } from '../services/operations/menu';
+import { fetchCategories, fetchCategoriesCopy, fetchMenu } from '../services/operations/menu';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { useLoader } from '../components/common/LoaderContext';
@@ -72,17 +72,16 @@ const Menu = () => {
       {/* Heading, searchbar, filter */}
       <div className="relative mt-25">
         {/* Heading */}
-        <p className='text-center mb-6 font-roboto uppercase font-semibold'>Your <span className='text-customBeige'>favorite food </span> is just a click away!</p>
+        <p className='text-center mb-6 font-roboto uppercase font-semibold'>Your favorite food is just a click away!</p>
         
         <div className='flex items-center gap-2'>
           {/* Searchbar */}
           <div className="relative flex items-center w-full">
-            <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white w-9 h-9 transition-colors p-2 bg-customOrange rounded-full cursor-pointer" />
+            <IoIosSearch className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white w-9 h-9 transition-colors p-2 bg-customOrange hover:bg-customOrange/80 rounded-full cursor-pointer" />
             <input
               type="text"
               value={query}
               onChange={handleInputChange}
-              onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
               placeholder="Search anything"
               className="w-full px-13 py-3 bg-mainBg placeholder:text-black/50 placeholder:font-light placeholder:text-sm rounded-full border-2 border-black/10 focus:outline-none focus:border-black text-black"
               autoComplete="off"
@@ -99,31 +98,45 @@ const Menu = () => {
       </div>
       
       {/* Categories */}
-      <div className='mt-4 flex items-center gap-3'>
-        <p className='font-roboto text-sm'>Categories: </p>
-        <div className='flex gap-2 overflow-auto'>
-         {categories.map((category, index) => {
-              const isActive = activeCategory.name === `${category.name}`;
+      <div className='mt-6 flex items-center gap-4'>
+        <p className='font-roboto text-sm font-semibold text-black/80 flex-shrink-0'>Categories:</p>
+        <div className='flex gap-3 overflow-x-auto pb-2 no-scrollbar'>
+         {categories.map((category) => {
+              const isActive = activeCategory.id === category.id;
               return (
-                <div
-                  key={index}
-                  className={`flex justify-center text-nowrap py-2 px-4 ${isActive ? "bg-mainRed/80 text-white" : "bg-mainRed/30 hover:bg-mainRed/50 text-white/80"} transition-all duration-200 rounded-full text-sm cursor-pointer border border-mainRed/30 hover:border-mainRed/80`}
+                <button
+                  key={category.id}
+                  className={`flex-shrink-0 whitespace-nowrap py-2 px-5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer focus:outline-none ${
+                    isActive
+                      ? "bg-customOrange text-white"
+                      : "bg-mainBg text-customOrange border border-customOrange/40 hover:bg-customOrange/5"
+                  }`}
                   onClick={() => setCategory(category)}>
                   {category.name}
-                </div>
+                </button>
               );
             })}
         </div>
       </div>
 
+      {/* Filtered Menu Items */}
       <div className='w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-10 font-poppins'>
           {
-            menu.map((menuItem, index) => {
+            menu.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
+            .map((menuItem) => {
               return (
-                <ItemCard key={index} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
+                <ItemCard key={menuItem.id} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
               )
             })
           }
+          {/* No results message */}
+          {menu.filter(item => item.name.toLowerCase().includes(query.toLowerCase())).length === 0 && query && (
+            <div className="col-span-full text-center py-16 flex flex-col items-center animate-fade-in-simple">
+              <IoIosSearch className="text-5xl text-customOrange/70 mb-4" />
+              <h3 className="text-lg font-roboto_serif font-semibold text-black/80 ">No Results Found</h3>
+              <p className="text-black/50 text-sm mt-1 font-roboto font-light">We couldn't find any items matching "{query}".</p>
+            </div>
+          )}
       </div>
     </div>
   )

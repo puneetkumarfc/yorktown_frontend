@@ -16,22 +16,26 @@ const HeroSection = () => {
     <div className='max-h-screen mt-[16vh]'>
         <ScrollVelocity texts={['Original american']} velocity={90} className="text-[80px] md:text-[140px] font-roboto_serif uppercase font-thin text-black"/>
 
-        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[582px]'>
+        <div className='relative -translate-y-15 flex justify-center xl:justify-between items-end w-full h-[76vh] sm:h-[590px]'>
 
                 <div className='hidden xl:flex flex-col gap-2'>
                     <p className='uppercase font-roboto font-medium'>Follow us on</p>
 
                     <div className='flex gap-6 items-center text-3xl text-black'>
-                        <AiFillInstagram className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        <a href="https://www.instagram.com/eatatyorktown?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <AiFillInstagram className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        </a>
 
-                        <FaTwitter  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        {/* <FaTwitter  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/> */}
 
-                        <FaFacebook  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        <a href="" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <FaFacebook  className='hover:text-customOrange transition-all duration-100 cursor-pointer'/>
+                        </a>
                     </div>
                 </div>
                 
-                <div className='absolute left-1/2 transform -translate-x-1/2 top-0'>
-                    <img src="/MainPizza.png" alt="PizzaImg" width={582} loading="lazy" />
+                <div className='absolute left-1/2 transform -translate-x-1/2 top-0 h-[80%] xl:h-[100%]'>
+                    <img src="/MainPizza.png" alt="PizzaImg" className="h-full w-auto object-contain" loading="lazy" />
                 </div>
 
                 <div className='xl:w-[300px] flex flex-col gap-5'>
@@ -43,7 +47,7 @@ const HeroSection = () => {
                     </p>
 
                     <div className='flex justify-center xl:justify-end gap-4'>
-                        <Button text={"Deliver at home"}/>
+                        <Button text={"Deliver at home"} path={"/coming-soon"}/>
                         <Button text={"Take away"} path={routeConstant.MENU}/>
                     </div>
                 </div>

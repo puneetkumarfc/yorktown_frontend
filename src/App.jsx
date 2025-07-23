@@ -9,6 +9,7 @@ import Sidebar from './components/common/Sidebar'
 import Menu from './pages/Menu'
 import Contact from './pages/Contact'
 import { routeConstant } from './constants/RouteConstants'
+import ComingSoon from './pages/ComingSoon'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminOrders from './pages/admin/AdminOrders';
@@ -135,6 +136,7 @@ function App() {
         <Route path={routeConstant.BAG} element={<Bag/>}/>
         <Route path={routeConstant.MENU} element={<Menu/>}/>
         <Route path={routeConstant.CONTACT} element={<Contact/>}/>
+        <Route path="/coming-soon" element={<ComingSoon/>}/>
         <Route path={routeConstant.ADMIN_LOGIN} element={<AdminLogin/>}/>
         <Route path="/admin" element={
           localStorage.getItem('adminToken')

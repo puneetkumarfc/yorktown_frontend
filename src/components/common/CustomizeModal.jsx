@@ -8,7 +8,6 @@ import { routeConstant } from "../../constants/RouteConstants";
 import toast from "react-hot-toast";
 import { fetchItemDetails } from "../../services/operations/menu";
 import { useLoader } from "./LoaderContext";
-import PizzaLoader from "./PizzaLoader";
 
 const CustomizeModal = ({
   id,
@@ -23,41 +22,63 @@ const CustomizeModal = ({
   size: initialSize,
   toppings: initialToppings,
   quantity: initialQuantity,
+  bread: initialBread,
+  cheese: initialCheese,
   uniqueId: originalUniqueId,
-  // add more as needed
 }) => {
-  const { showLoader, hideLoader, loading } = useLoader();
+  const { showLoader, hideLoader } = useLoader();
   const [itemDetails, setItemDetails] = useState({});
 
-  const displayDetails = async (id) => {
-    showLoader();
-    try {
-      const response = await fetchItemDetails(id);
-      console.log(response.data.data);
-      setItemDetails(response.data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      hideLoader();
+  // This useEffect now correctly handles data fetching and cleanup.
+  useEffect(() => {
+    // AbortController to cancel the request if the component unmounts.
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    const fetchAndSetDetails = async () => {
+      showLoader();
+      try {
+        const response = await fetchItemDetails(id);
+
+        // Only update state if the request was not aborted.
+        if (!signal.aborted) {
+          setItemDetails(response.data.data);
+        }
+      } catch (error) {
+        if (!signal.aborted) {
+          console.error("Error fetching item details:", error);
+        }
+      } finally {
+        if (!signal.aborted) {
+          hideLoader();
+        }
+      }
+    };
+
+    fetchAndSetDetails();
+
+    // Cleanup function to abort the fetch on unmount.
+    return () => controller.abort();
+  }, [id, showLoader, hideLoader]); // Correct dependencies.
+
+  useEffect(() => {
+    // This effect correctly depends on itemDetails and sets the default size.
+    // Only set a default size if we are NOT in edit mode.
+    if (!editMode && itemDetails.prices && itemDetails.prices.length > 0) {
+      setSelectedSize(itemDetails.prices[0].sizeId);
     }
-  };
-
-  useEffect(() => {
-    displayDetails(id);
-  }, []);
-
-  useEffect(() => {
-    setSelectedSize(itemDetails.prices?.[0]?.sizeId);
-  }, [itemDetails]);
+  }, [itemDetails, editMode]);
 
   // Pre-fill state if in edit mode
   useEffect(() => {
     if (editMode) {
       if (initialSize) setSelectedSize(initialSize);
       if (initialToppings) setSelectedToppings(initialToppings);
+      if (initialBread) setSelectedBreads(initialBread);
+      if (initialCheese) setSelectedCheese(initialCheese);
       if (initialQuantity) setQuantity(initialQuantity);
     }
-  }, [editMode, initialSize, initialToppings, initialQuantity]);
+  }, [editMode, initialSize, initialToppings, initialQuantity, initialBread, initialCheese]);
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(null);
@@ -171,7 +192,11 @@ const CustomizeModal = ({
       quantity: quantity,
       size: selectedSize,
       toppings: selectedToppings,
+      cheese: selectedCheese,
+      bread: selectedBreads,
     };
+    
+    console.log(newItem)
 
     addToCart(newItem);
     showModal(); // closes the customize modal
@@ -194,6 +219,8 @@ const CustomizeModal = ({
       quantity: quantity,
       size: selectedSize,
       toppings: selectedToppings,
+      cheese: selectedCheese,
+      bread: selectedBreads,
     };
     addToCart(updatedItem);
     showModal();
@@ -201,15 +228,14 @@ const CustomizeModal = ({
   };
 
   useEffect(() => {
+    const currentUniqueId = `${id}-${selectedSize}-${JSON.stringify(
+      selectedToppings.sort()
+    )}-${JSON.stringify(selectedCheese.sort())}-${selectedBreads}`;
     const matchedItem = cart.find(
-      (item) =>
-        item.id === id &&
-        item.size === selectedSize &&
-        JSON.stringify(item.toppings.sort()) ===
-          JSON.stringify(selectedToppings.sort())
+      (item) => item.uniqueId === currentUniqueId
     );
     setIsPresent(!!matchedItem);
-  }, [cart, selectedSize, selectedToppings]);
+  }, [cart, id, selectedSize, selectedToppings, selectedCheese, selectedBreads]);
 
   // Auto-dismiss the added modal after 1.5s
   useEffect(() => {
@@ -221,11 +247,6 @@ const CustomizeModal = ({
 
   return (
     <>
-      {showAddedModal && (
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[9999] flex items-center px-6 py-3 bg-green-500 text-white rounded-full shadow-lg animate-bounce-in">
-          <span className="font-semibold mr-2">✔</span> Item added to bag!
-        </div>
-      )}
       {/* Main Customize Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/20">
         <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-mainBg backdrop-blur-xl">
@@ -265,7 +286,7 @@ const CustomizeModal = ({
                 {editMode ? (
                   <button
                     type="button"
-                    className="py-2 px-4 bg-customOrange text-white rounded-xl font-semibold hover:bg-orange-600 transition-all duration-200"
+                    className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
                     onClick={handleUpdateItem}
                   >
                     Update Item
@@ -279,14 +300,14 @@ const CustomizeModal = ({
                     {isPresent ? "View Cart" : "Add to Bag"}
                   </button>
                 )}
-                <button
+                {!editMode && <button
                   className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
                   onClick={() => {
                     navigate(routeConstant.BAG);
                   }}
                 >
                   Buy Now
-                </button>
+                </button>}
               </div>
             </div>
 
@@ -302,7 +323,7 @@ const CustomizeModal = ({
                       className={`flex flex-col py-2 px-6 rounded-xl border transition-all duration-150 cursor-pointer ${
                         selectedSize === size.sizeId
                           ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
+                          : "border-black/10 hover:border-gray-300 text-black"
                       }`}
                     >
                       <div className="font-light text-sm font-poppins">
@@ -353,7 +374,7 @@ const CustomizeModal = ({
                           className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                             selectedToppings.includes(topping.toppingId)
                               ? "border-mainRed/70 bg-red-50 text-mainRed"
-                              : "border-black/5 hover:border-gray-300 text-black"
+                              : "border-black/10 hover:border-gray-300 text-black"
                           }`}
                         >
                           <div className="flex justify-between items-center">
@@ -381,7 +402,7 @@ const CustomizeModal = ({
                       className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                         selectedBreads === bread.id
                           ? "border-mainRed/70 bg-red-50 text-mainRed"
-                          : "border-black/5 hover:border-gray-300 text-black"
+                          : "border-black/10 hover:border-gray-300 text-black"
                       }`}
                     >
                       <div className="flex justify-between items-center">
@@ -430,7 +451,7 @@ const CustomizeModal = ({
                           className={`p-3 rounded-xl border text-left transition-all duration-150 cursor-pointer ${
                             selectedCheese.includes(Number(cheese.id))
                               ? "border-mainRed/70 bg-red-50 text-mainRed"
-                              : "border-black/5 hover:border-gray-300 text-black"
+                              : "border-black/10 hover:border-gray-300 text-black"
                           }`}
                         >
                           <div className="flex justify-between items-center">
@@ -479,7 +500,6 @@ const CustomizeModal = ({
             </div>
           </div>
         </div>
-        {loading && <PizzaLoader />}
       </div>
     </>
   );

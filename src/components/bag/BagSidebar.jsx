@@ -8,10 +8,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
 
-const BagSidebar = ({ setCheckoutModal }) => {
-  const stripePromise = loadStripe(
-    "pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P"
-  );
+const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
+  const stripePromise = loadStripe("pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P");
 
   const { cart, totalPrice } = useCartStore();
 
@@ -19,6 +17,9 @@ const BagSidebar = ({ setCheckoutModal }) => {
     itemId: item.id,
     sizeId: item.size,
     quantity: item.quantity,
+    toppingIds: item.toppings,
+    cheeseIds: item.cheese,
+    bread: item.bread,
   }));
 
   const [formStep, setFormStep] = useState(1);
@@ -29,7 +30,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
   });
 
   const [options, setOptions] = useState(null);
-  const [orderId, setOrderId] = useState(null);
+  
 
   const handleNext = async (data) => {
     if (formStep === 1) {
@@ -46,7 +47,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
           amount: Number(totalPrice()),
           currency: "usd",
           metadata: {
-            orderId: "ORDER123",
+            orderId: orderId,
             notes: "Takeaway order",
           },
         },
@@ -72,17 +73,6 @@ const BagSidebar = ({ setCheckoutModal }) => {
     setFormStep(formStep + 1);
   };
 
-  // Callback to close modal and check payment status
-  const handlePaymentComplete = async (orderId) => {
-    setCheckoutModal(false);
-    try {
-      const response = await checkStatus(orderId);
-      console.log("Payment status:", response.data.data)
-    } catch (err) {
-      console.error("Error checking payment status:", err);
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-y-auto p-0 m-4 max-h-[80vh]">
@@ -101,7 +91,6 @@ const BagSidebar = ({ setCheckoutModal }) => {
               className={`${
                 formStep === 1 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(1)}
             >
               01
             </p>
@@ -110,7 +99,6 @@ const BagSidebar = ({ setCheckoutModal }) => {
               className={`${
                 formStep === 2 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(2)}
             >
               02
             </p>
@@ -119,7 +107,6 @@ const BagSidebar = ({ setCheckoutModal }) => {
               className={`${
                 formStep === 3 ? "text-2xl" : "text-sm"
               } cursor-pointer`}
-              onClick={() => setFormStep(3)}
             >
               03
             </p>
@@ -143,7 +130,7 @@ const BagSidebar = ({ setCheckoutModal }) => {
                 setFormStep={setFormStep}
                 formStep={formStep}
                 handleNext={handleNext}
-                handlePaymentComplete={handlePaymentComplete}
+                orderId={orderId}
               />
             </Elements>
           ) : (
