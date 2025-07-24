@@ -1,5 +1,9 @@
 import React from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
+import { useNavigate } from 'react-router-dom';
+import { VscEye } from 'react-icons/vsc';
+import { routeConstant } from '../../constants/RouteConstants';
+import DataTable from '../../components/admin/DataTable';
 
 const summaryData = [
   { label: 'Total Orders Today', value: 128, icon: '\ud83d\uded2', color: 'red' },
@@ -9,10 +13,10 @@ const summaryData = [
 ];
 
 const recentOrders = [
-  { id: 'ORD-1001', user: 'John Doe', total: '$45.00', status: 'Delivered', date: '2024-06-01' },
-  { id: 'ORD-1002', user: 'Jane Smith', total: '$32.50', status: 'Pending', date: '2024-06-01' },
-  { id: 'ORD-1003', user: 'Alice Brown', total: '$27.99', status: 'Delivered', date: '2024-06-01' },
-  { id: 'ORD-1004', user: 'Bob Lee', total: '$19.99', status: 'Cancelled', date: '2024-06-01' },
+  { id: 'ORD-1001', numericId: 1001, user: 'John Doe', total: '$45.00', status: 'Delivered', date: '2024-06-01' },
+  { id: 'ORD-1002', numericId: 1002, user: 'Jane Smith', total: '$32.50', status: 'Pending', date: '2024-06-01' },
+  { id: 'ORD-1003', numericId: 1003, user: 'Alice Brown', total: '$27.99', status: 'Delivered', date: '2024-06-01' },
+  { id: 'ORD-1004', numericId: 1004, user: 'Bob Lee', total: '$19.99', status: 'Cancelled', date: '2024-06-01' },
 ];
 
 const chartData = [
@@ -26,6 +30,60 @@ const chartData = [
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  const columns = [
+    {
+      header: "Order ID",
+      cell: (order) => order.id,
+    },
+    {
+      header: "User",
+      cell: (order) => order.user,
+    },
+    {
+      header: "Total",
+      cell: (order) => order.total,
+    },
+    {
+      header: "Status",
+      headerClassName: 'text-center',
+      cellClassName: 'text-center',
+      cell: (order) => (
+        <span className={`border text-center rounded-full px-2 py-1 text-xs ${
+          order.status === 'Delivered' ? 'border-green-600 bg-green-100 text-green-600' :
+          order.status === 'Pending' ? 'border-yellow-400 bg-yellow-100 text-yellow-500' :
+          order.status === 'Cancelled' ? 'border-red-600 bg-red-100 text-red-600' :
+          'border-gray-400 bg-gray-100 text-gray-500'
+        }`}>
+          {order.status}
+        </span>
+      ),
+    },
+    {
+      header: "Date",
+      cell: (order) => order.date,
+    },
+    {
+      header: "Actions",
+      headerClassName: "text-center",
+      cellClassName: "flex justify-center items-center",
+      cell: (row) => (
+        <button
+          className="text-black text-xl cursor-pointer hover:text-black/50 transition"
+          title="View Order"
+          onClick={() =>
+            navigate(
+              routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.numericId)
+            )
+          }
+        >
+          <VscEye />
+        </button>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
@@ -47,37 +105,9 @@ const AdminDashboard = () => {
           {/* Recent Orders Table */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold mb-2">Recent Orders</h2>
-            <table className="min-w-full bg-white rounded-lg overflow-hidden">
-              <thead>
-                <tr className="bg-gray-100 text-gray-700">
-                  <th className="px-4 py-2 text-left">Order ID</th>
-                  <th className="px-4 py-2 text-left">User</th>
-                  <th className="px-4 py-2 text-left">Total</th>
-                  <th className="px-4 py-2 text-left">Status</th>
-                  <th className="px-4 py-2 text-left">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map(order => (
-                  <tr key={order.id} className="border-b last:border-b-0">
-                    <td className="px-4 py-2">{order.id}</td>
-                    <td className="px-4 py-2">{order.user}</td>
-                    <td className="px-4 py-2">{order.total}</td>
-                    <td className="px-4 py-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        order.status === 'Delivered' ? 'bg-green-700 text-green-200' :
-                        order.status === 'Pending' ? 'bg-yellow-500 text-yellow-900' :
-                        order.status === 'Cancelled' ? 'bg-red-700 text-red-200' :
-                        'bg-gray-300 text-gray-700'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-2">{order.date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="rounded-2xl animate-fadein text-black">
+              <DataTable columns={columns} data={recentOrders} />
+            </div>
           </div>
           {/* Revenue Chart */}
           <div>
