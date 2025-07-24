@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-import { FaEdit, FaTrash, FaEye, FaPlus } from 'react-icons/fa';
 import MenuItemModal from './MenuItemModal';
+import { FaPlus } from 'react-icons/fa';
+import { Ellipsis } from "lucide-react";
 import { fetchCategories, fetchMenu } from '../../services/operations/menu';
 import { useLoader } from '../../components/common/LoaderContext';
+import DataTable from '../../components/admin/DataTable';
+import Pagination from '../../components/admin/Pagination';
 
 const PAGE_SIZE = 20;
 
@@ -11,6 +14,7 @@ const AdminMenuList = () => {
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('name');
   const [sortDir, setSortDir] = useState('asc');
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -19,6 +23,7 @@ const AdminMenuList = () => {
   const [modalItem, setModalItem] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryMenuItems, setCategoryMenuItems] = useState({}); // { [categoryId]: [items] }
+  const [dropdownId, setDropdownId] = useState(null);
   const [error, setError] = useState(null);
   const { showLoader, hideLoader } = useLoader();
 
@@ -26,6 +31,7 @@ const AdminMenuList = () => {
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
+      setLoading(true);
       showLoader('Loading menu...');
       try {
         const catRes = await fetchCategories(2);
@@ -43,6 +49,7 @@ const AdminMenuList = () => {
         setError('Failed to fetch menu data.');
       } finally {
         hideLoader();
+        setLoading(false);
       }
     };
     fetchData();
@@ -120,6 +127,81 @@ const AdminMenuList = () => {
     setModalOpen(true);
   };
 
+  const toggleDropdown = (id) => {
+    setDropdownId(dropdownId === id ? null : id);
+  };
+
+  const columns = [
+    {
+      header: 'Name',
+      cell: (item) => (
+        <div className="flex items-center gap-3">
+          <span>{item.name}</span>
+        </div>
+      ),
+    },
+    {
+      header: 'Category',
+      cell: (item) => item.category,
+    },
+    {
+      header: 'Price',
+      cell: (item) => `$${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}`,
+    },
+    {
+      header: 'Status',
+      headerClassName: 'text-center',
+      cellClassName: 'text-center',
+      cell: (item) => (
+        <span
+          className={`border text-center border-green-600 bg-green-100 text-green-600 rounded-full px-2 py-1 text-xs`}
+        >
+          Active
+        </span>
+      ),
+    },
+    {
+      header: 'Actions',
+      headerClassName: 'text-center',
+      cellClassName: 'flex justify-center items-center',
+      cell: (item) => (
+        <div className="relative action-dropdown-container">
+          <button
+            onClick={() => toggleDropdown(item.id)}
+            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
+            title="Actions"
+          >
+            <Ellipsis strokeWidth={1.1}/>
+          </button>
+          {dropdownId === item.id && (
+            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+              <ul className="py-1 text-sm">
+                <li>
+                  <button
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => { handleView(item); setDropdownId(null); }}
+                  >View</button>
+                </li>
+                <li>
+                  <button
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => { handleEdit(item); setDropdownId(null); }}
+                  >Edit</button>
+                </li>
+                <li>
+                  <button
+                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-gray-100"
+                    onClick={() => { handleDelete(item.id); setDropdownId(null); }}
+                  >Delete</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
@@ -140,52 +222,23 @@ const AdminMenuList = () => {
               <FaPlus /> Add Menu Item
             </button>
           </div>
-          <div className="rounded-2xl overflow-x-auto animate-fadein">
-            <table className="min-w-full bg-white rounded-lg overflow-hidden">
-              <thead>
-                <tr>
-                  <th className="px-6 py-4 text-left font-medium text-gray-500">Name</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-500">Category</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-500">Price</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-500">Status</th>
-                  <th className="px-6 py-4 text-left font-medium text-gray-500">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginated.map((item, idx) => (
-                  <tr key={item.id} className={idx % 2 === 1 ? 'bg-gray-50' : ''}>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-900 flex items-center gap-3">
-                      {item.imageUrl ? <img src={item.imageUrl} alt={item.name} className="w-10 h-10 rounded-full object-cover" /> : <span className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold text-gray-500">{item.name[0]}</span>}
-                      <span>{item.name}</span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">{item.category}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-900">Active</td>
-                    <td className="px-6 py-4 whitespace-nowrap flex gap-2">
-                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="View" onClick={() => handleView(item)}>View</button>
-                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Edit" onClick={() => handleEdit(item)}>Edit</button>
-                      <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Delete" onClick={() => handleDelete(item.id)}>Delete</button>
-                    </td>
-                  </tr>
-                ))}
-                {paginated.length === 0 && (
-                  <tr><td colSpan={5} className="text-center text-red-500 py-8">No menu items found.</td></tr>
-                )}
-              </tbody>
-            </table>
+          <div className="rounded-2xl overflow-x-auto animate-fadein text-black">
+            {loading ? (
+              <div className="text-center text-gray-500 py-8">Loading menu items...</div>
+            ) : error ? (
+              <div className="text-center text-red-500 py-8">{error}</div>
+            ) : (
+              <DataTable columns={columns} data={paginated} />
+            )}
           </div>
           {/* Pagination */}
-          <div className="flex justify-end mt-4 animate-fadein">
-            <button onClick={() => handlePage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&lt;</button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                className={`px-3 py-1 rounded mx-1 ${page === i + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                onClick={() => handlePage(i + 1)}
-              >{i + 1}</button>
-            ))}
-            <button onClick={() => handlePage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&gt;</button>
-          </div>
+          {!loading && !error && totalPages > 0 && (
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              handlePage={handlePage}
+            />
+          )}
           {/* Modals */}
           <MenuItemModal
             open={modalOpen}

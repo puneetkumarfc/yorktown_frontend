@@ -57,7 +57,6 @@ export default function AdminSidebar() {
                       : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'
                   }`
                 }
-                end
               >
                 <link.icon className="w-5 h-5" />
                 <span>{link.name}</span>

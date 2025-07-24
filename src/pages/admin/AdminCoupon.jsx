@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-import { FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
+import { Ellipsis } from "lucide-react";
 import './AdminOrders.css'; // Use the same theme as orders/menu list
 import { adminCoupons } from '../../utils/api';
 import toast from 'react-hot-toast';
 import { useLoader } from '../../components/common/LoaderContext';
+import DataTable from '../../components/admin/DataTable';
+import Pagination from '../../components/admin/Pagination';
 
 const PAGE_SIZE = 10;
 
@@ -19,7 +22,6 @@ function CouponModal({ open, onClose, coupon, mode, onSave }) {
     startDate: '',
     expiry: '',
     status: 'Active',
-    maxUses: '',
     maxUsesPerUser: '',
     // orderType: 'BOTH', // will be sent as static in API integration
   });
@@ -39,7 +41,6 @@ function CouponModal({ open, onClose, coupon, mode, onSave }) {
         startDate: coupon.startDate || '',
         expiry: coupon.expiry || '',
         status: coupon.status || 'Active',
-        maxUses: coupon.maxUses || '',
         maxUsesPerUser: coupon.maxUsesPerUser || '',
       });
     }
@@ -190,21 +191,6 @@ function CouponModal({ open, onClose, coupon, mode, onSave }) {
                 <option value="Inactive">Inactive</option>
               </select>
             </label>
-            {/* Max Uses */}
-            <label className="flex flex-col gap-1" style={{ color: '#bd390e', fontWeight: 600 }}>
-              <span>Max Uses</span>
-              <input
-                className="admin-titlebar-search-input"
-                type="number"
-                value={editCoupon.maxUses}
-                disabled={!isEdit}
-                onChange={e => setEditCoupon({ ...editCoupon, maxUses: e.target.value })}
-                style={inputStyle}
-                min="0"
-                required
-                readOnly={isView}
-              />
-            </label>
             {/* Max Uses Per User */}
             <label className="flex flex-col gap-1" style={{ color: '#bd390e', fontWeight: 600 }}>
               <span>Max Uses Per User</span>
@@ -265,6 +251,7 @@ const AdminCoupon = () => {
   const [sort, setSort] = useState('code,asc');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [dropdownId, setDropdownId] = useState(null);
   // Add a ref to trigger reload
   const [reload, setReload] = useState(0);
   const { showLoader, hideLoader } = useLoader();
@@ -293,7 +280,6 @@ const AdminCoupon = () => {
             startDate: c.startDate ? c.startDate.split('T')[0] : '',
             expiry: c.endDate ? c.endDate.split('T')[0] : '',
             status: c.isActive ? 'Active' : 'Inactive',
-            maxUses: c.maxUses,
             maxUsesPerUser: c.maxUsesPerUser,
           })));
           setTotalPages(res.data.totalPages || 1);
@@ -313,6 +299,18 @@ const AdminCoupon = () => {
     };
     fetchData();
   }, [search, page, sort, reload]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside any element with the action-dropdown-container class
+      if (dropdownId !== null && !event.target.closest('.action-dropdown-container')) {
+        setDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownId]);
 
   const handleSort = (col) => {
     let direction = 'asc';
@@ -369,7 +367,6 @@ const AdminCoupon = () => {
       startDate: data.startDate ? data.startDate.split('T')[0] : '',
       expiry: data.endDate ? data.endDate.split('T')[0] : '',
       status: data.isActive ? 'Active' : 'Inactive',
-      maxUses: data.maxUses || '',
       maxUsesPerUser: data.maxUsesPerUser || '',
     };
   }
@@ -378,7 +375,7 @@ const AdminCoupon = () => {
 
   const handleSaveEdit = async (editCoupon) => {
     // Validation: All fields required
-    if (!editCoupon.code || !editCoupon.discountType || !editCoupon.discount || !editCoupon.maxDiscountAmount || !editCoupon.minOrderAmount || !editCoupon.startDate || !editCoupon.expiry || !editCoupon.status || !editCoupon.maxUses || !editCoupon.maxUsesPerUser) {
+    if (!editCoupon.code || !editCoupon.discountType || !editCoupon.discount || !editCoupon.maxDiscountAmount || !editCoupon.minOrderAmount || !editCoupon.startDate || !editCoupon.expiry || !editCoupon.status || !editCoupon.maxUsesPerUser) {
       toast.error('All fields are required.');
       return;
     }
@@ -402,7 +399,6 @@ const AdminCoupon = () => {
       minOrderAmount: Number(editCoupon.minOrderAmount),
       startDate: editCoupon.startDate ? `${editCoupon.startDate}T00:00:00` : '',
       endDate: editCoupon.expiry ? `${editCoupon.expiry}T23:59:59` : '',
-      maxUses: Number(editCoupon.maxUses),
       maxUsesPerUser: Number(editCoupon.maxUsesPerUser),
       orderType: 'BOTH',
       isActive: editCoupon.status === 'Active',
@@ -435,6 +431,66 @@ const AdminCoupon = () => {
     }
   };
 
+  const toggleDropdown = (id) => {
+    setDropdownId(dropdownId === id ? null : id);
+  };
+
+  const columns = [
+    {
+      header: "Code",
+      cell: (coupon) => coupon.code,
+    },
+    {
+      header: "Type",
+      cell: (coupon) => coupon.discountType,
+    },
+    {
+      header: "Discount",
+      cell: (coupon) => coupon.discountType === 'PERCENT' ? `${coupon.discount}%` : `$${coupon.discount}`,
+    },
+    {
+      header: "Start Date",
+      cell: (coupon) => coupon.startDate,
+    },
+    {
+      header: "Expiry Date",
+      cell: (coupon) => coupon.expiry,
+    },
+    {
+      header: "Status",
+      cell: (coupon) => (
+        <span className={`border text-center ${coupon.status === 'Active' ? 'border-green-600 bg-green-100 text-green-600' : 'border-red-600 bg-red-100 text-red-600'} rounded-full px-2 py-1 text-xs`}>
+          {coupon.status}
+        </span>
+      ),
+    },
+    {
+      header: "Actions",
+      headerClassName: "text-center",
+      cellClassName: "flex justify-center items-center",
+      cell: (coupon) => (
+        <div className="relative action-dropdown-container">
+          <button
+            onClick={() => toggleDropdown(coupon.id)}
+            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
+            title="Actions"
+          >
+            <Ellipsis strokeWidth={1.1}/>
+          </button>
+          {dropdownId === coupon.id && (
+            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+              <ul className="py-1 text-sm">
+                <li><button className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => { handleView(coupon); setDropdownId(null); }}>View</button></li>
+                <li><button className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100" onClick={() => { handleEdit(coupon); setDropdownId(null); }}>Edit</button></li>
+                <li><button className="w-full text-left block px-4 py-2 text-red-600 hover:bg-gray-100" onClick={() => { handleDelete(coupon.id); setDropdownId(null); }}>Delete</button></li>
+              </ul>
+            </div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
@@ -455,59 +511,23 @@ const AdminCoupon = () => {
               <FaPlus /> Add Coupon
             </button>
           </div>
-          <div className="rounded-2xl overflow-x-auto animate-fadein">
+          <div className="rounded-2xl animate-fadein text-black">
             {loading ? (
-              <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>Loading coupons...</div>
+              <div className="text-center text-gray-500 py-8">Loading coupons...</div>
             ) : error ? (
-              <div style={{ textAlign: 'center', color: '#bd390e', padding: '2rem' }}>{error}</div>
+              <div className="text-center text-red-500 py-8">{error}</div>
             ) : (
-              <table className="min-w-full bg-white rounded-lg overflow-hidden">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Code</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Discount Type</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Discount</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Start Date</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Expiry Date</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Status</th>
-                    <th className="px-6 py-4 text-left font-medium text-gray-500">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {coupons.map((coupon, idx) => (
-                    <tr key={coupon.id} className={idx % 2 === 1 ? 'bg-gray-50' : ''}>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.code}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.discountType}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.discount}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.startDate}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.expiry}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-900">{coupon.status}</td>
-                      <td className="px-6 py-4 whitespace-nowrap flex gap-2">
-                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="View" onClick={() => handleView(coupon)}>View</button>
-                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Edit" onClick={() => handleEdit(coupon)}>Edit</button>
-                        <button className="bg-black text-white px-3 py-1 rounded font-medium hover:bg-gray-800 transition" title="Delete" onClick={() => handleDelete(coupon.id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                  {coupons.length === 0 && !loading && !error && (
-                    <tr><td colSpan={7} className="text-center text-red-500 py-8">No coupons found.</td></tr>
-                  )}
-                </tbody>
-              </table>
+              <DataTable columns={columns} data={coupons} />
             )}
           </div>
           {/* Pagination */}
-          <div className="flex justify-end mt-4 animate-fadein">
-            <button onClick={() => handlePage(page - 1)} disabled={page === 0} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&lt;</button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i}
-                className={`px-3 py-1 rounded mx-1 ${page === i ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                onClick={() => handlePage(i)}
-              >{i + 1}</button>
-            ))}
-            <button onClick={() => handlePage(page + 1)} disabled={page === totalPages - 1} className="px-3 py-1 rounded bg-gray-200 mx-1 disabled:opacity-50">&gt;</button>
-          </div>
+          {!loading && !error && totalPages > 1 && (
+            <Pagination
+              page={page + 1} // Pagination component is 1-based
+              totalPages={totalPages}
+              handlePage={(p) => handlePage(p - 1)} // Adjust back to 0-based for state
+            />
+          )}
           {/* Modals */}
           <CouponModal
             open={modal.open}
@@ -516,11 +536,6 @@ const AdminCoupon = () => {
             mode={modal.mode}
             onSave={handleSaveEdit}
           />
-          {modalLoading && (
-            <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40">
-              <div className="bg-white/90 rounded-lg px-8 py-6 text-lg font-semibold text-[#bd390e] shadow-lg">Loading coupon details...</div>
-            </div>
-          )}
           <DeleteModal
             open={deleteModal.open}
             onClose={() => setDeleteModal({ open: false, couponId: null })}
