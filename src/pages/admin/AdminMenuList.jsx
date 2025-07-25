@@ -216,7 +216,7 @@ const AdminMenuList = () => {
       <AdminSidebar />
       <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px'  }}>
         <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Menu Items</h1>
+          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">Menu Items</h1>
           <hr className="mb-6" />
           {/* Search and Add */}
           <div className="flex items-end gap-2 mb-4">

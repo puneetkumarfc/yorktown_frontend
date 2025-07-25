@@ -356,7 +356,7 @@ const AdminCoupon = () => {
           className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Coupons</h1>
+          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">Coupons</h1>
           <hr className="mb-6" />
 
           {/* handleAdd, setSearch, setPage */}

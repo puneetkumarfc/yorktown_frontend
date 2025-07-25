@@ -167,7 +167,7 @@ const AdminOrders = () => {
           className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
-          <h1 className="text-xl font-semibold text-gray-900 mb-2 font-roboto_serif">
+          <h1 className="text-xl font-semibold text-gray-900 mb-8 font-roboto_serif">
             Your Orders
           </h1>
 

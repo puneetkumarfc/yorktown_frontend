@@ -71,7 +71,7 @@ export default function AdminSidebar() {
               {link.name === 'Settings' ? (
                 // Disabled Settings link with tooltip
                 <>
-                  <div className="flex items-center gap-3 w-full px-4 py-2 rounded-lg font-medium text-gray-400 cursor-not-allowed">
+                  <div className="flex items-center gap-3 w-full px-4 py-2 rounded-lg font-medium text-black/20 cursor-not-allowed">
                     <link.icon className="w-5 h-5" />
                     <span>{link.name}</span>
                   </div>
@@ -87,7 +87,7 @@ export default function AdminSidebar() {
                     `flex items-center gap-3 w-full px-4 py-2 rounded-lg font-medium transition group ${
                       isActive
                         ? 'bg-gray-100 text-gray-900'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-customOrange'
                     }`
                   }
                 >
@@ -139,7 +139,7 @@ export default function AdminSidebar() {
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-md p-6">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-roboto_serif text-gray-900">
+              <h2 className="text-lg font-roboto_serif text-gray-900 font-semibold">
                 Confirm Logout
               </h2>
             </div>
