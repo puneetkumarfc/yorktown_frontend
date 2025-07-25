@@ -409,13 +409,7 @@ const AdminCoupon = () => {
             )}
           </div>
           {/* Pagination */}
-          {!loading && !error && totalPages > 1 && (
-            <Pagination
-              page={page + 1} // Pagination component is 1-based
-              totalPages={totalPages}
-              handlePage={(p) => handlePage(p - 1)} // Adjust back to 0-based for state
-            />
-          )}
+          <Pagination page={page} totalPages={totalPages} handlePage={handlePage}/>
           {/* Modals */}
           <CouponModal
             open={modal.open}

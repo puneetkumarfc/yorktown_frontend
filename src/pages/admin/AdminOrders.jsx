@@ -9,7 +9,7 @@ import { Ellipsis } from "lucide-react";
 import Searchbar from "../../components/admin/Searchbar";
 import Pagination from "../../components/admin/Pagination";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
