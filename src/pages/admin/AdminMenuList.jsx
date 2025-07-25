@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
-import MenuItemModal from './MenuItemModal';
+import MenuModal from '../../components/admin/MenuModal';
 import { FaPlus } from 'react-icons/fa';
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Search, X } from "lucide-react";
 import { fetchCategories, fetchMenu } from '../../services/operations/menu';
 import { useLoader } from '../../components/common/LoaderContext';
 import DataTable from '../../components/admin/DataTable';
 import Pagination from '../../components/admin/Pagination';
+import CustomButton from '../../components/admin/CustomButton';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 const AdminMenuList = () => {
   const [search, setSearch] = useState('');
@@ -127,6 +128,8 @@ const AdminMenuList = () => {
     setModalOpen(true);
   };
 
+  const handleClear = () => setSearch('');
+
   const toggleDropdown = (id) => {
     setDropdownId(dropdownId === id ? null : id);
   };
@@ -182,17 +185,23 @@ const AdminMenuList = () => {
                     onClick={() => { handleView(item); setDropdownId(null); }}
                   >View</button>
                 </li>
-                <li>
+                <li className="relative group">
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    onClick={() => { handleEdit(item); setDropdownId(null); }}
+                    className="w-full text-left block px-4 py-2 text-gray-400 cursor-not-allowed"
+                    onClick={() => {}} // Disabled
                   >Edit</button>
+                  <div className="absolute left-full top-0 ml-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                    Coming Soon
+                  </div>
                 </li>
-                <li>
+                <li className="relative group">
                   <button
-                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-gray-100"
-                    onClick={() => { handleDelete(item.id); setDropdownId(null); }}
+                    className="w-full text-left block px-4 py-2 text-gray-400 cursor-not-allowed"
+                    onClick={() => {}} // Disabled
                   >Delete</button>
+                  <div className="absolute left-full top-0 ml-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                    Coming Soon
+                  </div>
                 </li>
               </ul>
             </div>
@@ -210,17 +219,40 @@ const AdminMenuList = () => {
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">Menu Items</h1>
           <hr className="mb-6" />
           {/* Search and Add */}
-          <div className="flex flex-col md:flex-row gap-4 md:gap-0 mb-4 items-center justify-between w-full">
-            <input
-              className="border rounded px-3 py-2 w-full md:w-64"
-              type="text"
-              placeholder="Search menu..."
-              value={search}
-              onChange={e => { setSearch(e.target.value); setPage(1); }}
-            />
-            <button className="bg-blue-600 text-white px-4 py-2 rounded ml-2 flex items-center gap-2" style={{ minWidth: 120 }} onClick={handleAdd}>
-              <FaPlus /> Add Menu Item
-            </button>
+          <div className="flex items-end gap-2 mb-4">
+            {/* Search bar */}
+            <div className="relative flex items-center w-full">
+              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
+              <input
+                type="text"
+                value={search}
+                onChange={e => { setSearch(e.target.value); setPage(1); }}
+                onKeyDown={(e) => e.key === "Enter"}
+                placeholder="Search menu..."
+                className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
+                autoComplete="off"
+              />
+              {search && (
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+            <div className="relative group">
+              <CustomButton
+                text={"Add Menu Item"}
+                active={false}
+                image={FaPlus}
+                onClick={() => {}} // Disabled
+              />
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                Coming Soon
+              </div>
+            </div>
           </div>
           <div className={`mt-4 rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'} [scrollbar-gutter:stable]`}>
             {loading ? (
@@ -240,7 +272,7 @@ const AdminMenuList = () => {
             />
           )}
           {/* Modals */}
-          <MenuItemModal
+          <MenuModal
             open={modalOpen}
             onClose={() => setModalOpen(false)}
             item={modalItem}

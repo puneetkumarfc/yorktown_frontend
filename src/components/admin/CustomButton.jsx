@@ -21,7 +21,7 @@ const CustomButton = ({text, image, onClick, active, type}) => {
       onClick={onClick} type={type}
     >
         {image && <Icon className={`transition-all duration-200 ${iconStateClasses}`} strokeWidth={1.2}/>}
-        <span className={`transition-all duration-200 font-medium ${textStateClasses}`}>{text}</span>
+        <span className={`transition-all text-nowrap duration-200 font-medium ${textStateClasses}`}>{text}</span>
     </button>
   )
 }
