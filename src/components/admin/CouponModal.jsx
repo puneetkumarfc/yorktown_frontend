@@ -260,7 +260,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                     </span>
                     <button
                       type="button"
-                      className="bg-white border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-2 focus:ring-black text-black"
+                      className="bg-white border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-1 focus:ring-black text-black"
                       onClick={() => isEdit && setShowStatusDropdown((v) => !v)}
                       disabled={!isEdit}
                     >

@@ -136,20 +136,7 @@ const AdminDashboard = () => {
               <DataTable columns={columns} data={recentOrders} isMenuOpen={dropdownId !== null} />
             </div>
           </div>
-          {/* Revenue Chart */}
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Revenue (This Week)</h2>
-            <div className="flex items-end gap-4 h-40">
-              {chartData.map((bar, idx) => (
-                <div key={idx} className="flex flex-col items-center justify-end h-full">
-                  <div className="w-8 bg-gradient-to-b from-red-500 to-red-800 rounded-t-lg flex items-end justify-center" style={{ height: `${bar.value / 10 + 20}px` }}>
-                    <span className="text-xs text-white font-semibold mb-1">${bar.value}</span>
-                  </div>
-                  <span className="text-xs text-gray-500 mt-1">{bar.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

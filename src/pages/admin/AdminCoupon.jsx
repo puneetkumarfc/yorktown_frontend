@@ -10,82 +10,9 @@ import DataTable from "../../components/admin/DataTable";
 import Pagination from "../../components/admin/Pagination";
 import CouponModal from "../../components/admin/CouponModal";
 import CustomButton from "../../components/admin/CustomButton";
+import DeleteModal from "../../components/admin/DeleteModal";
 
 const PAGE_SIZE = 10;
-
-function DeleteModal({ open, onClose, onConfirm, coupon }) {
-  if (!open) return null;
-  return (
-    <div className="logout-confirm-overlay animate-fadein">
-      <div
-        className="logout-confirm-modal"
-        style={{
-          minWidth: 420,
-          maxWidth: 520,
-          width: "100%",
-          paddingLeft: 32,
-          paddingRight: 32,
-        }}
-      >
-        <div
-          className="logout-confirm-header"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 8,
-          }}
-        >
-          <h3 style={{ color: "#bd390e", fontWeight: 900, fontSize: 26 }}>
-            Delete Coupon
-          </h3>
-          <button
-            className="logout-confirm-close"
-            onClick={onClose}
-            style={{
-              color: "#bd390e",
-              fontSize: 28,
-              fontWeight: 700,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              transition: "color 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "#a82a0c")}
-            onMouseOut={(e) => (e.currentTarget.style.color = "#bd390e")}
-          >
-            &times;
-          </button>
-        </div>
-        <div
-          className="logout-confirm-content"
-          style={{
-            color: "#bd390e",
-            fontWeight: 600,
-            paddingLeft: 12,
-            marginBottom: 24,
-          }}
-        >
-          <p>
-            Are you sure you want to delete this coupon
-            {coupon && coupon.code ? `: "${coupon.code}"` : ""}?
-          </p>
-        </div>
-        <div
-          className="logout-confirm-footer"
-          style={{ display: "flex", justifyContent: "flex-end", gap: 12 }}
-        >
-          <button className="logout-confirm-btn cancel" onClick={onClose}>
-            Cancel
-          </button>
-          <button className="logout-confirm-btn confirm" onClick={onConfirm}>
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const AdminCoupon = () => {
   const [coupons, setCoupons] = useState([]);
@@ -501,6 +428,7 @@ const AdminCoupon = () => {
             open={deleteModal.open}
             onClose={() => setDeleteModal({ open: false, couponId: null })}
             onConfirm={handleConfirmDelete}
+            module="Coupon"
             coupon={coupons.find((c) => c.id === deleteModal.couponId)}
           />
         </div>
