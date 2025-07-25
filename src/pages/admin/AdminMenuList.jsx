@@ -222,7 +222,7 @@ const AdminMenuList = () => {
               <FaPlus /> Add Menu Item
             </button>
           </div>
-          <div className="rounded-2xl overflow-x-auto animate-fadein text-black">
+          <div className={`mt-4 rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'} [scrollbar-gutter:stable]`}>
             {loading ? (
               <div className="text-center text-gray-500 py-8">Loading menu items...</div>
             ) : error ? (

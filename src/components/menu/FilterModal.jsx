@@ -1,8 +1,7 @@
 import React from "react";
 import { filters } from "../../constants/Menu";
 
-
-const FilterModal = ({selectedFilters, clearAllFilters, toggleFilters}) => {
+const FilterModal = ({ selectedFilters, clearAllFilters, toggleFilters }) => {
   return (
     <div className="absolute top-10 rounded-xl right-0 w-fit bg-[#1a1a1a] py-4 px-6 z-10">
       <p className="text-lg font-semibold text-center">Filters</p>
@@ -43,13 +42,15 @@ const FilterModal = ({selectedFilters, clearAllFilters, toggleFilters}) => {
       <div className="flex gap-2 items-center justify-center mt-2">
         <button
           className="text-nowrap text-sm bg-[#ffffff2a] hover:bg-[#ffffff65]
-                        transition-all duration-200 text-white cursor-pointer p-3 rounded-xl">
+                        transition-all duration-200 text-white cursor-pointer p-3 rounded-xl"
+        >
           Apply Filters
         </button>
         <button
           className="text-nowrap text-sm bg-mainRed hover:bg-mainRed/80 
                         transition-all duration-200 text-white cursor-pointer p-3 rounded-xl"
-          onClick={clearAllFilters}>
+          onClick={clearAllFilters}
+        >
           Clear All
         </button>
       </div>

@@ -123,21 +123,16 @@
   backdrop-filter: blur(4px);
 }
 
-.admin-login-field input:-webkit-autofill,
-.admin-login-field input:-webkit-autofill:focus,
-.admin-login-field input:-webkit-autofill:hover,
-.admin-login-field input:-webkit-autofill:active {
+/* Override browser-default autofill styles */
+#admin-login-page input:-webkit-autofill,
+#admin-login-page input:-webkit-autofill:hover,
+#admin-login-page input:-webkit-autofill:focus,
+#admin-login-page input:-webkit-autofill:active {
+  /* Use a box-shadow to override the browser's default autofill background */
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  box-shadow: 0 0 0 30px white inset !important;
+  /* Change text color to be readable */
   -webkit-text-fill-color: #000000 !important;
-  color: #000000 !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-.admin-login-field input:-moz-autofill {
-  color: #000000 !important;
-}
-
-.admin-login-field input:autofill {
-  color: #000000 !important;
 }
 
 .admin-login-field input:focus {

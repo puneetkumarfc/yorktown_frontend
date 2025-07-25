@@ -5,10 +5,9 @@ import { routeConstant } from "../../constants/RouteConstants";
 import { adminOrders } from "../../utils/api";
 import { useLoader } from "../../components/common/LoaderContext";
 import DataTable from "../../components/admin/DataTable";
-import { VscEye } from "react-icons/vsc";
+import { Ellipsis } from "lucide-react";
 import Searchbar from "../../components/admin/Searchbar";
 import Pagination from "../../components/admin/Pagination";
-
 
 const PAGE_SIZE = 20;
 
@@ -23,11 +22,26 @@ const AdminOrders = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
+  const [dropdownId, setDropdownId] = useState(null);
 
   const [query, setQuery] = useState("");
   const handleInputChange = (e) => setQuery(e.target.value);
   const handleClear = () => setQuery("");
 
+  const toggleDropdown = (id) => {
+    setDropdownId(dropdownId === id ? null : id);
+  };
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownId !== null && !event.target.closest('.action-dropdown-container')) {
+        setDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownId]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -113,16 +127,30 @@ const AdminOrders = () => {
       headerClassName: "text-center",
       cellClassName: "flex justify-center items-center",
       cell: (row) => (
-        <button
-          className="text-black text-xl cursor-pointer hover:text-black/50 transition"
-          onClick={() =>
-            navigate(
-              routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.id)
-            )
-          }
-        >
-          <VscEye />
-        </button>
+        <div className="relative action-dropdown-container">
+          <button
+            onClick={() => toggleDropdown(row.id)}
+            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
+            title="Actions"
+          >
+            <Ellipsis strokeWidth={1.1}/>
+          </button>
+          {dropdownId === row.id && (
+            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+              <ul className="py-1 text-sm">
+                <li>
+                  <button
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.id));
+                      setDropdownId(null);
+                    }}
+                  >View</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       ),
     },
   ];
@@ -146,7 +174,7 @@ const AdminOrders = () => {
           {/* Search and Table */}
            <Searchbar/>
 
-          <div className="rounded-2xl overflow-x-auto animate-fadein text-black">
+          <div className={`mt-4 rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'} [scrollbar-gutter:stable]`}>
             {loading ? (
               <div
                 style={{

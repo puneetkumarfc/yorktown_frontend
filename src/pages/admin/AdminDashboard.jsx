@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import { useNavigate } from 'react-router-dom';
-import { VscEye } from 'react-icons/vsc';
 import { routeConstant } from '../../constants/RouteConstants';
 import DataTable from '../../components/admin/DataTable';
+import { Ellipsis } from 'lucide-react';
 
 const summaryData = [
   { label: 'Total Orders Today', value: 128, icon: '\ud83d\uded2', color: 'red' },
@@ -31,6 +31,22 @@ const chartData = [
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [dropdownId, setDropdownId] = useState(null);
+
+  const toggleDropdown = (id) => {
+    setDropdownId(dropdownId === id ? null : id);
+  };
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownId !== null && !event.target.closest('.action-dropdown-container')) {
+        setDropdownId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [dropdownId]);
 
   const columns = [
     {
@@ -68,18 +84,28 @@ const AdminDashboard = () => {
       header: "Actions",
       headerClassName: "text-center",
       cellClassName: "flex justify-center items-center",
-      cell: (row) => (
-        <button
-          className="text-black text-xl cursor-pointer hover:text-black/50 transition"
-          title="View Order"
-          onClick={() =>
-            navigate(
-              routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.numericId)
-            )
-          }
-        >
-          <VscEye />
-        </button>
+      cell: (item) => (
+        <div className="relative action-dropdown-container">
+          <button
+            onClick={() => toggleDropdown(item.id)}
+            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
+            title="Actions"
+          >
+            <Ellipsis strokeWidth={1.1}/>
+          </button>
+          {dropdownId === item.id && (
+            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+              <ul className="py-1 text-sm">
+                <li>
+                  <button
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => { navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", item.numericId)); setDropdownId(null); }}
+                  >View</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
       ),
     },
   ];
@@ -87,6 +113,7 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <AdminSidebar />
+      
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px' }}>
         <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
@@ -105,8 +132,8 @@ const AdminDashboard = () => {
           {/* Recent Orders Table */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold mb-2">Recent Orders</h2>
-            <div className="rounded-2xl animate-fadein text-black">
-              <DataTable columns={columns} data={recentOrders} />
+            <div className={`rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'}`}>
+              <DataTable columns={columns} data={recentOrders} isMenuOpen={dropdownId !== null} />
             </div>
           </div>
           {/* Revenue Chart */}

@@ -4,10 +4,14 @@ import './AdminLogin.css';
 import { routeConstant } from '../../constants/RouteConstants';
 import { adminAuth, validation, handleApiError } from '../../utils/api';
 import { useLoader } from '../../components/common/LoaderContext';
+import { Eye, EyeOff } from 'lucide-react';
+import { formFields } from '../../constants/AdminLogin';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -19,27 +23,29 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
+  };
+
   const validateForm = () => {
-    if (!validation.required(email)) {
+    if (!validation.required(formData.email)) {
       setError('Email is required');
       return false;
     }
-    
-    if (!validation.required(password)) {
+    if (!validation.required(formData.password)) {
       setError('Password is required');
       return false;
     }
-    
-    if (!validation.email(email)) {
+    if (!validation.email(formData.email)) {
       setError('Please enter a valid email address');
       return false;
     }
-    
-    if (!validation.password(password)) {
+    if (!validation.password(formData.password)) {
       setError('Password must be at least 6 characters long');
       return false;
     }
-    
     setError('');
     return true;
   };
@@ -59,7 +65,7 @@ const AdminLogin = () => {
     setSuccessMessage('');
 
     try {
-      const result = await adminAuth.login(email.trim(), password);
+      const result = await adminAuth.login(formData.email.trim(), formData.password);
       
       // Success - show success popup then redirect
       setSuccessMessage(result.message || 'Login successful');
@@ -94,57 +100,67 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-login-bg">
-      <div className="admin-login-content-wrapper">
-        <form className="admin-login-form" onSubmit={handleSubmit}>
-          <h2 className="admin-login-title">Admin Login</h2>
-          <div className="admin-login-field">
-            <label htmlFor="admin-email">Email</label>
-            <input
-              id="admin-email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              autoComplete="username"
-              required
+    <div id="admin-login-page" className="w-[100vw] h-[100vh] overflow-hidden flex items-center gap-2 bg-white p-2">
+      <div className="h-full w-[70%] overflow-hidden rounded-xl">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop" alt="Restaurant" className="h-full w-full object-cover" />
+      </div>
+
+      <div className="w-[30%]">
+        <div className="w-full px-4">
+          <h2 className="font-roboto_serif text-black text-center font-bold text-2xl mb-4">Admin Login</h2>
+          
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+            {formFields.map((field) => (
+              <div className="flex flex-col" key={field.id}>
+                <label htmlFor={field.id} className='text-black/70 text-sm font-roboto'>{field.label}</label>
+                {
+                  field.type === 'password' ? (
+                  <div className="relative w-full">
+                    <input
+                      id={field.id}
+                      name={field.name}
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      placeholder={field.placeholder}
+                      autoComplete={field.autoComplete}
+                      required
+                      className='border border-black/20 w-full py-3 pl-2 pr-10 rounded-xl text-black placeholder:text-black/30 placeholder:text-sm text-sm focus:outline-none focus:border-black'
+                      disabled={isLoading}
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 cursor-pointer right-0 flex items-center pr-3 text-gray-400 hover:text-black"
+                      onClick={() => setShowPassword((v) => !v)}
+                      tabIndex="-1"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                ) : (
+                  <input
+                    {...field}
+                    className='border border-black/20 w-full py-3 px-2 rounded-xl placeholder:text-black/30 placeholder:text-sm text-black text-sm focus:outline-none focus:border-black'
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    disabled={isLoading}
+                    required
+                  />
+                )}
+              </div>
+            ))}
+            {error && <div className="admin-login-error">{error}</div>}
+            <button 
+              className={`mt-4 border border-black rounded-xl cursor-pointer text-white font-semibold bg-black/90 hover:bg-white hover:text-black/90 transition-all duration-150
+               py-2 w-full ${isLoading ? 'admin-login-btn-loading' : ''}`} 
+              type="submit"
               disabled={isLoading}
-            />
-          </div>
-          <div className="admin-login-field admin-login-password-field">
-            <label htmlFor="admin-password">Password</label>
-            <div className="admin-login-password-wrapper">
-              <input
-                id="admin-password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                required
-                disabled={isLoading}
-              />
-              <span
-                className={"admin-login-eye-icon" + (showPassword ? ' visible' : '')}
-                onClick={() => setShowPassword(v => !v)}
-                tabIndex={0}
-                role="button"
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                style={{ userSelect: 'none' }}
-              >
-                {showPassword ? '🙈' : '👁️'}
-              </span>
-            </div>
-          </div>
-          {error && <div className="admin-login-error">{error}</div>}
-          <button 
-            className={`admin-login-btn ${isLoading ? 'admin-login-btn-loading' : ''}`} 
-            type="submit"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
+            >
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Error Popup */}
