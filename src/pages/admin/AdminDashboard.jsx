@@ -251,7 +251,7 @@ const AdminDashboard = () => {
               {summaryData.map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-mainBg border border-black/10 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
+                  className="bg-mainBg border border-black/7 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-2xl" style={{ color: item.color }}>
