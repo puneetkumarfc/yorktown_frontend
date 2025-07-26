@@ -162,21 +162,19 @@ const AdminOrderDetails = () => {
     <div className="min-h-screen bg-[#E8EDE9] flex">
       {/* Print Receipt Modal */}
       {showPrintModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-          <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-4xl p-6 mx-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4">
+          <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
             <div className="flex justify-end gap-3 mb-4">
-              <button
+              <CustomButton
+                text="Download PDF"
+                active={true}
                 onClick={handleDownloadPDF}
-                className="px-4 py-2 bg-mainRed text-white rounded-lg hover:bg-mainRed/80 transition-all font-medium"
-              >
-                Download PDF
-              </button>
-              <button
+              />
+              <CustomButton
+                text="Close"
+                active={false}
                 onClick={() => setShowPrintModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-all font-medium"
-              >
-                Close
-              </button>
+              />
             </div>
             <div>
               <Receipt

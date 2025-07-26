@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
 import { routeConstant } from "../../constants/RouteConstants";
 import { adminAuth, validation, handleApiError } from "../../utils/api";
@@ -106,7 +106,18 @@ const AdminLogin = () => {
       id="admin-login-page"
       className="w-[100vw] h-[100vh] overflow-hidden flex items-center gap-2 bg-mainBg p-2"
     >
-      <div className="h-full w-[70%] overflow-hidden rounded-xl">
+      <div className="md:hidden absolute top-0 right-0 left-0 py-2 bg-black/90 text-center">
+        <NavLink
+          to="https://eatatyorktown.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white text-sm hover:underline underline sm:no-underline"
+        >
+          ← Back to Main Website
+        </NavLink>
+      </div>
+
+      <div className="h-full hidden md:block md:w-[70%] overflow-hidden rounded-xl">
         <img
           src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop"
           alt="Restaurant"
@@ -114,7 +125,7 @@ const AdminLogin = () => {
         />
       </div>
 
-      <div className="w-[30%]">
+      <div className="w-full sm:w-[80%] md:w-[30%] mx-auto">
         <div className="w-full px-4">
           <h2 className="font-roboto_serif text-black text-center font-bold text-2xl mb-4">
             Admin Login

@@ -1,72 +1,128 @@
-import React from 'react';
-
-const pdfStyles = {
-  fontFamily: "'Segoe UI', Arial, sans-serif",
-  maxWidth: '800px',
-  margin: '0 auto',
-  padding: '32px',
-  background: '#fff',
-  borderRadius: '12px',
-  boxShadow: '0 2px 16px #0001',
-  fontSize: '1.1rem',
-  color: '#222',
-};
+import React from "react";
 
 const Receipt = React.forwardRef(({ order, orderItems, payments }, ref) => (
-  <div ref={ref} className="receipt-pdf-wrapper" style={pdfStyles}>
-    <h2 style={{ textAlign: 'center', marginBottom: 8 }}>Order Receipt</h2>
-    <hr />
-    <div style={{ marginBottom: 8 }}>
-      <div><b>Order ID:</b> {order.id}</div>
-      <div><b>Date:</b> {order.placedAt ? new Date(order.placedAt).toLocaleString() : '-'}</div>
-      <div><b>Customer:</b> {order.customerName}</div>
-      <div><b>Email:</b> {order.customerEmail || '-'}</div>
-      <div><b>Phone:</b> {order.customerPhone || '-'}</div>
-      <div><b>Address:</b> {order.customerAddress || '-'}</div>
+  <div
+    ref={ref}
+    className="receipt-pdf-wrapper bg-mainBg border border-gray-200 rounded-xl p-8 text-black max-w-2xl w-full mx-auto font-roboto shadow-lg"
+  >
+    <h2 className="text-center text-xl font-semibold mb-4 font-roboto_serif">
+      Order Receipt
+    </h2>
+    <hr className="mb-6 border-black/10" />
+    <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
+      <div className="flex flex-col gap-1">
+        <span className="font-semibold">Order ID:</span>
+        <span className="font-light text-black/80">{order.id}</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="font-semibold">Date:</span>
+        <span className="font-light text-black/80">
+          {order.placedAt ? new Date(order.placedAt).toLocaleString() : "-"}
+        </span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="font-semibold">Customer:</span>
+        <span className="font-light text-black/80">{order.customerName}</span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="font-semibold">Email:</span>
+        <span className="font-light text-black/80">
+          {order.customerEmail || "-"}
+        </span>
+      </div>
+      <div className="flex flex-col gap-1">
+        <span className="font-semibold">Phone:</span>
+        <span className="font-light text-black/80">
+          {order.customerPhone || "-"}
+        </span>
+      </div>
+      <div className="flex flex-col gap-1 md:col-span-2">
+        <span className="font-semibold">Address:</span>
+        <span className="font-light text-black/80">
+          {order.customerAddress || "-"}
+        </span>
+      </div>
     </div>
-    <hr />
-    <div>
-      <b>Items:</b>
-      <table style={{ width: '100%', fontSize: 14, marginTop: 4, marginBottom: 8 }}>
-        <thead>
-          <tr>
-            <th align="left">Item</th>
-            <th align="right">Qty</th>
-            <th align="right">Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orderItems && orderItems.length > 0 ? orderItems.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.menuItemName} {item.sizeName ? `(${item.sizeName})` : ''}</td>
-              <td align="right">{item.quantity}</td>
-              <td align="right">${item.totalPrice?.toFixed(2)}</td>
+    <hr className="mb-6 border-black/10" />
+    <div className="mb-8">
+      <b className="block mb-2">Items:</b>
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs border border-gray-200 rounded-lg">
+          <thead>
+            <tr className="bg-black/5">
+              <th className="text-left py-2 px-2 font-medium text-gray-700">
+                Item
+              </th>
+              <th className="text-center py-2 px-2 font-medium text-gray-700">
+                Qty
+              </th>
+              <th className="text-right py-2 px-2 font-medium text-gray-700">
+                Price
+              </th>
             </tr>
-          )) : (
-            <tr><td colSpan={3} style={{ textAlign: 'center' }}>No items</td></tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orderItems && orderItems.length > 0 ? (
+              orderItems.map((item, idx) => (
+                <tr key={idx} className="border-b border-gray-100">
+                  <td className="py-2 px-2">
+                    <span className="font-medium text-gray-900">
+                      {item.menuItemName}
+                    </span>
+                    {item.sizeName && (
+                      <span className="text-xs text-gray-500 ml-1">
+                        ({item.sizeName})
+                      </span>
+                    )}
+                  </td>
+                  <td className="text-center py-2 px-2 text-black font-light">
+                    {item.quantity}
+                  </td>
+                  <td className="text-right py-2 px-2 text-black font-light">
+                    ${item.totalPrice?.toFixed(2)}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3} className="text-center py-4 text-gray-500">
+                  No items
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div style={{ marginBottom: 8 }}>
-      <b>Total:</b> ${order.totalAmount?.toFixed(2)}
+    <div className="mb-2 flex gap-2 text-sm">
+      <span className="font-semibold">Total:</span>
+      <span className="font-light text-black/80">
+        ${order.totalAmount?.toFixed(2)}
+      </span>
     </div>
-    <div style={{ marginBottom: 8 }}>
-      <b>Status:</b> {order.status}
+    <div className="mb-2 flex gap-2 text-sm">
+      <span className="font-semibold">Status:</span>
+      <span className="font-light text-black/80">{order.status}</span>
     </div>
-    <div style={{ marginBottom: 8 }}>
-      <b>Order Notes:</b> {order.orderNotes || '-'}
+    <div className="mb-2 flex gap-2 text-sm">
+      <span className="font-semibold">Order Notes:</span>
+      <span className="font-light text-black/80">
+        {order.orderNotes || "-"}
+      </span>
     </div>
-    <div style={{ marginBottom: 8 }}>
-      <b>Payment Status:</b> {payments && payments.length > 0 ? payments[0].paymentStatus || '-' : '-'}
+    <div className="mb-6 flex gap-2 text-sm">
+      <span className="font-semibold">Payment Status:</span>
+      <span className="font-light text-black/80">
+        {payments && payments.length > 0
+          ? payments[0].paymentStatus || "-"
+          : "-"}
+      </span>
     </div>
-    <hr />
-    
-    <hr />
-    <div style={{ textAlign: 'center', fontSize: 12, marginTop: 12 }}>
+    <hr className="my-6 border-black/10" />
+    <div className="text-center text-xs mt-4 text-black/60 font-roboto">
       Thank you for your order!
     </div>
   </div>
 ));
 
-export default Receipt; 
+export default Receipt;
