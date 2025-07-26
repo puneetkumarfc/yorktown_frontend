@@ -60,9 +60,6 @@ const QuickPick = () => {
         displayCategories();
     }, [])
 
-    console.log(activeCategory)
-    console.log(menu)
-
   return (
     <div className='flex flex-col items-center mt-12 mb-20 relative'>
         <p className='uppercase font-roboto font-medium'>Quick Picks</p>

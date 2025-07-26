@@ -7,6 +7,7 @@ import { placeOrder } from "../../services/operations/payments";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
+import { useLoader } from "../common/LoaderContext";
 
 const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   const stripePromise = loadStripe(
@@ -14,6 +15,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   );
 
   const { cart, totalPrice } = useCartStore();
+  const {showLoader, hideLoader} = useLoader();
 
   const cartItems = cart.map((item) => ({
     itemId: item.id,
@@ -22,6 +24,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
     toppingIds: item.toppings,
     cheeseIds: item.cheese,
     bread: item.bread,
+    notes: item.notes,
   }));
 
   const [formStep, setFormStep] = useState(1);
@@ -53,7 +56,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
           },
         },
       };
-      console.log(input);
+      showLoader()
       try {
         const response = await placeOrder(input);
         console.log("Order placed:", response.data.data.clientSecret);
@@ -68,6 +71,9 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
         }
       } catch (error) {
         console.error("Error placing order:", error);
+      }
+      finally {
+        hideLoader();
       }
     }
 

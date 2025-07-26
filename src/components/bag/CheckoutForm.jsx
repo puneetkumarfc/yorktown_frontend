@@ -36,7 +36,7 @@ const CheckoutForm = ({ orderId }) => {
       <button
         type="submit"
         disabled={!stripe || loading}
-        className="mt-4 py-2 border rounded-xl w-full hover:bg-mainBg hover:text-black transition-all duration-150"
+        className="mt-4 py-2 font-roboto font-semibold cursor-pointer rounded-xl w-full bg-black/90 hover:bg-mainBg text-white hover:text-black transition-all duration-150"
       >
         {loading ? "Processing…" : "Pay"}
       </button>

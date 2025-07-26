@@ -25,6 +25,7 @@ const CustomizeModal = ({
   bread: initialBread,
   cheese: initialCheese,
   uniqueId: originalUniqueId,
+  notes: initialNotes,
 }) => {
   const { showLoader, hideLoader } = useLoader();
   const [itemDetails, setItemDetails] = useState({});
@@ -77,6 +78,7 @@ const CustomizeModal = ({
       if (initialBread) setSelectedBreads(initialBread);
       if (initialCheese) setSelectedCheese(initialCheese);
       if (initialQuantity) setQuantity(initialQuantity);
+      if (initialNotes) setNotes(initialNotes);
     }
   }, [
     editMode,
@@ -85,6 +87,7 @@ const CustomizeModal = ({
     initialQuantity,
     initialBread,
     initialCheese,
+    initialNotes,
   ]);
 
   const navigate = useNavigate();
@@ -94,6 +97,7 @@ const CustomizeModal = ({
   const [selectedBreads, setSelectedBreads] = useState(null);
   const [selectedCheese, setSelectedCheese] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [notes, setNotes] = useState("");
   const [isPresent, setIsPresent] = useState(false);
   const [showAddedModal, setShowAddedModal] = useState(false);
 
@@ -201,6 +205,7 @@ const CustomizeModal = ({
       toppings: selectedToppings,
       cheese: selectedCheese,
       bread: selectedBreads,
+      notes: notes || "",
     };
 
     console.log(newItem);
@@ -211,6 +216,27 @@ const CustomizeModal = ({
       setTimeout(() => onShowNextActionModal(), 300);
     }
     if (onShowConfirmation) onShowConfirmation();
+  };
+
+  const handleBuyNow = () => {
+    const unitPrice = parseFloat(computeUnitPrice().toFixed(2));
+    const newItem = {
+      id,
+      name: name,
+      image: img,
+      price: parseFloat((unitPrice * quantity).toFixed(2)),
+      unitPrice,
+      quantity: quantity,
+      size: selectedSize,
+      toppings: selectedToppings,
+      cheese: selectedCheese,
+      bread: selectedBreads,
+      notes: notes || "",
+    };
+
+    addToCart(newItem);
+    showModal(); // Close current modal
+    navigate(routeConstant.BAG); // Navigate to bag
   };
 
   const handleUpdateItem = () => {
@@ -228,6 +254,7 @@ const CustomizeModal = ({
       toppings: selectedToppings,
       cheese: selectedCheese,
       bread: selectedBreads,
+      notes: notes || "",
     };
     addToCart(updatedItem);
     showModal();
@@ -319,9 +346,7 @@ const CustomizeModal = ({
                 {!editMode && (
                   <button
                     className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
-                    onClick={() => {
-                      navigate(routeConstant.BAG);
-                    }}
+                    onClick={handleBuyNow}
                   >
                     Buy Now
                   </button>
@@ -484,6 +509,21 @@ const CustomizeModal = ({
                 </div>
               </div>
             )}
+
+            {/* Notes */}
+            <div className="mt-6">
+              <p className="mb-2 text-black font-medium">
+                Special Instructions{" "}
+                <span className="font-light text-black/60">(Optional)</span>
+              </p>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="e.g., extra spicy, no onions, etc."
+                className="w-full p-3 rounded-xl border border-black/10 hover:border-gray-300 text-black focus:outline-none focus:border-customOrange transition-colors duration-150 font-light text-sm font-poppins"
+                rows="3"
+              />
+            </div>
 
             <div className="flex items-center justify-between pt-4 mt-2 border-t border-black/10">
               <div className="flex items-center space-x-3">

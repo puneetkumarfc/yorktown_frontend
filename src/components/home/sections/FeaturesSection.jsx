@@ -1,7 +1,4 @@
 import React, { useLayoutEffect, useRef } from 'react'
-import SpotlightCard from '../SpotlightCard'
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { features } from '../../../constants/Home';
 
 const FeaturesSection = () => {

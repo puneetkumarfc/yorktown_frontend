@@ -15,6 +15,7 @@ const Menu = () => {
 
   const [query, setQuery] = useState('');
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState({});
   const [activeCategory, setActiveCategory] = useState('');
   const [menu, setMenu] = useState([]);
   
@@ -53,10 +54,11 @@ const Menu = () => {
   const displayMenu = async (categoryId, displayHome = 2) => {
     showLoader();
     try {
-      const response = await fetchMenu(categoryId, displayHome);
-      setMenu(response.data.data);
+      const response = await fetchCategoriesCopy(categoryId, displayHome);
+      const transformedData = response.data.data || {};
+      setSubCategories(transformedData);
     } catch (error) {
-      console.log(error);
+      setSubCategories({}); // Clear on error
     } finally {
       hideLoader();
     }
@@ -120,23 +122,38 @@ const Menu = () => {
       </div>
 
       {/* Filtered Menu Items */}
-      <div className='w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-10 font-poppins'>
-          {
-            menu.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
-            .map((menuItem) => {
-              return (
-                <ItemCard key={menuItem.id} id={menuItem.id} name={menuItem.name} img={menuItem.imageUrl || menuItem.img} desc={menuItem.desc} priceFrom={menuItem.startingPrice}/>
-              )
-            })
-          }
-          {/* No results message */}
-          {menu.filter(item => item.name.toLowerCase().includes(query.toLowerCase())).length === 0 && query && (
-            <div className="col-span-full text-center py-16 flex flex-col items-center animate-fade-in-simple">
-              <IoIosSearch className="text-5xl text-customOrange/70 mb-4" />
-              <h3 className="text-lg font-roboto_serif font-semibold text-black/80 ">No Results Found</h3>
-              <p className="text-black/50 text-sm mt-1 font-roboto font-light">We couldn't find any items matching "{query}".</p>
+      <div className='w-full mt-10 flex flex-col gap-10'>
+        {Object.keys(subCategories).map((categoryName) => (
+          <div key={categoryName} className='flex flex-col gap-1'>
+            <p className='font-semibold mb-2'>{categoryName}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+              {subCategories[categoryName]
+                .filter(menuItem => menuItem.name.toLowerCase().includes(query.toLowerCase()))
+                .map(menuItem => (
+                  <ItemCard
+                    key={`${categoryName}-${menuItem.id}`}
+                    id={menuItem.id}
+                    name={menuItem.name}
+                    img={menuItem.imageUrl || menuItem.img}
+                    desc={menuItem.desc}
+                    priceFrom={menuItem.startingPrice}
+                  />
+                ))}
             </div>
-          )}
+          </div>
+        ))}
+        {/* No results message */}
+        {Object.keys(subCategories).every(categoryName =>
+          subCategories[categoryName].filter(menuItem =>
+            menuItem.name.toLowerCase().includes(query.toLowerCase())
+          ).length === 0
+        ) && query && (
+          <div className="col-span-full text-center py-16 flex flex-col items-center animate-fade-in-simple">
+            <IoIosSearch className="text-5xl text-customOrange/70 mb-4" />
+            <h3 className="text-lg font-roboto_serif font-semibold text-black/80">No Results Found</h3>
+            <p className="text-black/50 text-sm mt-1 font-roboto font-light">We couldn't find any items matching "{query}".</p>
+          </div>
+        )}
       </div>
     </div>
   )

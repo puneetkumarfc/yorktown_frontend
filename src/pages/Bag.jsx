@@ -135,6 +135,11 @@ const Bag = () => {
                       <p className="font-roboto text-center md:text-start text-base text-customOrange font-bold">
                         ${item.price}
                       </p>
+                      {item.notes && (
+                        <p className="font-roboto text-xs text-black/60 mt-1 italic max-w-xs truncate">
+                          Notes: "{item.notes}"
+                        </p>
+                      )}
                       
                     </div>
 
@@ -230,6 +235,7 @@ const Bag = () => {
           bread={editItem.bread}
           cheese={editItem.cheese}
           uniqueId={editItem.uniqueId}
+          notes={editItem.notes}
         />
       )}
 
