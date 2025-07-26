@@ -139,7 +139,7 @@ const Bag = () => {
                     </div>
 
                     <button
-                      className="text-customOrange font-medium hover:text-customOrange/50 transition-all duration-200 cursor-pointer underline"
+                      className="text-customOrange font-normal hover:text-customOrange/60 transition-all duration-200 cursor-pointer underline"
                       onClick={() => setEditItem(item)}
                     >
                       Edit
