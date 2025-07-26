@@ -5,7 +5,7 @@ const DeleteModal = ({ open, onClose, onConfirm, module, coupon }) => {
   if (!open) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-xl p-6">
+      <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold font-roboto_serif text-black">
             Delete {module || "Item"}
@@ -29,7 +29,7 @@ const DeleteModal = ({ open, onClose, onConfirm, module, coupon }) => {
         <div className="flex justify-end gap-3 mt-5">
           <button
             type="button"
-            className="px-5 py-2 rounded-lg border border-gray-300 bg-white text-black font-normal hover:bg-gray-100 transition-all"
+            className="px-5 py-2 rounded-lg border border-gray-300 bg-mainBg text-black font-normal hover:bg-gray-100 transition-all"
             onClick={onClose}
           >
             Cancel

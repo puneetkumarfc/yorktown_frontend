@@ -93,10 +93,14 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6">
+      <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold font-roboto_serif text-black">
-            {isAdd ? "Add Menu Item" : isView ? "Menu Item Details" : "Edit Menu Item"}
+            {isAdd
+              ? "Add Menu Item"
+              : isView
+              ? "Menu Item Details"
+              : "Edit Menu Item"}
           </h2>
           <button
             className="text-gray-400 hover:text-black text-2xl font-bold bg-transparent border-none cursor-pointer"
@@ -119,7 +123,7 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
                     {field.name}
                   </label>
                   <input
-                    className="bg-white border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black"
+                    className="bg-mainBg border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black"
                     type={field.type}
                     disabled={field.disabled}
                     readOnly={field.readOnly}
@@ -145,7 +149,7 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
                   )}
                 </div>
               ))}
-              
+
               {/* Status - custom dropdown */}
               <Controller
                 name="status"
@@ -158,7 +162,7 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
                     </span>
                     <button
                       type="button"
-                      className="bg-white border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-2 focus:ring-black text-black"
+                      className="bg-mainBg border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-2 focus:ring-black text-black"
                       onClick={() => isEdit && setShowStatusDropdown((v) => !v)}
                       disabled={!isEdit}
                     >
@@ -171,7 +175,7 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
                       />
                     </button>
                     {showStatusDropdown && isEdit && (
-                      <ul className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <ul className="absolute top-full left-0 right-0 mt-2 bg-mainBg border border-gray-200 rounded-lg shadow-lg z-10">
                         {statusOptions.map((option) => (
                           <li
                             key={option}
@@ -201,7 +205,7 @@ const MenuModal = ({ open, onClose, item, mode, onSave }) => {
                   Description
                 </label>
                 <textarea
-                  className="bg-white border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black resize-none"
+                  className="bg-mainBg border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black resize-none"
                   rows={4}
                   disabled={!isEdit}
                   readOnly={isView}

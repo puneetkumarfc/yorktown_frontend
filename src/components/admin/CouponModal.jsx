@@ -142,7 +142,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6">
+      <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold font-roboto_serif text-black">
             {isAdd ? "Add Coupon" : isView ? "Coupon Details" : "Edit Coupon"}
@@ -168,7 +168,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                     {field.name}
                   </label>
                   <input
-                    className="bg-white border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black"
+                    className="bg-mainBg border placeholder:text-black/30 placeholder:text-sm border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-black text-black"
                     type={field.type}
                     disabled={field.disabled}
                     readOnly={field.readOnly}
@@ -219,12 +219,12 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                             className={`w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center transition-colors duration-150 ${
                               field.value === opt.value
                                 ? "bg-black border-black"
-                                : "bg-white"
+                                : "bg-mainBg"
                             }`}
                             style={{ minWidth: 20 }}
                           >
                             {field.value === opt.value && (
-                              <span className="block w-2.5 h-2.5 rounded-full bg-white" />
+                              <span className="block w-2.5 h-2.5 rounded-full bg-mainBg" />
                             )}
                           </span>
                           <input
@@ -260,7 +260,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                     </span>
                     <button
                       type="button"
-                      className="bg-white border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-1 focus:ring-black text-black"
+                      className="bg-mainBg border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-1 focus:ring-black text-black"
                       onClick={() => isEdit && setShowStatusDropdown((v) => !v)}
                       disabled={!isEdit}
                     >
@@ -273,7 +273,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                       />
                     </button>
                     {showStatusDropdown && isEdit && (
-                      <ul className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                      <ul className="absolute top-full left-0 right-0 mt-2 bg-mainBg border border-gray-200 rounded-lg shadow-lg z-10">
                         {statusOptions.map((option) => (
                           <li
                             key={option}
@@ -281,7 +281,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
                               field.onChange(option);
                               setShowStatusDropdown(false);
                             }}
-                            className={`px-4 py-2 cursor-pointer hover:bg-gray-100 text-black font-normal`}
+                            className={`px-4 py-2 cursor-pointer hover:bg-black/5 text-black font-normal`}
                           >
                             {option}
                           </li>

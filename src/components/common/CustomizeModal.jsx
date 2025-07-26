@@ -78,7 +78,14 @@ const CustomizeModal = ({
       if (initialCheese) setSelectedCheese(initialCheese);
       if (initialQuantity) setQuantity(initialQuantity);
     }
-  }, [editMode, initialSize, initialToppings, initialQuantity, initialBread, initialCheese]);
+  }, [
+    editMode,
+    initialSize,
+    initialToppings,
+    initialQuantity,
+    initialBread,
+    initialCheese,
+  ]);
 
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(null);
@@ -195,8 +202,8 @@ const CustomizeModal = ({
       cheese: selectedCheese,
       bread: selectedBreads,
     };
-    
-    console.log(newItem)
+
+    console.log(newItem);
 
     addToCart(newItem);
     showModal(); // closes the customize modal
@@ -231,11 +238,16 @@ const CustomizeModal = ({
     const currentUniqueId = `${id}-${selectedSize}-${JSON.stringify(
       selectedToppings.sort()
     )}-${JSON.stringify(selectedCheese.sort())}-${selectedBreads}`;
-    const matchedItem = cart.find(
-      (item) => item.uniqueId === currentUniqueId
-    );
+    const matchedItem = cart.find((item) => item.uniqueId === currentUniqueId);
     setIsPresent(!!matchedItem);
-  }, [cart, id, selectedSize, selectedToppings, selectedCheese, selectedBreads]);
+  }, [
+    cart,
+    id,
+    selectedSize,
+    selectedToppings,
+    selectedCheese,
+    selectedBreads,
+  ]);
 
   // Auto-dismiss the added modal after 1.5s
   useEffect(() => {
@@ -252,7 +264,7 @@ const CustomizeModal = ({
         <div className="w-full max-w-4xl max-h-[91vh] overflow-y-auto rounded-xl bg-mainBg backdrop-blur-xl">
           <div className="h-[30vh] overflow-hidden rounded-t-md relative">
             <div
-              className="p-2 rounded-full absolute top-1 right-1 bg-white/70 hover:bg-white transition-all duration-200 text-black border cursor-pointer"
+              className="p-2 rounded-full absolute top-1 right-1 bg-mainBg/70 hover:bg-mainBg transition-all duration-200 text-black border cursor-pointer"
               onClick={showModal}
             >
               <RxCross2 />
@@ -295,19 +307,25 @@ const CustomizeModal = ({
                   <button
                     type="button"
                     className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
-                    onClick={isPresent ? () => navigate(routeConstant.BAG) : handleAddToCart}
+                    onClick={
+                      isPresent
+                        ? () => navigate(routeConstant.BAG)
+                        : handleAddToCart
+                    }
                   >
                     {isPresent ? "View Cart" : "Add to Bag"}
                   </button>
                 )}
-                {!editMode && <button
-                  className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
-                  onClick={() => {
-                    navigate(routeConstant.BAG);
-                  }}
-                >
-                  Buy Now
-                </button>}
+                {!editMode && (
+                  <button
+                    className="py-2 px-4 bg-transparent hover:bg-customOrange transition-all duration-200 border border-customOrange hover:border-transparent rounded-xl text-sm text-customOrange hover:text-white cursor-pointer"
+                    onClick={() => {
+                      navigate(routeConstant.BAG);
+                    }}
+                  >
+                    Buy Now
+                  </button>
+                )}
               </div>
             </div>
 

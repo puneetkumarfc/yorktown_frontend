@@ -1,9 +1,13 @@
-import React from 'react';
-import { BellIcon, Cog6ToothIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import {
+  BellIcon,
+  Cog6ToothIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
 
 export default function AdminModernHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full h-16 bg-white border-b border-gray-200 shadow-sm flex items-center px-8">
+    <header className="sticky top-0 z-40 w-full h-16 bg-mainBg border-b border-gray-200 shadow-sm flex items-center px-8">
       {/* Spacer to align with sidebar */}
       <div className="flex-1" />
       {/* Actions */}
@@ -15,10 +19,12 @@ export default function AdminModernHeader() {
             alt="User avatar"
             className="w-9 h-9 rounded-full object-cover border"
           />
-          <span className="hidden md:block font-medium text-gray-900">Erica</span>
+          <span className="hidden md:block font-medium text-gray-900">
+            Erica
+          </span>
           <ChevronDownIcon className="w-5 h-5 text-gray-400" />
         </div>
       </div>
     </header>
   );
-} 
+}

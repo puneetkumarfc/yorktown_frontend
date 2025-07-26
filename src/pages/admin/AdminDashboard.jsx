@@ -199,11 +199,11 @@ const AdminDashboard = () => {
             <Ellipsis strokeWidth={1.1} />
           </button>
           {dropdownId === item.id && (
-            <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20">
+            <div className="absolute right-0 mt-2 w-28 bg-mainBg border border-gray-200 rounded-md shadow-lg z-20">
               <ul className="py-1 text-sm">
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-black/5"
                     onClick={() => {
                       navigate(
                         routeConstant.ADMIN_ORDER_DETAILS.replace(
@@ -226,7 +226,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#E8EDE9] flex">
       <AdminSidebar />
 
       {/* Main content area */}
@@ -235,7 +235,7 @@ const AdminDashboard = () => {
         style={{ paddingRight: "10px", marginLeft: "256px" }}
       >
         <div
-          className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
           <h1 className="text-2xl font-roboto_serif font-semibold text-gray-900 mb-12">
@@ -251,7 +251,7 @@ const AdminDashboard = () => {
               {summaryData.map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+                  className="bg-mainBg border border-black/10 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-2xl" style={{ color: item.color }}>

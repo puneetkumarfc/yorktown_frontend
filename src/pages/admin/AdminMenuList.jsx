@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import AdminSidebar from '../../components/admin/AdminSidebar';
-import MenuModal from '../../components/admin/MenuModal';
-import { FaPlus } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+import MenuModal from "../../components/admin/MenuModal";
+import { FaPlus } from "react-icons/fa";
 import { Ellipsis, Search, X } from "lucide-react";
-import { fetchCategories, fetchMenu } from '../../services/operations/menu';
-import { useLoader } from '../../components/common/LoaderContext';
-import DataTable from '../../components/admin/DataTable';
-import Pagination from '../../components/admin/Pagination';
-import CustomButton from '../../components/admin/CustomButton';
+import { fetchCategories, fetchMenu } from "../../services/operations/menu";
+import { useLoader } from "../../components/common/LoaderContext";
+import DataTable from "../../components/admin/DataTable";
+import Pagination from "../../components/admin/Pagination";
+import CustomButton from "../../components/admin/CustomButton";
 
 const PAGE_SIZE = 10;
 
 const AdminMenuList = () => {
-  const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState('name');
-  const [sortDir, setSortDir] = useState('asc');
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [sortDir, setSortDir] = useState("asc");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState('view');
+  const [modalMode, setModalMode] = useState("view");
   const [modalItem, setModalItem] = useState(null);
   const [categories, setCategories] = useState([]);
   const [categoryMenuItems, setCategoryMenuItems] = useState({}); // { [categoryId]: [items] }
@@ -33,13 +33,13 @@ const AdminMenuList = () => {
     const fetchData = async () => {
       setError(null);
       setLoading(true);
-      showLoader('Loading menu...');
+      showLoader("Loading menu...");
       try {
         const catRes = await fetchCategories(2);
         const cats = catRes.data.data || [];
         setCategories(cats);
         // Fetch menu items for all categories in parallel
-        const menuPromises = cats.map(cat => fetchMenu(cat.id, 2));
+        const menuPromises = cats.map((cat) => fetchMenu(cat.id, 2));
         const menuResults = await Promise.all(menuPromises);
         const menuMap = {};
         cats.forEach((cat, idx) => {
@@ -47,7 +47,7 @@ const AdminMenuList = () => {
         });
         setCategoryMenuItems(menuMap);
       } catch (err) {
-        setError('Failed to fetch menu data.');
+        setError("Failed to fetch menu data.");
       } finally {
         hideLoader();
         setLoading(false);
@@ -58,25 +58,28 @@ const AdminMenuList = () => {
   }, []);
 
   // Helper to flatten all items for search/sort/pagination
-  const allItems = categories.flatMap(cat =>
-    (categoryMenuItems[cat.id] || []).map(item => ({
+  const allItems = categories.flatMap((cat) =>
+    (categoryMenuItems[cat.id] || []).map((item) => ({
       ...item,
-      category: cat.name
+      category: cat.name,
     }))
   );
 
   // Filter, sort, and paginate
-  const filtered = allItems.filter(item =>
-    item.name.toLowerCase().includes(search.toLowerCase()) ||
-    (item.category || '').toLowerCase().includes(search.toLowerCase())
+  const filtered = allItems.filter(
+    (item) =>
+      item.name.toLowerCase().includes(search.toLowerCase()) ||
+      (item.category || "").toLowerCase().includes(search.toLowerCase())
   );
   const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === 'price' || sortBy === 'startingPrice') {
-      return sortDir === 'asc' ? (a.startingPrice - b.startingPrice) : (b.startingPrice - a.startingPrice);
+    if (sortBy === "price" || sortBy === "startingPrice") {
+      return sortDir === "asc"
+        ? a.startingPrice - b.startingPrice
+        : b.startingPrice - a.startingPrice;
     } else {
-      return sortDir === 'asc'
-        ? (a[sortBy] || '').localeCompare(b[sortBy] || '')
-        : (b[sortBy] || '').localeCompare(a[sortBy] || '');
+      return sortDir === "asc"
+        ? (a[sortBy] || "").localeCompare(b[sortBy] || "")
+        : (b[sortBy] || "").localeCompare(a[sortBy] || "");
     }
   });
   const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
@@ -84,10 +87,10 @@ const AdminMenuList = () => {
 
   const handleSort = (col) => {
     if (sortBy === col) {
-      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
       setSortBy(col);
-      setSortDir('asc');
+      setSortDir("asc");
     }
     setPage(1);
   };
@@ -109,12 +112,12 @@ const AdminMenuList = () => {
 
   const handleView = (item) => {
     setModalItem(item);
-    setModalMode('view');
+    setModalMode("view");
     setModalOpen(true);
   };
   const handleEdit = (item) => {
     setModalItem(item);
-    setModalMode('edit');
+    setModalMode("edit");
     setModalOpen(true);
   };
   const handleSave = (updatedItem) => {
@@ -124,11 +127,11 @@ const AdminMenuList = () => {
 
   const handleAdd = () => {
     setModalItem(null);
-    setModalMode('add');
+    setModalMode("add");
     setModalOpen(true);
   };
 
-  const handleClear = () => setSearch('');
+  const handleClear = () => setSearch("");
 
   const toggleDropdown = (id) => {
     setDropdownId(dropdownId === id ? null : id);
@@ -136,7 +139,7 @@ const AdminMenuList = () => {
 
   const columns = [
     {
-      header: 'Name',
+      header: "Name",
       cell: (item) => (
         <div className="flex items-center gap-3">
           <span>{item.name}</span>
@@ -144,17 +147,18 @@ const AdminMenuList = () => {
       ),
     },
     {
-      header: 'Category',
+      header: "Category",
       cell: (item) => item.category,
     },
     {
-      header: 'Price',
-      cell: (item) => `$${item.startingPrice ? item.startingPrice.toFixed(2) : '--'}`,
+      header: "Price",
+      cell: (item) =>
+        `$${item.startingPrice ? item.startingPrice.toFixed(2) : "--"}`,
     },
     {
-      header: 'Status',
-      headerClassName: 'text-center',
-      cellClassName: 'text-center',
+      header: "Status",
+      headerClassName: "text-center",
+      cellClassName: "text-center",
       cell: (item) => (
         <span
           className={`border text-center border-green-600 bg-green-100 text-green-600 rounded-full px-2 py-1 text-xs`}
@@ -164,9 +168,9 @@ const AdminMenuList = () => {
       ),
     },
     {
-      header: 'Actions',
-      headerClassName: 'text-center',
-      cellClassName: 'flex justify-center items-center',
+      header: "Actions",
+      headerClassName: "text-center",
+      cellClassName: "flex justify-center items-center",
       cell: (item) => (
         <div className="relative action-dropdown-container">
           <button
@@ -174,22 +178,29 @@ const AdminMenuList = () => {
             className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
             title="Actions"
           >
-            <Ellipsis strokeWidth={1.1}/>
+            <Ellipsis strokeWidth={1.1} />
           </button>
           {dropdownId === item.id && (
-            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+            <div className="absolute right-0 mt-2 w-28 bg-mainBg border border-gray-200 rounded-md shadow-lg z-20">
               <ul className="py-1 text-sm">
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    onClick={() => { handleView(item); setDropdownId(null); }}
-                  >View</button>
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-black/5 cursor-pointer"
+                    onClick={() => {
+                      handleView(item);
+                      setDropdownId(null);
+                    }}
+                  >
+                    View
+                  </button>
                 </li>
                 <li className="relative group">
                   <button
                     className="w-full text-left block px-4 py-2 text-gray-400 cursor-not-allowed"
                     onClick={() => {}} // Disabled
-                  >Edit</button>
+                  >
+                    Edit
+                  </button>
                   <div className="absolute left-full top-0 ml-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                     Coming Soon
                   </div>
@@ -198,7 +209,9 @@ const AdminMenuList = () => {
                   <button
                     className="w-full text-left block px-4 py-2 text-gray-400 cursor-not-allowed"
                     onClick={() => {}} // Disabled
-                  >Delete</button>
+                  >
+                    Delete
+                  </button>
                   <div className="absolute left-full top-0 ml-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
                     Coming Soon
                   </div>
@@ -212,12 +225,19 @@ const AdminMenuList = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#E8EDE9] flex">
       <AdminSidebar />
-      <div className="flex-1 flex flex-col items-center justify-start py-2" style={{ paddingRight: '10px', marginLeft: '256px'  }}>
-        <div className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]" style={{ height: '100%' }}>
-          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">Menu Items</h1>
-          <hr className="mb-6" />
+      <div
+        className="flex-1 flex flex-col items-center justify-start py-2"
+        style={{ paddingRight: "10px", marginLeft: "256px" }}
+      >
+        <div
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
+          style={{ height: "100%" }}
+        >
+          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
+            Menu Items
+          </h1>
           {/* Search and Add */}
           <div className="flex items-end gap-2 mb-4">
             {/* Search bar */}
@@ -226,7 +246,10 @@ const AdminMenuList = () => {
               <input
                 type="text"
                 value={search}
-                onChange={e => { setSearch(e.target.value); setPage(1); }}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
                 onKeyDown={(e) => e.key === "Enter"}
                 placeholder="Search menu..."
                 className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
@@ -254,9 +277,15 @@ const AdminMenuList = () => {
               </div>
             </div>
           </div>
-          <div className={`mt-4 rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'} [scrollbar-gutter:stable]`}>
+          <div
+            className={`mt-4 rounded-2xl animate-fadein text-black ${
+              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+            } [scrollbar-gutter:stable]`}
+          >
             {loading ? (
-              <div className="text-center text-gray-500 py-8">Loading menu items...</div>
+              <div className="text-center text-gray-500 py-8">
+                Loading menu items...
+              </div>
             ) : error ? (
               <div className="text-center text-red-500 py-8">{error}</div>
             ) : (
@@ -285,4 +314,4 @@ const AdminMenuList = () => {
   );
 };
 
-export default AdminMenuList; 
+export default AdminMenuList;

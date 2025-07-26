@@ -35,12 +35,15 @@ const AdminOrders = () => {
   // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownId !== null && !event.target.closest('.action-dropdown-container')) {
+      if (
+        dropdownId !== null &&
+        !event.target.closest(".action-dropdown-container")
+      ) {
         setDropdownId(null);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownId]);
 
   useEffect(() => {
@@ -133,19 +136,26 @@ const AdminOrders = () => {
             className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
             title="Actions"
           >
-            <Ellipsis strokeWidth={1.1}/>
+            <Ellipsis strokeWidth={1.1} />
           </button>
           {dropdownId === row.id && (
-            <div className='absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20'>
+            <div className="absolute right-0 mt-2 w-28 bg-mainBg border border-gray-200 rounded-md shadow-lg z-20">
               <ul className="py-1 text-sm">
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-black/5 cursor-pointer"
                     onClick={() => {
-                      navigate(routeConstant.ADMIN_ORDER_DETAILS.replace(":orderId", row.id));
+                      navigate(
+                        routeConstant.ADMIN_ORDER_DETAILS.replace(
+                          ":orderId",
+                          row.id
+                        )
+                      );
                       setDropdownId(null);
                     }}
-                  >View</button>
+                  >
+                    View
+                  </button>
                 </li>
               </ul>
             </div>
@@ -156,7 +166,7 @@ const AdminOrders = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#E8EDE9] flex">
       <AdminSidebar />
 
       <div
@@ -164,7 +174,7 @@ const AdminOrders = () => {
         style={{ paddingRight: "10px", marginLeft: "256px" }}
       >
         <div
-          className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
           <h1 className="text-xl font-semibold text-gray-900 mb-8 font-roboto_serif">
@@ -172,9 +182,13 @@ const AdminOrders = () => {
           </h1>
 
           {/* Search and Table */}
-           <Searchbar/>
+          <Searchbar />
 
-          <div className={`mt-4 rounded-2xl animate-fadein text-black ${dropdownId !== null ? 'overflow-visible' : 'overflow-x-auto'} [scrollbar-gutter:stable]`}>
+          <div
+            className={`mt-4 rounded-2xl animate-fadein text-black ${
+              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+            } [scrollbar-gutter:stable]`}
+          >
             {loading ? (
               <div
                 style={{
@@ -199,10 +213,13 @@ const AdminOrders = () => {
               <DataTable columns={columns} data={orders} />
             )}
           </div>
-          
-          {/* Pagination */}
-          <Pagination page={page} totalPages={totalPages} handlePage={handlePage} />
 
+          {/* Pagination */}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            handlePage={handlePage}
+          />
         </div>
       </div>
     </div>

@@ -302,11 +302,11 @@ const AdminCoupon = () => {
             <Ellipsis strokeWidth={1.1} />
           </button>
           {dropdownId === coupon.id && (
-            <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-md shadow-lg z-20">
+            <div className="absolute right-0 mt-2 w-28 bg-mainBg border border-gray-200 rounded-md shadow-lg z-20">
               <ul className="py-1 text-sm">
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-black/5 cursor-pointer"
                     onClick={() => {
                       handleView(coupon);
                       setDropdownId(null);
@@ -317,7 +317,7 @@ const AdminCoupon = () => {
                 </li>
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-black/5 cursor-pointer"
                     onClick={() => {
                       handleEdit(coupon);
                       setDropdownId(null);
@@ -328,7 +328,7 @@ const AdminCoupon = () => {
                 </li>
                 <li>
                   <button
-                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-gray-100"
+                    className="w-full text-left block px-4 py-2 text-red-600 hover:bg-black/5 cursor-pointer"
                     onClick={() => {
                       handleDelete(coupon.id);
                       setDropdownId(null);
@@ -346,18 +346,19 @@ const AdminCoupon = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#E8EDE9] flex">
       <AdminSidebar />
       <div
         className="flex-1 flex flex-col items-center justify-start py-2"
         style={{ paddingRight: "10px", marginLeft: "256px" }}
       >
         <div
-          className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
-          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">Coupons</h1>
-          <hr className="mb-6" />
+          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
+            Coupons
+          </h1>
 
           {/* handleAdd, setSearch, setPage */}
 
@@ -409,7 +410,11 @@ const AdminCoupon = () => {
             )}
           </div>
           {/* Pagination */}
-          <Pagination page={page} totalPages={totalPages} handlePage={handlePage}/>
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            handlePage={handlePage}
+          />
           {/* Modals */}
           <CouponModal
             open={modal.open}

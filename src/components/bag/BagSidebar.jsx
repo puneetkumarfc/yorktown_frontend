@@ -9,7 +9,9 @@ import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
 
 const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
-  const stripePromise = loadStripe("pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P");
+  const stripePromise = loadStripe(
+    "pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P"
+  );
 
   const { cart, totalPrice } = useCartStore();
 
@@ -30,7 +32,6 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   });
 
   const [options, setOptions] = useState(null);
-  
 
   const handleNext = async (data) => {
     if (formStep === 1) {
@@ -78,7 +79,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
       <div className="relative w-full max-w-[400px] xl:w-[400px] bg-customBeige rounded-2xl shadow-2xl overflow-y-auto p-0 m-4 max-h-[80vh]">
         {/* Close button */}
         <button
-          className="absolute top-4 right-4 z-10 text-sm text-black hover:text-customOrange transition-colors bg-white/70 rounded-full p-1 shadow focus:outline-none"
+          className="absolute top-4 right-4 z-10 text-sm text-black hover:text-customOrange transition-colors bg-mainBg/70 rounded-full p-1 shadow focus:outline-none"
           aria-label="Close checkout modal"
           onClick={() => setCheckoutModal(false)}
         >

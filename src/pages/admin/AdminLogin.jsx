@@ -104,7 +104,7 @@ const AdminLogin = () => {
   return (
     <div
       id="admin-login-page"
-      className="w-[100vw] h-[100vh] overflow-hidden flex items-center gap-2 bg-white p-2"
+      className="w-[100vw] h-[100vh] overflow-hidden flex items-center gap-2 bg-mainBg p-2"
     >
       <div className="h-full w-[70%] overflow-hidden rounded-xl">
         <img
@@ -169,7 +169,7 @@ const AdminLogin = () => {
             ))}
             {error && <div className="admin-login-error">{error}</div>}
             <button
-              className={`mt-4 border border-black rounded-xl cursor-pointer text-white font-semibold bg-black/90 hover:bg-white hover:text-black/90 transition-all duration-150
+              className={`mt-4 border border-black rounded-xl cursor-pointer text-white font-semibold bg-black/90 hover:bg-mainBg hover:text-black/90 transition-all duration-150
                py-2 w-full ${isLoading ? "admin-login-btn-loading" : ""}`}
               type="submit"
               disabled={isLoading}
@@ -232,7 +232,7 @@ const AdminLogin = () => {
               </p>
               {/* Button */}
               <button
-                className="px-6 py-3 bg-black text-white rounded-xl hover:bg-white hover:text-black transition-all duration-200 font-medium border border-black"
+                className="px-6 py-3 bg-black text-white rounded-xl hover:bg-mainBg hover:text-black transition-all duration-200 font-medium border border-black"
                 onClick={closeErrorPopup}
               >
                 Try Again
@@ -297,7 +297,7 @@ const AdminLogin = () => {
               </p>
               {/* Button */}
               <button
-                className="px-6 py-3 bg-black text-white rounded-xl hover:bg-white hover:text-black transition-all duration-200 font-medium border border-black"
+                className="px-6 py-3 bg-black text-white rounded-xl hover:bg-mainBg hover:text-black transition-all duration-200 font-medium border border-black"
                 onClick={closeSuccessPopup}
               >
                 Continue

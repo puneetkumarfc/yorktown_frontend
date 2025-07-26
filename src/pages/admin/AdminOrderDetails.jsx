@@ -121,7 +121,7 @@ const AdminOrderDetails = () => {
           style={{ paddingRight: "10px", marginLeft: "256px" }}
         >
           <div
-            className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
             style={{ height: "100%" }}
           >
             <div className="text-center text-gray-500 py-8">
@@ -142,7 +142,7 @@ const AdminOrderDetails = () => {
           style={{ paddingRight: "10px", marginLeft: "256px" }}
         >
           <div
-            className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
             style={{ height: "100%" }}
           >
             <div className="text-center text-red-500 py-8">{error}</div>
@@ -159,11 +159,11 @@ const AdminOrderDetails = () => {
   const { order, orderItems, payments } = orderData;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#E8EDE9] flex">
       {/* Print Receipt Modal */}
       {showPrintModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-4xl p-6 mx-4">
+          <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-4xl p-6 mx-4">
             <div className="flex justify-end gap-3 mb-4">
               <button
                 onClick={handleDownloadPDF}
@@ -196,13 +196,13 @@ const AdminOrderDetails = () => {
         style={{ paddingRight: "10px", marginLeft: "256px" }}
       >
         <div
-          className="w-full bg-white rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
           style={{ height: "100%" }}
         >
           <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">
             Order Details
           </h1>
-          <hr className="mb-6" />
+          <hr className="mb-6 text-black/10" />
 
           <div className="flex items-end gap-2 mb-4">
             <div className="flex-1"></div>
@@ -388,7 +388,7 @@ const AdminOrderDetails = () => {
                 <div className="relative">
                   <button
                     type="button"
-                    className="bg-white border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-1 focus:ring-black text-black"
+                    className="bg-mainBg border border-gray-300 rounded-lg px-3 py-2 flex items-center justify-between w-full focus:outline-none focus:ring-1 focus:ring-black text-black"
                     onClick={() => setShowStatusDropdown((v) => !v)}
                   >
                     <span>{status}</span>
@@ -400,12 +400,12 @@ const AdminOrderDetails = () => {
                     />
                   </button>
                   {showStatusDropdown && (
-                    <ul className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    <ul className="absolute top-full left-0 right-0 mt-2 bg-mainBg border border-gray-200 rounded-lg shadow-lg z-10">
                       {statusOptions.map((option) => (
                         <li
                           key={option.id}
                           onClick={() => handleStatusChange(option.name)}
-                          className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-black text-sm font-normal"
+                          className="px-4 py-2 cursor-pointer hover:bg-black/5 text-black text-sm font-normal"
                         >
                           {option.name.charAt(0).toUpperCase() +
                             option.name.slice(1)}

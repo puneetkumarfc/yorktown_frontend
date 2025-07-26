@@ -1,5 +1,5 @@
-import React from 'react';
-import { FiPhone, FiMapPin, FiMail } from 'react-icons/fi';
+import React from "react";
+import { FiPhone, FiMapPin, FiMail } from "react-icons/fi";
 
 const Contact = () => {
   return (
@@ -7,51 +7,76 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-xl font-bold text-black mb-1 font-roboto_serif animate-fade-in-down">Get in Touch</h1>
-          <p className="text-sm text-black/50 font-light font-roboto animate-fade-in-up">We'd love to hear from you. Here's how you can reach us.</p>
+          <h1 className="text-xl font-bold text-black mb-1 font-roboto_serif animate-fade-in-down">
+            Get in Touch
+          </h1>
+          <p className="text-sm text-black/50 font-light font-roboto animate-fade-in-up">
+            We'd love to hear from you. Here's how you can reach us.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Details & Map Section */}
           <div className="bg-mainBg rounded-3xl shadow-sm border border-black/5 p-8 lg:p-10 animate-fade-in-simple">
-            <h2 className="text-xl font-bold text-customOrange mb-8 font-roboto_serif">Contact Information</h2>
-            
+            <h2 className="text-xl font-bold text-customOrange mb-8 font-roboto_serif">
+              Contact Information
+            </h2>
+
             <div className="flex flex-col gap-6">
               {/* Phone Number */}
-              <a href="tel:717-699-4647" className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group">
+              <a
+                href="tel:717-699-4647"
+                className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group"
+              >
                 <div className="flex items-center gap-5">
-                  <div className="bg-white p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
+                  <div className="bg-mainBg p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
                     <FiPhone className="w-6 h-6 text-customOrange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-black">Phone</h3>
-                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">717-699-4647</p>
+                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">
+                      717-699-4647
+                    </p>
                   </div>
                 </div>
               </a>
 
               {/* Email */}
-              <a href="mailto:Eatatyorktown@gmail.com" className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group">
+              <a
+                href="mailto:Eatatyorktown@gmail.com"
+                className="block p-5 rounded-2xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group"
+              >
                 <div className="flex items-center gap-5">
-                  <div className="bg-white p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
+                  <div className="bg-mainBg p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
                     <FiMail className="w-6 h-6 text-customOrange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-black">Email</h3>
-                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">Eatatyorktown@gmail.com</p>
+                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">
+                      Eatatyorktown@gmail.com
+                    </p>
                   </div>
                 </div>
               </a>
 
               {/* Address */}
-              <a href="https://www.google.com/maps/search/?api=1&query=1125+Roosevelt+Avenue,+York,+PA+17404" target="_blank" rel="noopener noreferrer" className="block p-5 rounded-xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=1125+Roosevelt+Avenue,+York,+PA+17404"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block p-5 rounded-xl bg-customBeige/40 hover:bg-customBeige transition-all duration-300 group"
+              >
                 <div className="flex items-center gap-5">
-                  <div className="bg-white p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
+                  <div className="bg-mainBg p-4 rounded-full shadow-sm group-hover:bg-customOrange transition-all duration-300">
                     <FiMapPin className="w-6 h-6 text-customOrange group-hover:text-white transition-colors duration-300" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-black">Address</h3>
-                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">1125 Roosevelt Avenue, York, PA 17404</p>
+                    <h3 className="text-lg font-semibold text-black">
+                      Address
+                    </h3>
+                    <p className="text-base text-black/70 group-hover:text-customOrange transition-colors duration-300">
+                      1125 Roosevelt Avenue, York, PA 17404
+                    </p>
                   </div>
                 </div>
               </a>
@@ -76,4 +101,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;
