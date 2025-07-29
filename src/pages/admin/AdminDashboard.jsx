@@ -333,11 +333,7 @@ const AdminDashboard = () => {
           <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
             Recent Orders
           </h2>
-          <div
-            className={`rounded-2xl animate-fadein text-black ${
-              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-            }`}
-          >
+          <div className="rounded-2xl animate-fadein text-black overflow-x-auto table-container">
             <DataTable
               columns={columns}
               data={transformedOrders}

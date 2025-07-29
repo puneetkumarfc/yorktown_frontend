@@ -390,9 +390,7 @@ const AdminCoupon = () => {
         </div>
 
         <div
-          className={`rounded-2xl animate-fadein text-black ${
-            dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-          }`}
+          className="rounded-2xl animate-fadein text-black overflow-x-auto table-container"
         >
           {loading ? (
             <div className="text-center text-gray-500 py-8">
