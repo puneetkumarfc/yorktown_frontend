@@ -36,6 +36,53 @@ body::-webkit-scrollbar,
   display: none !important; /* Safari, Chrome, Edge */
 }
 
+/* Mobile table scrolling fix */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: auto !important;
+    -ms-overflow-style: auto !important;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    display: block !important;
+    height: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+  
+  /* Prevent table shifting when dropdown is open */
+  .table-container {
+    position: relative !important;
+    transform: none !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+  
+  /* Ensure dropdowns don't affect table positioning */
+  .action-dropdown-container {
+    position: relative !important;
+    z-index: 50 !important;
+  }
+  
+  .action-dropdown-container .absolute {
+    position: absolute !important;
+    z-index: 60 !important;
+  }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

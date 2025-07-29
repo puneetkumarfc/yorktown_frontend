@@ -179,9 +179,7 @@ const AdminOrders = () => {
         <Searchbar />
 
         <div
-          className={`mt-4 rounded-2xl animate-fadein text-black ${
-            dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-          } [scrollbar-gutter:stable]`}
+          className="mt-4 rounded-2xl animate-fadein text-black overflow-x-auto [scrollbar-gutter:stable] table-container"
         >
           {loading ? (
             <div
