@@ -11,7 +11,7 @@ import { useLoader } from "../common/LoaderContext";
 
 const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   const stripePromise = loadStripe(
-    "pk_test_51Rgn47FRY99NMsGPiUl2J7v4TBq5avectsvAtc6Ekl7vqsT6PwHYlE7Y1h5vzADSD0HLvqN9UYO4niw5XU06RyGm00bi7d8I8P"
+    "pk_live_51Rgn3vFRe9zYMh4jxu5p0T9DZRU4PwWVBiS8ZlXeekaQ5hpM7sGAs0MCDmndWGxbIAP740mJrO36KosKjHR4LnVK00YRIh4F8T"
   );
 
   const { cart, totalPrice } = useCartStore();
