@@ -142,7 +142,7 @@ const CouponModal = ({ open, onClose, coupon, mode, onSave }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
-      <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6">
+      <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl p-6 m-5 overflow-y-auto">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-semibold font-roboto_serif text-black">
             {isAdd ? "Add Coupon" : isView ? "Coupon Details" : "Edit Coupon"}

@@ -30,26 +30,85 @@ const AdminOrderDetails = () => {
   const [showPrintModal, setShowPrintModal] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const receiptRef = React.useRef();
+
   const handlePrint = useReactToPrint({
     content: () => receiptRef.current,
     documentTitle:
       orderData && orderData.order
         ? `Order_${orderData.order.id}_Receipt`
         : "Order_Receipt",
+    onBeforeGetContent: () => {
+      // Ensure the modal is visible before printing
+      if (!showPrintModal) {
+        setShowPrintModal(true);
+        return new Promise((resolve) => {
+          setTimeout(resolve, 100);
+        });
+      }
+      return Promise.resolve();
+    },
+    onAfterPrint: () => {
+      // Close modal after printing
+      setShowPrintModal(false);
+    },
+    onPrintError: (error) => {
+      console.error("Print error:", error);
+      setError(`Print failed: ${error.message}`);
+    },
   });
 
-  const handleDownloadPDF = () => {
-    if (!receiptRef.current) return;
-    const orderId = order?.id || "Receipt";
-    html2pdf()
-      .set({
-        margin: [0.2, 0.2, 0.2, 0.2], // top, left, bottom, right (inches)
-        filename: `Order_${orderId}.pdf`,
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      })
-      .from(receiptRef.current)
-      .save();
+  const handleDownloadPDF = async () => {
+    if (!orderData?.order) {
+      setError("Cannot download PDF. Data is missing.");
+      return;
+    }
+
+    showLoader("Generating PDF...");
+    const orderId = orderData.order.id || "Receipt";
+
+    try {
+      // Ensure modal is open for PDF generation
+      if (!showPrintModal) {
+        setShowPrintModal(true);
+        // Wait for modal to render
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+
+      const element = receiptRef.current;
+      if (!element) {
+        throw new Error("Receipt element not found");
+      }
+
+      console.log("Generating PDF for element:", element);
+
+      await html2pdf()
+        .set({
+          margin: [0.2, 0.2, 0.2, 0.2], // top, left, bottom, right (inches)
+          filename: `Order_${orderId}.pdf`,
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            backgroundColor: "#ffffff",
+          },
+          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+        })
+        .from(element)
+        .save();
+    } catch (err) {
+      console.error("PDF generation error:", err);
+      setError(`Failed to generate PDF: ${err.message}`);
+    } finally {
+      hideLoader();
+      // Don't close modal automatically for PDF - let user close it
+    }
+  };
+
+  // Debug function to test if receipt ref is working
+  const testReceiptRef = () => {
+    console.log("Receipt ref:", receiptRef.current);
+    console.log("Modal open:", showPrintModal);
+    console.log("Order data:", orderData);
   };
 
   useEffect(() => {
@@ -113,18 +172,13 @@ const AdminOrderDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex overflow-y-auto">
+      <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
         <div
-          className="flex-1 flex flex-col items-center justify-start py-2"
-          style={{ paddingRight: "10px", marginLeft: "256px" }}
+          className="w-full shadow p-3 md:p-4 min-h-screen"
+          style={{ height: "100%" }}
         >
-          <div
-            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
-            style={{ height: "100%" }}
-          >
-            <div className="text-center text-gray-500 py-8">
-              Loading order details...
-            </div>
+          <div className="text-center text-gray-500 py-8">
+            Loading order details...
           </div>
         </div>
       </div>
@@ -133,18 +187,12 @@ const AdminOrderDetails = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex">
-        <AdminSidebar />
+      <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
         <div
-          className="flex-1 flex flex-col items-center justify-start py-2"
-          style={{ paddingRight: "10px", marginLeft: "256px" }}
+          className="w-full shadow p-3 md:p-4 min-h-screen"
+          style={{ height: "100%" }}
         >
-          <div
-            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
-            style={{ height: "100%" }}
-          >
-            <div className="text-center text-red-500 py-8">{error}</div>
-          </div>
+          <div className="text-center text-red-500 py-8">{error}</div>
         </div>
       </div>
     );
@@ -157,24 +205,34 @@ const AdminOrderDetails = () => {
   const { order, orderItems, payments } = orderData;
 
   return (
-    <div className="min-h-screen bg-[#E8EDE9] flex">
+    <>
       {/* Print Receipt Modal */}
       {showPrintModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4">
-          <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
-            <div className="flex justify-end gap-3 mb-4">
-              <CustomButton
-                text="Download PDF"
-                active={true}
-                onClick={handleDownloadPDF}
-              />
-              <CustomButton
-                text="Close"
-                active={false}
-                onClick={() => setShowPrintModal(false)}
-              />
+          <div className="bg-mainBg rounded-xl shadow-2xl border border-gray-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Print Receipt
+              </h3>
+              <div className="flex gap-3">
+                <CustomButton
+                  text="Print"
+                  active={true}
+                  onClick={handlePrint}
+                />
+                <CustomButton
+                  text="Download PDF"
+                  active={true}
+                  onClick={handleDownloadPDF}
+                />
+                <CustomButton
+                  text="Close"
+                  active={false}
+                  onClick={() => setShowPrintModal(false)}
+                />
+              </div>
             </div>
-            <div>
+            <div className="flex justify-center">
               <Receipt
                 ref={receiptRef}
                 order={order}
@@ -186,12 +244,9 @@ const AdminOrderDetails = () => {
         </div>
       )}
 
-      <div
-        className="flex-1 flex flex-col items-center justify-start py-2 overflow-auto"
-        style={{ paddingRight: "10px", marginLeft: "256px" }}
-      >
+      <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
         <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
+          className="w-full shadow p-3 md:p-4 min-h-screen"
           style={{ height: "100%" }}
         >
           <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">
@@ -204,7 +259,15 @@ const AdminOrderDetails = () => {
             <CustomButton
               text="Print Receipt"
               active={true}
-              onClick={() => setShowPrintModal(true)}
+              onClick={() => {
+                setShowPrintModal(true);
+                setError(""); // Clear any previous errors
+              }}
+            />
+            <CustomButton
+              text="Debug"
+              active={false}
+              onClick={testReceiptRef}
             />
           </div>
 
@@ -419,6 +482,12 @@ const AdminOrderDetails = () => {
             </div>
           )}
 
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-center">{error}</p>
+            </div>
+          )}
+
           {/* Action Buttons */}
           <div className="flex justify-end gap-3">
             <CustomButton
@@ -435,7 +504,7 @@ const AdminOrderDetails = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

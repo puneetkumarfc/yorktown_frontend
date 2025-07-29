@@ -67,3 +67,48 @@ input:-webkit-autofill:active {
 .animate-fade-in-simple {
   animation: fadeInSimple 0.35s cubic-bezier(0.4,0,0.2,1);
 }
+
+/* Print styles for receipt */
+@media print {
+  .receipt-pdf-wrapper {
+    background-color: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    font-size: 12px !important;
+  }
+  
+  .receipt-pdf-wrapper * {
+    color: black !important;
+  }
+  
+  .receipt-pdf-wrapper table {
+    border-collapse: collapse !important;
+  }
+  
+  .receipt-pdf-wrapper th,
+  .receipt-pdf-wrapper td {
+    border: 1px solid #ccc !important;
+    padding: 4px !important;
+  }
+  
+  /* Hide print modal elements when printing */
+  .fixed.inset-0 {
+    position: static !important;
+    background: none !important;
+  }
+  
+  .fixed.inset-0 > div {
+    position: static !important;
+    background: white !important;
+    box-shadow: none !important;
+    border: none !important;
+    max-width: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}

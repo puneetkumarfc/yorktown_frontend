@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   HomeIcon,
@@ -15,7 +15,7 @@ import { adminAuth } from "../../utils/api";
 import AdminLogoutModal from "./AdminLogoutModal";
 import { PanelRightOpen } from "lucide-react";
 
-export default function AdminSidebar({ toggleSidebar }) {
+export default function AdminSidebar({ toggleSidebar, setSidebarOpen }) {
   const navigate = useNavigate();
 
   const navLinks = [
@@ -25,11 +25,11 @@ export default function AdminSidebar({ toggleSidebar }) {
       icon: ClipboardDocumentListIcon,
       to: routeConstant.ADMIN_ORDERS,
     },
-    {
-      name: "Menu",
-      icon: ClipboardDocumentListIcon,
-      to: routeConstant.ADMIN_MENU_LIST,
-    },
+    // {
+    //   name: "Menu",
+    //   icon: ClipboardDocumentListIcon,
+    //   to: routeConstant.ADMIN_MENU_LIST,
+    // },
     { name: "Coupons", icon: MegaphoneIcon, to: routeConstant.ADMIN_COUPON },
     { name: "Settings", icon: Cog6ToothIcon, to: routeConstant.ADMIN_SETTINGS },
   ];
@@ -58,6 +58,10 @@ export default function AdminSidebar({ toggleSidebar }) {
   const cancelLogout = () => {
     setShowLogoutModal(false);
   };
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [navigate])
 
   return (
     <aside className="h-full w-full flex flex-col">

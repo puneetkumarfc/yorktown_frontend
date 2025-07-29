@@ -3,7 +3,20 @@ import React from "react";
 const Receipt = React.forwardRef(({ order, orderItems, payments }, ref) => (
   <div
     ref={ref}
-    className="receipt-pdf-wrapper bg-mainBg border border-gray-200 rounded-xl p-8 text-black max-w-2xl w-full mx-auto font-roboto shadow-lg"
+    className="receipt-pdf-wrapper bg-white border border-gray-200 rounded-xl p-8 text-black max-w-2xl w-full mx-auto font-roboto shadow-lg"
+    style={{
+      // Print-specific styles
+      "@media print": {
+        backgroundColor: "white",
+        color: "black",
+        boxShadow: "none",
+        border: "1px solid #ccc",
+        margin: "0",
+        padding: "20px",
+        maxWidth: "100%",
+        width: "100%",
+      },
+    }}
   >
     <h2 className="text-center text-xl font-semibold mb-4 font-roboto_serif">
       Order Receipt

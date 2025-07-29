@@ -17,7 +17,7 @@ const AdminLayout = () => {
         <div className={`!fixed z-40 top-0 left-0 bottom-0 w-[60vw] max-w-[240px] bg-[#E8EDE9] transform transition-transform duration-300 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-[104%]"
           } md:translate-x-0 md:static md:block`}>
-          <AdminSidebar toggleSidebar={toggleSidebar} />
+          <AdminSidebar toggleSidebar={toggleSidebar} setSidebarOpen={setSidebarOpen}/>
         </div>
 
         {/* Main Content Area */}

@@ -240,7 +240,7 @@ const AdminDashboard = () => {
           <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
             Overview
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-8">
             {summaryData.map((item, idx) => (
               <div
                 key={idx}
