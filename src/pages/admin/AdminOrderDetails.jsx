@@ -57,157 +57,18 @@ const AdminOrderDetails = () => {
     },
   });
 
-  const handleDownloadPDF = async () => {
-    if (!orderData?.order) {
-      setError("Cannot download PDF. Data is missing.");
-      return;
-    }
-
-    showLoader("Generating PDF...");
-    const orderId = orderData.order.id || "Receipt";
-
-    try {
-      // Ensure modal is open for PDF generation
-      if (!showPrintModal) {
-        setShowPrintModal(true);
-        // Wait for modal to render
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-
-      const element = receiptRef.current;
-      if (!element) {
-        throw new Error("Receipt element not found");
-      }
-
-      console.log("Generating PDF for element:", element);
-      console.log(
-        "Element dimensions:",
-        element.offsetWidth,
-        "x",
-        element.offsetHeight
-      );
-      console.log(
-        "Element content:",
-        element.innerHTML.substring(0, 200) + "..."
-      );
-
-      // Test if html2pdf is available
-      if (typeof html2pdf === "undefined") {
-        throw new Error("html2pdf library not loaded");
-      }
-
-      // Ensure the element has white background for PDF generation
-      const originalBackground = element.style.backgroundColor;
-      element.style.backgroundColor = "#ffffff";
-
-      // Try a simpler approach first
-      const pdfPromise = html2pdf()
-        .set({
-          margin: [0.3, 0.3, 0.3, 0.3], // Smaller margins
-          filename: `Order_${orderId}.pdf`,
-          html2canvas: {
-            scale: 1, // Larger scale for better readability
-            useCORS: true,
-            logging: true, // Enable logging to see what's happening
-            backgroundColor: "#ffffff",
-            allowTaint: true,
-            foreignObjectRendering: true,
-            width: element.scrollWidth,
-            height: element.scrollHeight,
-            scrollX: 0,
-            scrollY: 0,
-          },
-          jsPDF: {
-            unit: "in",
-            format: "a4",
-            orientation: "portrait",
-            compress: true,
-            putOnlyUsedFonts: true,
-          },
-        })
-        .from(element)
-        .save();
-
-      // Add timeout
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error("PDF generation timed out")), 15000);
-      });
-
-      await Promise.race([pdfPromise, timeoutPromise]);
-
-      // Restore original background after successful generation
-      element.style.backgroundColor = originalBackground;
-      console.log("PDF generated successfully");
-    } catch (err) {
-      console.error("First PDF method failed, trying alternative:", err);
-
-      // Try alternative method for large content
-      try {
-        const success = await generatePDFAlternative(element, orderId);
-        if (success) {
-          console.log("Alternative PDF method succeeded");
-          element.style.backgroundColor = originalBackground;
-          return;
-        }
-      } catch (altErr) {
-        console.error("Alternative method also failed:", altErr);
-      }
-
-      // Try alternative method using window.print() as fallback
-      try {
-        const element = receiptRef.current;
-        if (element) {
-          // Create a new window for printing
-          const printWindow = window.open("", "_blank");
-          printWindow.document.open();
-          printWindow.document.write(`
-            <html>
-              <head>
-                <title>Order Receipt</title>
-                <style>
-                  body { font-family: Arial, sans-serif; margin: 20px; }
-                  table { border-collapse: collapse; width: 100%; }
-                  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                  th { background-color: #f2f2f2; }
-                  @media print { body { margin: 0; } }
-                </style>
-              </head>
-              <body>
-                ${element.outerHTML}
-              </body>
-            </html>
-          `);
-          printWindow.document.close();
-          printWindow.focus();
-
-          // Wait a bit then print
-          setTimeout(() => {
-            printWindow.print();
-            printWindow.close();
-          }, 500);
-
-          console.log("Fallback print method used");
-          return; // Exit early if fallback succeeds
-        }
-      } catch (fallbackErr) {
-        console.error("Fallback method also failed:", fallbackErr);
-      }
-
-      // If we get here, all methods failed
-      console.error("All PDF generation methods failed:", err);
-      console.error("Error stack:", err.stack);
-
-      if (err.message.includes("timed out")) {
-        setError("PDF generation timed out. Please try again.");
-      } else if (err.message.includes("not loaded")) {
-        setError("PDF library not available. Please refresh the page.");
-      } else {
-        setError(`Failed to generate PDF: ${err.message}`);
-      }
-    } finally {
-      hideLoader();
-      // Don't close modal automatically for PDF - let user close it
-    }
+  const handleDownloadPDF = () => {
+    if (!receiptRef.current) return;
+    const orderId = order?.id || 'Receipt';
+    html2pdf()
+      .set({
+        margin: [0.2, 0.2, 0.2, 0.2], // top, left, bottom, right (inches)
+        filename: `Order_${orderId}.pdf`,
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      })
+      .from(receiptRef.current)
+      .save();
   };
 
   // Debug function to test if receipt ref is working
@@ -397,11 +258,11 @@ const AdminOrderDetails = () => {
                 Print Receipt
               </h3>
               <div className="flex gap-3">
-                <CustomButton
+                {/* <CustomButton
                   text="Print"
                   active={true}
                   onClick={handlePrint}
-                />
+                /> */}
                 <CustomButton
                   text="Download PDF"
                   active={true}
@@ -446,11 +307,11 @@ const AdminOrderDetails = () => {
                 setError(""); // Clear any previous errors
               }}
             />
-            <CustomButton
+            {/* <CustomButton
               text="Test PDF"
               active={false}
               onClick={testHtml2Pdf}
-            />
+            /> */}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
