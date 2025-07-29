@@ -103,20 +103,26 @@ const AdminOrderDetails = () => {
       // Try a simpler approach first
       const pdfPromise = html2pdf()
         .set({
-          margin: [0.5, 0.5, 0.5, 0.5],
+          margin: [0.3, 0.3, 0.3, 0.3], // Smaller margins
           filename: `Order_${orderId}.pdf`,
           html2canvas: {
-            scale: 1,
+            scale: 1, // Larger scale for better readability
             useCORS: true,
             logging: true, // Enable logging to see what's happening
             backgroundColor: "#ffffff",
             allowTaint: true,
             foreignObjectRendering: true,
+            width: element.scrollWidth,
+            height: element.scrollHeight,
+            scrollX: 0,
+            scrollY: 0,
           },
           jsPDF: {
             unit: "in",
             format: "a4",
             orientation: "portrait",
+            compress: true,
+            putOnlyUsedFonts: true,
           },
         })
         .from(element)
@@ -133,8 +139,19 @@ const AdminOrderDetails = () => {
       element.style.backgroundColor = originalBackground;
       console.log("PDF generated successfully");
     } catch (err) {
-      console.error("PDF generation error:", err);
-      console.error("Error stack:", err.stack);
+      console.error("First PDF method failed, trying alternative:", err);
+
+      // Try alternative method for large content
+      try {
+        const success = await generatePDFAlternative(element, orderId);
+        if (success) {
+          console.log("Alternative PDF method succeeded");
+          element.style.backgroundColor = originalBackground;
+          return;
+        }
+      } catch (altErr) {
+        console.error("Alternative method also failed:", altErr);
+      }
 
       // Try alternative method using window.print() as fallback
       try {
@@ -142,6 +159,7 @@ const AdminOrderDetails = () => {
         if (element) {
           // Create a new window for printing
           const printWindow = window.open("", "_blank");
+          printWindow.document.open();
           printWindow.document.write(`
             <html>
               <head>
@@ -175,7 +193,10 @@ const AdminOrderDetails = () => {
         console.error("Fallback method also failed:", fallbackErr);
       }
 
-      // If we get here, both methods failed
+      // If we get here, all methods failed
+      console.error("All PDF generation methods failed:", err);
+      console.error("Error stack:", err.stack);
+
       if (err.message.includes("timed out")) {
         setError("PDF generation timed out. Please try again.");
       } else if (err.message.includes("not loaded")) {
@@ -230,6 +251,45 @@ const AdminOrderDetails = () => {
       }
     } catch (err) {
       console.error("html2pdf test error:", err);
+    }
+  };
+
+  // Alternative PDF generation method for large content
+  const generatePDFAlternative = async (element, orderId) => {
+    try {
+      // Use the same settings as the main PDF generation
+      const pdfPromise = html2pdf()
+        .set({
+          margin: [0.3, 0.3, 0.3, 0.3], // Same margins as main method
+          filename: `Order_${orderId}.pdf`,
+          html2canvas: {
+            scale: 1, // Same scale as main method
+            useCORS: true,
+            logging: true,
+            backgroundColor: "#ffffff",
+            allowTaint: true,
+            foreignObjectRendering: true,
+            width: element.scrollWidth,
+            height: element.scrollHeight,
+            scrollX: 0,
+            scrollY: 0,
+          },
+          jsPDF: {
+            unit: "in",
+            format: "a4",
+            orientation: "portrait",
+            compress: true,
+            putOnlyUsedFonts: true,
+          },
+        })
+        .from(element)
+        .save();
+
+      await pdfPromise;
+      return true;
+    } catch (err) {
+      console.error("Alternative PDF generation failed:", err);
+      return false;
     }
   };
 
@@ -385,11 +445,6 @@ const AdminOrderDetails = () => {
                 setShowPrintModal(true);
                 setError(""); // Clear any previous errors
               }}
-            />
-            <CustomButton
-              text="Debug"
-              active={false}
-              onClick={testReceiptRef}
             />
             <CustomButton
               text="Test PDF"
