@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { routeConstant } from "../../constants/RouteConstants";
 import DataTable from "../../components/admin/DataTable";
 import { Ellipsis } from "lucide-react";
+import { adminDashboard } from "../../utils/api";
+import { useLoader } from "../../components/common/LoaderContext";
 
 const summaryData = [
   {
@@ -14,7 +16,7 @@ const summaryData = [
   },
   { label: "Pending Orders", value: 12, icon: "\u23f3", color: "orange" },
   { label: "Revenue", value: "$2,340", icon: "\ud83d\udcb0", color: "green" },
-  { label: "New Users", value: 23, icon: "\ud83d\udc64", color: "blue" },
+  // { label: "New Users", value: 23, icon: "\ud83d\udc64", color: "blue" },
 ];
 
 const recentOrders = [
@@ -129,6 +131,12 @@ const chartData = [
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [dropdownId, setDropdownId] = useState(null);
+  const [dashboardData, setDashboardData] = useState({
+    recentOrders: [],
+    pendingOrdersCount: 0,
+    totalRevenue: 0
+  });
+  const { showLoader, hideLoader } = useLoader();
 
   const toggleDropdown = (id) => {
     setDropdownId(dropdownId === id ? null : id);
@@ -147,6 +155,57 @@ const AdminDashboard = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownId]);
+
+  // Fetch dashboard data
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      showLoader("Loading dashboard data...");
+      try {
+        const response = await adminDashboard.getDashboardData();
+        if (response.success) {
+          setDashboardData(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        hideLoader();
+      }
+    };
+
+    fetchDashboardData();
+  }, [showLoader, hideLoader]);
+
+  // Transform API data to match the expected format
+  const transformedOrders = dashboardData.recentOrders.map(order => ({
+    id: `ORD-${order.id}`,
+    numericId: order.id,
+    user: order.customerName,
+    total: `$${order.totalAmount.toFixed(2)}`,
+    status: order.status,
+    date: new Date(order.placedAt).toLocaleDateString(),
+  }));
+
+  // Update summary data with API data
+  const updatedSummaryData = [
+    {
+      label: "Total Orders Today",
+      value: dashboardData.todaysOrdersCount || 0, // Keep static as mentioned in requirements
+      icon: "\ud83d\uded2",
+      color: "red",
+    },
+    { 
+      label: "Pending Orders", 
+      value: dashboardData.pendingOrdersCount || 0, 
+      icon: "\u23f3", 
+      color: "orange" 
+    },
+    { 
+      label: "Revenue", 
+      value: `$${(dashboardData.totalRevenue || 0).toFixed(2)}`, 
+      icon: "\ud83d\udcb0", 
+      color: "green" 
+    },
+  ];
 
   const columns = [
     {
@@ -174,6 +233,12 @@ const AdminDashboard = () => {
               ? "border-yellow-400 bg-yellow-100 text-yellow-500"
               : order.status === "Cancelled"
               ? "border-red-600 bg-red-100 text-red-600"
+              : order.status === "received"
+              ? "border-blue-600 bg-blue-100 text-blue-600"
+              : order.status === "preparing"
+              ? "border-orange-600 bg-orange-100 text-orange-600"
+              : order.status === "in oven"
+              ? "border-purple-600 bg-purple-100 text-purple-600"
               : "border-gray-400 bg-gray-100 text-gray-500"
           }`}
         >
@@ -241,7 +306,7 @@ const AdminDashboard = () => {
             Overview
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            {summaryData.map((item, idx) => (
+            {updatedSummaryData.map((item, idx) => (
               <div
                 key={idx}
                 className="bg-mainBg border border-black/7 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
@@ -275,7 +340,7 @@ const AdminDashboard = () => {
           >
             <DataTable
               columns={columns}
-              data={recentOrders}
+              data={transformedOrders}
               isMenuOpen={dropdownId !== null}
             />
           </div>
