@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+
 import MenuModal from "../../components/admin/MenuModal";
 import { FaPlus } from "react-icons/fa";
 import { Ellipsis, Search, X } from "lucide-react";
@@ -225,90 +225,84 @@ const AdminMenuList = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E8EDE9] flex">
-      <AdminSidebar />
+    <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
       <div
-        className="flex-1 flex flex-col items-center justify-start py-2"
-        style={{ paddingRight: "10px", marginLeft: "256px" }}
+        className="w-full shadow p-3 md:p-4 min-h-screen"
+        style={{ height: "100%" }}
       >
-        <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
-          style={{ height: "100%" }}
-        >
-          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
-            Menu Items
-          </h1>
-          {/* Search and Add */}
-          <div className="flex items-end gap-2 mb-4">
-            {/* Search bar */}
-            <div className="relative flex items-center w-full">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setPage(1);
-                }}
-                onKeyDown={(e) => e.key === "Enter"}
-                placeholder="Search menu..."
-                className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
-                autoComplete="off"
-              />
-              {search && (
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-            <div className="relative group">
-              <CustomButton
-                text={"Add Menu Item"}
-                active={false}
-                image={FaPlus}
-                onClick={() => {}} // Disabled
-              />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
-                Coming Soon
-              </div>
-            </div>
-          </div>
-          <div
-            className={`mt-4 rounded-2xl animate-fadein text-black ${
-              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-            } [scrollbar-gutter:stable]`}
-          >
-            {loading ? (
-              <div className="text-center text-gray-500 py-8">
-                Loading menu items...
-              </div>
-            ) : error ? (
-              <div className="text-center text-red-500 py-8">{error}</div>
-            ) : (
-              <DataTable columns={columns} data={paginated} />
+        <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
+          Menu Items
+        </h1>
+        {/* Search and Add */}
+        <div className="flex items-end gap-2 mb-4">
+          {/* Search bar */}
+          <div className="relative flex items-center w-full">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              onKeyDown={(e) => e.key === "Enter"}
+              placeholder="Search menu..."
+              className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
+              autoComplete="off"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={handleClear}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             )}
           </div>
-          {/* Pagination */}
-          {!loading && !error && totalPages > 0 && (
-            <Pagination
-              page={page}
-              totalPages={totalPages}
-              handlePage={handlePage}
+          <div className="relative group">
+            <CustomButton
+              text={"Add Menu Item"}
+              active={false}
+              image={FaPlus}
+              onClick={() => {}} // Disabled
             />
-          )}
-          {/* Modals */}
-          <MenuModal
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-            item={modalItem}
-            mode={modalMode}
-            onSave={handleSave}
-          />
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+              Coming Soon
+            </div>
+          </div>
         </div>
+        <div
+          className={`mt-4 rounded-2xl animate-fadein text-black ${
+            dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+          } [scrollbar-gutter:stable]`}
+        >
+          {loading ? (
+            <div className="text-center text-gray-500 py-8">
+              Loading menu items...
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-8">{error}</div>
+          ) : (
+            <DataTable columns={columns} data={paginated} />
+          )}
+        </div>
+        {/* Pagination */}
+        {!loading && !error && totalPages > 0 && (
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            handlePage={handlePage}
+          />
+        )}
+        {/* Modals */}
+        <MenuModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          item={modalItem}
+          mode={modalMode}
+          onSave={handleSave}
+        />
       </div>
     </div>
   );

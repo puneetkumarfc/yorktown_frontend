@@ -67,7 +67,7 @@ export default function SidebarDemo() {
         style={{ paddingRight: "10px" }}
       >
         <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
           style={{ height: "100%" }}
         >
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">Inbox</h1>

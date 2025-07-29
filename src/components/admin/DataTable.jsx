@@ -10,7 +10,7 @@ const DataTable = ({ columns, data }) => {
   }
 
   return (
-    <table className="w-full table-auto border-separate border-spacing-0 border border-black/5 rounded-xl">
+    <table className="w-full table-auto border-separate border-spacing-0 border border-black/5 rounded-xl overflow-x-auto">
       <thead className="bg-black/90 text-white">
         <tr>
           {columns.map((col, index) => (

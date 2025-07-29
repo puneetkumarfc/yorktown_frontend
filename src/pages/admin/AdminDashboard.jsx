@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+
 import { useNavigate } from "react-router-dom";
 import { routeConstant } from "../../constants/RouteConstants";
 import DataTable from "../../components/admin/DataTable";
@@ -226,66 +226,58 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E8EDE9] flex">
-      <AdminSidebar />
-
-      {/* Main content area */}
+    <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
       <div
-        className="flex-1 flex flex-col items-center justify-start py-2"
-        style={{ paddingRight: "10px", marginLeft: "256px" }}
+        className="w-full shadow p-3 md:p-4 min-h-screen"
+        style={{ height: "100%" }}
       >
-        <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
-          style={{ height: "100%" }}
-        >
-          <h1 className="text-2xl font-roboto_serif font-semibold text-gray-900 mb-12">
-            Dashboard
-          </h1>
+        <h1 className="text-2xl font-roboto_serif font-semibold text-gray-900 mb-12">
+          Dashboard
+        </h1>
 
-          {/* Summary cards */}
-          <div>
-            <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
-              Overview
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              {summaryData.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="bg-mainBg border border-black/7 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-2xl" style={{ color: item.color }}>
-                      {item.icon}
-                    </div>
-                    <div className="text-xs text-gray-400 font-medium uppercase tracking-wide">
-                      {item.label.split(" ").slice(-1)[0]}
-                    </div>
+        {/* Summary cards */}
+        <div>
+          <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
+            Overview
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {summaryData.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-mainBg border border-black/7 rounded-xl p-6 shadow-xs hover:shadow-sm transition-shadow duration-200"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-2xl" style={{ color: item.color }}>
+                    {item.icon}
                   </div>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">
-                    {item.value}
+                  <div className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+                    {item.label.split(" ").slice(-1)[0]}
                   </div>
-                  <div className="text-sm text-gray-500">{item.label}</div>
                 </div>
-              ))}
-            </div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">
+                  {item.value}
+                </div>
+                <div className="text-sm text-gray-500">{item.label}</div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          {/* Recent Orders Table */}
-          <div className="mb-8">
-            <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
-              Recent Orders
-            </h2>
-            <div
-              className={`rounded-2xl animate-fadein text-black ${
-                dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-              }`}
-            >
-              <DataTable
-                columns={columns}
-                data={recentOrders}
-                isMenuOpen={dropdownId !== null}
-              />
-            </div>
+        {/* Recent Orders Table */}
+        <div className="mb-8">
+          <h2 className="text-lg font-roboto_serif font-semibold mb-2 text-gray-900">
+            Recent Orders
+          </h2>
+          <div
+            className={`rounded-2xl animate-fadein text-black ${
+              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+            }`}
+          >
+            <DataTable
+              columns={columns}
+              data={recentOrders}
+              isMenuOpen={dropdownId !== null}
+            />
           </div>
         </div>
       </div>

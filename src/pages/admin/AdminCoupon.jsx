@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+
 import { FaPlus } from "react-icons/fa";
 import { Ellipsis, Search, X } from "lucide-react";
 import "./AdminOrders.css"; // Use the same theme as orders/menu list
@@ -346,91 +346,85 @@ const AdminCoupon = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E8EDE9] flex">
-      <AdminSidebar />
+    <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
       <div
-        className="flex-1 flex flex-col items-center justify-start py-2"
-        style={{ paddingRight: "10px", marginLeft: "256px" }}
+        className="w-full shadow p-3 md:p-4 min-h-screen"
+        style={{ height: "100%" }}
       >
-        <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
-          style={{ height: "100%" }}
-        >
-          <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
-            Coupons
-          </h1>
+        <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-8">
+          Coupons
+        </h1>
 
-          {/* handleAdd, setSearch, setPage */}
+        {/* handleAdd, setSearch, setPage */}
 
-          {/* Search and Add */}
-          <div className="flex items-end gap-2 mb-4">
-            {/* Search bar */}
-            <div className="relative flex items-center w-full">
-              <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
-              <input
-                type="text"
-                value={search}
-                onChange={handleInputChange}
-                onKeyDown={(e) => e.key === "Enter"}
-                placeholder="Search"
-                className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
-                autoComplete="off"
-              />
-              {search && (
-                <button
-                  type="button"
-                  onClick={handleClear}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-            <CustomButton
-              text={"Add"}
-              active={true}
-              image={FaPlus}
-              onClick={handleAdd}
+        {/* Search and Add */}
+        <div className="flex items-end gap-2 mb-4">
+          {/* Search bar */}
+          <div className="relative flex items-center w-full">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
+            <input
+              type="text"
+              value={search}
+              onChange={handleInputChange}
+              onKeyDown={(e) => e.key === "Enter"}
+              placeholder="Search"
+              className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
+              autoComplete="off"
             />
-          </div>
-
-          <div
-            className={`rounded-2xl animate-fadein text-black ${
-              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-            }`}
-          >
-            {loading ? (
-              <div className="text-center text-gray-500 py-8">
-                Loading coupons...
-              </div>
-            ) : error ? (
-              <div className="text-center text-red-500 py-8">{error}</div>
-            ) : (
-              <DataTable columns={columns} data={coupons} />
+            {search && (
+              <button
+                type="button"
+                onClick={handleClear}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
             )}
           </div>
-          {/* Pagination */}
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            handlePage={handlePage}
-          />
-          {/* Modals */}
-          <CouponModal
-            open={modal.open}
-            onClose={() => setModal({ open: false, coupon: null, mode: null })}
-            coupon={modal.coupon}
-            mode={modal.mode}
-            onSave={handleSaveEdit}
-          />
-          <DeleteModal
-            open={deleteModal.open}
-            onClose={() => setDeleteModal({ open: false, couponId: null })}
-            onConfirm={handleConfirmDelete}
-            module="Coupon"
-            coupon={coupons.find((c) => c.id === deleteModal.couponId)}
+          <CustomButton
+            text={"Add"}
+            active={true}
+            image={FaPlus}
+            onClick={handleAdd}
           />
         </div>
+
+        <div
+          className={`rounded-2xl animate-fadein text-black ${
+            dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+          }`}
+        >
+          {loading ? (
+            <div className="text-center text-gray-500 py-8">
+              Loading coupons...
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-8">{error}</div>
+          ) : (
+            <DataTable columns={columns} data={coupons} />
+          )}
+        </div>
+        {/* Pagination */}
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          handlePage={handlePage}
+        />
+        {/* Modals */}
+        <CouponModal
+          open={modal.open}
+          onClose={() => setModal({ open: false, coupon: null, mode: null })}
+          coupon={modal.coupon}
+          mode={modal.mode}
+          onSave={handleSaveEdit}
+        />
+        <DeleteModal
+          open={deleteModal.open}
+          onClose={() => setDeleteModal({ open: false, couponId: null })}
+          onConfirm={handleConfirmDelete}
+          module="Coupon"
+          coupon={coupons.find((c) => c.id === deleteModal.couponId)}
+        />
       </div>
     </div>
   );

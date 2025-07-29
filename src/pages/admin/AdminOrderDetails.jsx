@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import AdminSidebar from "../../components/admin/AdminSidebar";
 import { adminOrders } from "../../utils/api";
 import { useLoader } from "../../components/common/LoaderContext";
 import Receipt from "../../components/admin/Receipt";
@@ -115,13 +114,12 @@ const AdminOrderDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex overflow-y-auto">
-        <AdminSidebar />
         <div
           className="flex-1 flex flex-col items-center justify-start py-2"
           style={{ paddingRight: "10px", marginLeft: "256px" }}
         >
           <div
-            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
+            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
             style={{ height: "100%" }}
           >
             <div className="text-center text-gray-500 py-8">
@@ -142,7 +140,7 @@ const AdminOrderDetails = () => {
           style={{ paddingRight: "10px", marginLeft: "256px" }}
         >
           <div
-            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
+            className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
             style={{ height: "100%" }}
           >
             <div className="text-center text-red-500 py-8">{error}</div>
@@ -188,13 +186,12 @@ const AdminOrderDetails = () => {
         </div>
       )}
 
-      <AdminSidebar />
       <div
         className="flex-1 flex flex-col items-center justify-start py-2 overflow-auto"
         style={{ paddingRight: "10px", marginLeft: "256px" }}
       >
         <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
+          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-screen"
           style={{ height: "100%" }}
         >
           <h1 className="text-xl font-roboto_serif font-semibold text-gray-900 mb-2">

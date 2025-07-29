@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AdminSidebar from "../../components/admin/AdminSidebar";
+
 import { useNavigate } from "react-router-dom";
 import { routeConstant } from "../../constants/RouteConstants";
 import { adminOrders } from "../../utils/api";
@@ -166,61 +166,54 @@ const AdminOrders = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E8EDE9] flex">
-      <AdminSidebar />
-
+    <div className="bg-mainBg flex flex-col items-center w-full rounded-xl">
       <div
-        className="flex-1 flex flex-col items-center justify-start py-2"
-        style={{ paddingRight: "10px", marginLeft: "256px" }}
+        className="w-full shadow p-3 md:p-4 min-h-screen"
+        style={{ height: "100%" }}
       >
+        <h1 className="text-xl font-semibold text-gray-900 mb-8 font-roboto_serif">
+          Your Orders
+        </h1>
+
+        {/* Search and Table */}
+        <Searchbar />
+
         <div
-          className="w-full bg-mainBg rounded-xl shadow p-8 min-h-[400px]"
-          style={{ height: "100%" }}
+          className={`mt-4 rounded-2xl animate-fadein text-black ${
+            dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
+          } [scrollbar-gutter:stable]`}
         >
-          <h1 className="text-xl font-semibold text-gray-900 mb-8 font-roboto_serif">
-            Your Orders
-          </h1>
-
-          {/* Search and Table */}
-          <Searchbar />
-
-          <div
-            className={`mt-4 rounded-2xl animate-fadein text-black ${
-              dropdownId !== null ? "overflow-visible" : "overflow-x-auto"
-            } [scrollbar-gutter:stable]`}
-          >
-            {loading ? (
-              <div
-                style={{
-                  textAlign: "center",
-                  color: "#ff2222",
-                  padding: "2rem",
-                }}
-              >
-                Loading orders...
-              </div>
-            ) : error ? (
-              <div
-                style={{
-                  textAlign: "center",
-                  color: "#ff2222",
-                  padding: "2rem",
-                }}
-              >
-                {error}
-              </div>
-            ) : (
-              <DataTable columns={columns} data={orders} />
-            )}
-          </div>
-
-          {/* Pagination */}
-          <Pagination
-            page={page}
-            totalPages={totalPages}
-            handlePage={handlePage}
-          />
+          {loading ? (
+            <div
+              style={{
+                textAlign: "center",
+                color: "#ff2222",
+                padding: "2rem",
+              }}
+            >
+              Loading orders...
+            </div>
+          ) : error ? (
+            <div
+              style={{
+                textAlign: "center",
+                color: "#ff2222",
+                padding: "2rem",
+              }}
+            >
+              {error}
+            </div>
+          ) : (
+            <DataTable columns={columns} data={orders} />
+          )}
         </div>
+
+        {/* Pagination */}
+        <Pagination
+          page={page}
+          totalPages={totalPages}
+          handlePage={handlePage}
+        />
       </div>
     </div>
   );

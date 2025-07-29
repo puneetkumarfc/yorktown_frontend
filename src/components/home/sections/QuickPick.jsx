@@ -70,7 +70,7 @@ const QuickPick = () => {
                 categories.map((category, index) => {
                     const isActive = activeCategory.name === `${category.name}`;
                     return (
-                        <div key={index} className={`flex-shrink-0 whitespace-nowrap py-2 px-5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer focus:outline-none ${
+                        <div key={index} className={`flex-shrink-0 whitespace-nowrap py-2 px-3 rounded-full text-xs font-normal transition-all duration-200 cursor-pointer focus:outline-none ${
                             isActive
                             ? "bg-customOrange text-white"
                             : "bg-mainBg text-customOrange border border-customOrange/40 hover:bg-customOrange/5"
