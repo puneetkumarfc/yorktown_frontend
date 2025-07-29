@@ -71,7 +71,7 @@ const AdminOrderDetails = () => {
       if (!showPrintModal) {
         setShowPrintModal(true);
         // Wait for modal to render
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       const element = receiptRef.current;
@@ -80,24 +80,109 @@ const AdminOrderDetails = () => {
       }
 
       console.log("Generating PDF for element:", element);
+      console.log(
+        "Element dimensions:",
+        element.offsetWidth,
+        "x",
+        element.offsetHeight
+      );
+      console.log(
+        "Element content:",
+        element.innerHTML.substring(0, 200) + "..."
+      );
 
-      await html2pdf()
+      // Test if html2pdf is available
+      if (typeof html2pdf === "undefined") {
+        throw new Error("html2pdf library not loaded");
+      }
+
+      // Ensure the element has white background for PDF generation
+      const originalBackground = element.style.backgroundColor;
+      element.style.backgroundColor = "#ffffff";
+
+      // Try a simpler approach first
+      const pdfPromise = html2pdf()
         .set({
-          margin: [0.2, 0.2, 0.2, 0.2], // top, left, bottom, right (inches)
+          margin: [0.5, 0.5, 0.5, 0.5],
           filename: `Order_${orderId}.pdf`,
           html2canvas: {
-            scale: 2,
+            scale: 1,
             useCORS: true,
-            logging: false,
+            logging: true, // Enable logging to see what's happening
             backgroundColor: "#ffffff",
+            allowTaint: true,
+            foreignObjectRendering: true,
           },
-          jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+          jsPDF: {
+            unit: "in",
+            format: "a4",
+            orientation: "portrait",
+          },
         })
         .from(element)
         .save();
+
+      // Add timeout
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error("PDF generation timed out")), 15000);
+      });
+
+      await Promise.race([pdfPromise, timeoutPromise]);
+
+      // Restore original background after successful generation
+      element.style.backgroundColor = originalBackground;
+      console.log("PDF generated successfully");
     } catch (err) {
       console.error("PDF generation error:", err);
-      setError(`Failed to generate PDF: ${err.message}`);
+      console.error("Error stack:", err.stack);
+
+      // Try alternative method using window.print() as fallback
+      try {
+        const element = receiptRef.current;
+        if (element) {
+          // Create a new window for printing
+          const printWindow = window.open("", "_blank");
+          printWindow.document.write(`
+            <html>
+              <head>
+                <title>Order Receipt</title>
+                <style>
+                  body { font-family: Arial, sans-serif; margin: 20px; }
+                  table { border-collapse: collapse; width: 100%; }
+                  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                  th { background-color: #f2f2f2; }
+                  @media print { body { margin: 0; } }
+                </style>
+              </head>
+              <body>
+                ${element.outerHTML}
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+          printWindow.focus();
+
+          // Wait a bit then print
+          setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+          }, 500);
+
+          console.log("Fallback print method used");
+          return; // Exit early if fallback succeeds
+        }
+      } catch (fallbackErr) {
+        console.error("Fallback method also failed:", fallbackErr);
+      }
+
+      // If we get here, both methods failed
+      if (err.message.includes("timed out")) {
+        setError("PDF generation timed out. Please try again.");
+      } else if (err.message.includes("not loaded")) {
+        setError("PDF library not available. Please refresh the page.");
+      } else {
+        setError(`Failed to generate PDF: ${err.message}`);
+      }
     } finally {
       hideLoader();
       // Don't close modal automatically for PDF - let user close it
@@ -109,6 +194,43 @@ const AdminOrderDetails = () => {
     console.log("Receipt ref:", receiptRef.current);
     console.log("Modal open:", showPrintModal);
     console.log("Order data:", orderData);
+  };
+
+  // Test html2pdf library
+  const testHtml2Pdf = () => {
+    try {
+      console.log("html2pdf available:", typeof html2pdf !== "undefined");
+      if (typeof html2pdf !== "undefined") {
+        console.log("html2pdf version:", html2pdf.version);
+
+        // Test with a simple div
+        const testDiv = document.createElement("div");
+        testDiv.innerHTML = "<h1>Test PDF</h1><p>This is a test.</p>";
+        testDiv.style.padding = "20px";
+        testDiv.style.backgroundColor = "white";
+        document.body.appendChild(testDiv);
+
+        html2pdf()
+          .set({
+            margin: [0.5, 0.5, 0.5, 0.5],
+            filename: "test.pdf",
+            html2canvas: { scale: 1, backgroundColor: "#ffffff" },
+            jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+          })
+          .from(testDiv)
+          .save()
+          .then(() => {
+            console.log("Test PDF generated successfully");
+            document.body.removeChild(testDiv);
+          })
+          .catch((err) => {
+            console.error("Test PDF failed:", err);
+            document.body.removeChild(testDiv);
+          });
+      }
+    } catch (err) {
+      console.error("html2pdf test error:", err);
+    }
   };
 
   useEffect(() => {
@@ -268,6 +390,11 @@ const AdminOrderDetails = () => {
               text="Debug"
               active={false}
               onClick={testReceiptRef}
+            />
+            <CustomButton
+              text="Test PDF"
+              active={false}
+              onClick={testHtml2Pdf}
             />
           </div>
 
