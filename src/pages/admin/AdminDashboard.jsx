@@ -258,7 +258,7 @@ const AdminDashboard = () => {
         <div className="relative action-dropdown-container">
           <button
             onClick={() => toggleDropdown(item.id)}
-            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center"
+            className="text-gray-500 cursor-pointer hover:text-black transition focus:outline-none flex items-center z-0"
             title="Actions"
           >
             <Ellipsis strokeWidth={1.1} />
