@@ -12,10 +12,9 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { routeConstant } from "../../constants/RouteConstants";
 import { adminAuth } from "../../utils/api";
-import AdminLogoutModal from "./AdminLogoutModal";
 import { PanelRightOpen } from "lucide-react";
 
-export default function AdminSidebar({ toggleSidebar }) {
+export default function AdminSidebar({ toggleSidebar, onLogoutClick }) {
   const navigate = useNavigate();
 
   const navLinks = [
@@ -35,7 +34,6 @@ export default function AdminSidebar({ toggleSidebar }) {
   ];
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const currentUser = adminAuth.getCurrentUser() || {
     email: "erica@example.com",
@@ -44,19 +42,7 @@ export default function AdminSidebar({ toggleSidebar }) {
 
   const handleLogout = () => {
     setShowUserDropdown(false);
-    setShowLogoutModal(true);
-  };
-
-  const confirmLogout = () => {
-    // Clear session/localStorage
-    localStorage.clear();
-    sessionStorage.clear();
-    // Redirect to login page
-    navigate(routeConstant.ADMIN_LOGIN);
-  };
-
-  const cancelLogout = () => {
-    setShowLogoutModal(false);
+    onLogoutClick();
   };
 
   return (
@@ -122,7 +108,7 @@ export default function AdminSidebar({ toggleSidebar }) {
           onClick={() => setShowUserDropdown(!showUserDropdown)}
         >
           <img
-            src="https://randomuser.me/api/portraits/women/44.jpg"
+            src="https://avatar.iran.liara.run/public/12"
             alt="User avatar"
             className="w-10 h-10 rounded-full object-cover border"
           />
@@ -154,14 +140,6 @@ export default function AdminSidebar({ toggleSidebar }) {
           </div>
         )}
       </div>
-
-      {/* Logout Confirmation Modal */}
-      {showLogoutModal && (
-        <AdminLogoutModal
-          cancelLogout={cancelLogout}
-          confirmLogout={confirmLogout}
-        />
-      )}
     </aside>
   );
 }
