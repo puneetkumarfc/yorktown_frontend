@@ -473,6 +473,57 @@ export const adminCoupons = {
   },
 };
 
+// Admin dashboard functions
+export const adminDashboard = {
+  // Fetch dashboard data
+  getDashboardData: async () => {
+    const response = await apiCall('/admin/dashboard', {
+      method: 'GET',
+    });
+
+    if (response.ok) {
+      const responseData = response.data;
+      
+      // Check the status field from the API response
+      if (responseData.status === true) {
+        return {
+          success: true,
+          message: responseData.message || 'Dashboard data fetched successfully',
+          data: responseData.data
+        };
+      } else {
+        // API returned status: false
+        let errorMessage = 'Failed to fetch dashboard data. Please try again.';
+        
+        if (responseData.errors && responseData.errors.length > 0) {
+          errorMessage = responseData.errors[0]; // Take the first error message
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+        
+        throw new Error(errorMessage);
+      }
+    } else {
+      // Handle HTTP errors
+      let errorMessage = 'Failed to fetch dashboard data. Please try again.';
+      
+      if (response.status === 401) {
+        errorMessage = 'Unauthorized. Please login again.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. You do not have permission to view dashboard.';
+      } else if (response.status === 400) {
+        errorMessage = 'Invalid request. Please check your input.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (response.status === 404) {
+        errorMessage = 'Dashboard service not found.';
+      }
+      
+      throw new Error(errorMessage);
+    }
+  },
+};
+
 // Error handling utility
 export const handleApiError = (error) => {
   if (error.name === 'TypeError' && error.message.includes('fetch')) {
