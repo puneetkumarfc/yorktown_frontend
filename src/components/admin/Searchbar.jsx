@@ -24,7 +24,7 @@ const Searchbar = () => {
             <button
             type="button"
             onClick={handleClear}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 hover:text-mainRed transition-colors cursor-pointer"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
             >
             <RxCross2 className="w-5 h-5" />
             </button>

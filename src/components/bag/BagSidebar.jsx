@@ -8,6 +8,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { RxCross2 } from "react-icons/rx";
 import { useLoader } from "../common/LoaderContext";
+import toast from "react-hot-toast";
 
 const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   // const stripePromise = loadStripe(
@@ -15,7 +16,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
   // );
 
   const stripePromise = loadStripe(
-    "pk_live_51Rgn3vFRe9zYMh4jxu5p0T9DZRU4PwWVBiS8ZlXeekaQ5hpM7sGAs0MCDmndWGxbIAP740mJrO36KosKjHR4LnVK00YRIh4F8"
+    "pk_live_51Rgn3vFRe9zYMh4jxu5p0T9DZRU4PwWVBiS8ZlXeekaQ5hpM7sGAs0MCDmndWGxbIAP740mJrO36KosKjHR4LnVK00YRIh4F8T"
   );
 
   const { cart, totalPrice } = useCartStore();
@@ -71,10 +72,12 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
               theme: "stripe",
             },
           });
-          setOrderId(response.data.data.orderId); // Store real orderId from backend
+          setOrderId(response.data.data.orderId);
         }
       } catch (error) {
         console.error("Error placing order:", error);
+        setCheckoutModal(false);
+        toast.error("Something went wrong! Please try again after some time.");
       } finally {
         hideLoader();
       }
@@ -141,6 +144,7 @@ const BagSidebar = ({ setCheckoutModal, orderId, setOrderId }) => {
                 formStep={formStep}
                 handleNext={handleNext}
                 orderId={orderId}
+                setCheckoutModal={setCheckoutModal}
               />
             </Elements>
           ) : (

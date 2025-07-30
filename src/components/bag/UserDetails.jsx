@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { userDetails } from '../../constants/Forms'
 import { IoIosArrowForward } from "react-icons/io";
 import { useForm } from 'react-hook-form';
@@ -29,6 +29,12 @@ const UserDetails = ({handleNext}) => {
                               maxLength: {
                                 value: 10,
                                 message: "Number must be at most 10 digits",
+                              },
+                            }),
+                            ...(field.key === "customerEmail" && {
+                              pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Invalid email address",
                               },
                             }),
                           })}

@@ -4,8 +4,9 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import toast from "react-hot-toast";
 
-const CheckoutForm = ({ orderId }) => {
+const CheckoutForm = ({ orderId, setCheckoutModal}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,9 @@ const CheckoutForm = ({ orderId }) => {
 
     if (error) {
       console.error(error.message);
+      setLoading(false);
+      setCheckoutModal(false);
+      toast.error(error.message);
     }
 
     setLoading(false);
