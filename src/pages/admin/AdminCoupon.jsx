@@ -23,7 +23,7 @@ const AdminCoupon = () => {
     couponId: null,
   });
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [sort, setSort] = useState("code,asc");
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ const AdminCoupon = () => {
       try {
         const body = {
           search,
-          page,
+          page: page - 1,
           size: PAGE_SIZE,
           sort,
         };
@@ -100,11 +100,11 @@ const AdminCoupon = () => {
       direction = sort.endsWith("asc") ? "desc" : "asc";
     }
     setSort(`${col},${direction}`);
-    setPage(0);
+    setPage(1);
   };
 
   const handlePage = (newPage) => {
-    if (newPage >= 0 && newPage < totalPages) setPage(newPage);
+    if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
   };
 
   const handleView = async (coupon) => {
@@ -399,15 +399,8 @@ const AdminCoupon = () => {
           ) : error ? (
             <div className="text-center text-red-500 py-8">{error}</div>
           ) : (
-            <DataTable columns={columns} data={coupons} />
-          )}
+            <DataTable columns={columns} data={coupons} page={page} totalPages={totalPages} handlePage={handlePage}/> )}
         </div>
-        {/* Pagination */}
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          handlePage={handlePage}
-        />
         {/* Modals */}
         <CouponModal
           open={modal.open}

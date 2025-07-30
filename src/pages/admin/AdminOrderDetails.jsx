@@ -450,6 +450,16 @@ const AdminOrderDetails = () => {
                                   Note: {item.notes}
                                 </p>
                               )}
+                              {item.toppings.length > 0 && (
+                                <p className="text-xs text-gray-500">
+                                  Toppings: {item.toppings.map(topping => topping.toppingName).join(", ")}
+                                </p>
+                              )}
+                              {item.cheeses.length > 0 && (
+                                <p className="text-xs text-gray-500">
+                                  Cheeses: {item.cheeses.map(topping => topping.cheeseName).join(", ")}
+                                </p>
+                              )}
                             </div>
                           </td>
                           <td className="text-center py-2 text-gray-900">

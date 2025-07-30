@@ -5,9 +5,11 @@ import { routeConstant } from "../../constants/RouteConstants";
 import { adminOrders } from "../../utils/api";
 import { useLoader } from "../../components/common/LoaderContext";
 import DataTable from "../../components/admin/DataTable";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, Search, X } from "lucide-react";
 import Searchbar from "../../components/admin/Searchbar";
 import Pagination from "../../components/admin/Pagination";
+import CustomButton from "../../components/admin/CustomButton";
+import { FaPlus } from "react-icons/fa";
 
 const PAGE_SIZE = 10;
 
@@ -23,10 +25,6 @@ const AdminOrders = () => {
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
   const [dropdownId, setDropdownId] = useState(null);
-
-  const [query, setQuery] = useState("");
-  const handleInputChange = (e) => setQuery(e.target.value);
-  const handleClear = () => setQuery("");
 
   const toggleDropdown = (id) => {
     setDropdownId(dropdownId === id ? null : id);
@@ -83,6 +81,16 @@ const AdminOrders = () => {
 
   const handlePage = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
+
+  const handleClearSearch = () => {
+    setSearch("");
+    setPage(1);
   };
 
   const columns = [
@@ -176,7 +184,30 @@ const AdminOrders = () => {
         </h1>
 
         {/* Search and Table */}
-        <Searchbar />
+        <div className="flex items-end gap-2 mb-4">
+          {/* Search bar */}
+          <div className="relative flex items-center w-full">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-black/20 w-5 h-5 transition-colors" />
+            <input
+              type="text"
+              value={search}
+              onChange={handleSearchChange}
+              onKeyDown={(e) => e.key === "Enter"}
+              placeholder="Search"
+              className="w-full py-2 px-8 border border-black/20 placeholder:text-black/30 rounded-xl focus:outline-none focus:border-black/50 text-black"
+              autoComplete="off"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={handleClearSearch}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-black/20 hover:text-black/50 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+        </div>
 
         <div
           className="mt-4 rounded-2xl animate-fadein text-black overflow-x-auto [scrollbar-gutter:stable] table-container"
@@ -202,16 +233,8 @@ const AdminOrders = () => {
               {error}
             </div>
           ) : (
-            <DataTable columns={columns} data={orders} />
-          )}
+            <DataTable columns={columns} data={orders} page={page} totalPages={totalPages} handlePage={handlePage}/>)}
         </div>
-
-        {/* Pagination */}
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          handlePage={handlePage}
-        />
       </div>
     </div>
   );
